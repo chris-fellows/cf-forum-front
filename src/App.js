@@ -7,6 +7,9 @@ import DITestComponent from './pages/DITestComponent.jsx';
 import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import { useInject, useContainer } from './DependencyInjection.js';
+import GroupRootPosts from './pages/GroupRootPosts.jsx';
+import GroupInfo from './pages/GroupInfo.jsx';
+import ThreadPosts from './pages/ThreadPosts.jsx';
 
 // https://www.youtube.com/watch?v=fPuLnzSjPLE&t=3s
 // Pages:
@@ -78,6 +81,16 @@ const container = {
       const data = await response.json()      
       return data;
     },
+    getRootPostsByGroupService: async (id) => {  // GroupID
+      const response = await fetch("http://localhost:8800/rootposts/bygroup/" + id)
+      const data = await response.json()      
+      return data;
+    },
+    getPostsByRootPostService: async (postId, pageSize, pageNumber) => { 
+      const response = await fetch("http://localhost:8800/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber)
+      const data = await response.json()      
+      return data;
+    },
     getUserService: async (id) => {       
       const response = await fetch("http://localhost:8800/users/" + id)
       const data = await response.json()      
@@ -97,11 +110,15 @@ const container = {
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>                  
-        </Routes>
-      </BrowserRouter>
+  <ContainerProvider container={container}>          
+
+    <div className="App">      
+        <Routes> 
+          <Route path="/groups" element={<Groups />}/>
+          <Route path="/groupinfo" element={<GroupInfo />}/>                    
+          <Route path="/grouprootposts" element={<GroupRootPosts />}/>
+          <Route path="/threadposts" element={<ThreadPosts />}/> 
+        </Routes>      
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -115,13 +132,12 @@ function App() {
         >
           Learn React
         </a>
-
-        <ContainerProvider container={container}>          
+        
           <Groups />
-          <DITestComponent />
-        </ContainerProvider>
+          <DITestComponent />  
       </header>
     </div>
+    </ContainerProvider>
   );
 }
 

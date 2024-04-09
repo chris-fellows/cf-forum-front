@@ -1,40 +1,41 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
-import { Post } from "./Post.jsx"
+import { useInject } from "../DependencyInjection";
+//import { useNavigate } from "react-router-dom";
+import Post from "./Post.jsx"
+import RootPost from "./RootPost.jsx";
+import { useSearchParams } from 'react-router-dom';
 
 // Displays root posts for group (Posts.GroupId=X, Posts.Sequence=1)
 // Params: GroupId
-const GroupRootPosts = ({groupId}) => {
+const GroupRootPosts = () => {        
     const [posts, setPosts] = useState([])
+    const getRootPostsByGroupService = useInject('getRootPostsByGroupService');  
+
+    const [searchParams] = useSearchParams();
+    const groupId = searchParams.get("groupid");
 
     useEffect(() => {
-        const fetchAllGroupPosts = () => {
-            try{
-                console.log("Fetching group posts 100");
-                fetch("http://localhost:8800/groupposts?id=" + groupId)
-                    .then((response) => response.json())
-                    .then((data) => setPosts(data))
-                    .catch((error2) => console.log("Error in catch"));
+        console.log("Entered GroupRootPosts:" + groupId);
 
-                console.log("Fetching group posts 200");
-                console.log(groups);
-                                                
-            } catch (error) {
-                console.log("Fetched group posts response: Error");
-                console.log(error);
-            }
+        const fetchRootPosts = async () => {
+            console.log("calling getRootPostsByGroupService");
+            const data = await getRootPostsByGroupService(groupId, 1000, 1) // pageSize, pageNumber
+            console.log("called getRootPostsByGroupService");
+            setPosts(data);
+            console.log(data);
+            console.log("set posts in state");
         }
 
-        console.log("Calling fetchAllGroupPosts");
-        fetchAllGroupPosts();
-        console.log("Called fetchAllGroupPosts");
+        fetchRootPosts();
     }, []);
-
-    return
-        <div>GroupPosts (Lists first post for each thread)</div>
-        {posts.map(post => (     
-            <Post id={post.id} />
-        ))}
+    
+    // Display root post (Summary)
+    // {posts.map(post => <div key={post.ID} class="Post">{post.ID} {post.Text}</div>)}
+    return (
+        <>
+            {posts.map(post => <RootPost post={post}/>)}            
+        </>
+    )          
 }
 
 export default GroupRootPosts

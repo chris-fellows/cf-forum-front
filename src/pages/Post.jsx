@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { UserInfo } from "./UserInfo.jsx"
+import UserInfo from "./UserInfo"
 
 // Displays post
 // Params: PostId
-const Post = ({id}) => {
-    const [post, setPost] = useState([])
-
+const Post = ({post}) => {
+    //const [post, setPost] = useState([])
+    
     return (
         <>
-            <div>Post</div>
-            <UserInfo id={post.UserId} />
+            <div>{post.Text}</div>
+            <UserInfo id={post.UserID} />
         </>
     )
 }

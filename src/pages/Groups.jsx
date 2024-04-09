@@ -65,10 +65,10 @@ const Groups = () => {
         console.log("Leaving Groups:useEffect");
     }, []);
 
-    const handleGroupClick = async (id) => { 
+    //const handleGroupClick = async (id) => { 
         //e.preventDefault();
         //navigate("/Group?id=" + id);
-    }
+    //}
 
     return (
         <>
