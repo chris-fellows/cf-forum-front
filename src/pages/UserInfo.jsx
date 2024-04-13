@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-// Displays user info (Basic info)
+// Displays user info (Name, logo)
 // Params: UserId
-const UserInfo = ({id}) => {
+const UserInfo = ({name, logo}) => {
     return (
-        <div>UserInfo (User name, logo)</div>
+        <>
+        <div>{name}</div> {logo && <img src={logo} alt="Logo" />}
+        </>
     )
 }
 

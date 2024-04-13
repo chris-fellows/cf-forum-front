@@ -10,12 +10,11 @@ const GroupInfo = ({group}) => {
 
     const navigate = useNavigate()
 
-    // TODO: Load group info
+    // Handle group click, displays group root posts
     const handleGroupClick = async (groupId) => { 
         //e.preventDefault();        
         console.log("navigating to /grouprootposts");
-        navigate("/grouprootposts?groupid=" + groupId);
-        //navigate("/grouprootposts");        
+        navigate("/grouprootposts?groupid=" + groupId);        
     }
 
     // <img src={group.Log} alt="Logo" />
@@ -24,7 +23,8 @@ const GroupInfo = ({group}) => {
             <div key={group.ID} className="Group" >
                     <p>Name: {group.name}</p>
                     <p>Description: {group.Description}</p>                
-                    <button onClick={() => handleGroupClick(group.ID)}>Edit</button>
+                    <img src={group.Logo} alt="Logo" />
+                    <button onClick={() => handleGroupClick(group.ID)}>View Posts</button>
                 </div>            
         </>
     )    

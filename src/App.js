@@ -7,9 +7,14 @@ import DITestComponent from './pages/DITestComponent.jsx';
 import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import { useInject, useContainer } from './DependencyInjection.js';
+import About from './pages/About.jsx';
+import Contact from './pages/Contact.jsx';
+import Help from './pages/Help.jsx';
 import GroupRootPosts from './pages/GroupRootPosts.jsx';
 import GroupInfo from './pages/GroupInfo.jsx';
+import NavBar from './pages/NavBar.jsx';
 import ThreadPosts from './pages/ThreadPosts.jsx';
+import Users from './pages/Users.jsx';
 
 // https://www.youtube.com/watch?v=fPuLnzSjPLE&t=3s
 // Pages:
@@ -28,26 +33,12 @@ const ContainerProvider = ({ container, children }) => {
   return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
 };
 
-// Define a hook to access the container from within a component
-//const useContainer = () => {
-//  const container = useContext(ContainerContext);
-//  if (!container) {
-//    throw new Error('Container not found. Make sure to wrap your components with a ContainerProvider.');
-//  }
-//  return container;
-//};
-
-// Define a hook to inject dependencies from the container
-//const useInject = (identifier) => {
-//  const container = useContainer();
-//  return container.resolve(identifier);
-//};
-
-
 // Test service
 const MyService = () => {
   return { foo: 'bar' };
 };
+
+//const backendURL = "http://localhost:8880";
 
 const MyAppConfigService =() => {
   return { 
@@ -64,14 +55,15 @@ const MyAppConfigService =() => {
 //  return <div>{myService.foo} AppConfigService: {myAppConfigService.message} </div>; // Output: 'bar'
 //};
 
-// getGroupsService: () => { return fetch("http://localhost:8800/groups").json(); }
-// Define contain for dependencies
+// Define container for dependencies
 const container = {
   items: {
     myService: MyService(),
     myAppConfigService: MyAppConfigService(),
     userRoleService: new UserRoleService(),
-    getGroupsService: async () => {       
+    getGroupsService: async () => {    
+      //const url = this.resolve["myAppConfigService"].backendURL;
+      //console.log("getGroupsServiceURL=" + url);      
       const response = await fetch("http://localhost:8800/groups")
       const data = await response.json()      
       return data;
@@ -91,8 +83,23 @@ const container = {
       const data = await response.json()      
       return data;
     },
+    deletePostByIdService: async (postId) => { 
+      const response = await delete("http://localhost:8800/posts/" + postId)
+      const data = await response.json()      
+      return data;
+    },
     getUserService: async (id) => {       
       const response = await fetch("http://localhost:8800/users/" + id)
+      const data = await response.json()      
+      return data;
+    },
+    getUsersService: async () => {       
+      const response = await fetch("http://localhost:8800/users")
+      const data = await response.json()      
+      return data;
+    },
+    getRandomAdvertsService: async (number) => {       
+      const response = await fetch("http://localhost:8800/adverts/random/" + number)
       const data = await response.json()      
       return data;
     }
@@ -105,37 +112,22 @@ const container = {
   }
 };
 
-//<Route path="/" element={<Groups/>}/>
-//          <Route path="/group" element={<Group/>}/>
-
 function App() {
   return (
   <ContainerProvider container={container}>          
 
-    <div className="App">      
+    <div className="App">                   
+        <NavBar />
         <Routes> 
+          <Route path="/about" element={<About />}/>
+          <Route path="/contact" element={<Contact />}/>
+          <Route path="/help" element={<Help />}/>
           <Route path="/groups" element={<Groups />}/>
           <Route path="/groupinfo" element={<GroupInfo />}/>                    
           <Route path="/grouprootposts" element={<GroupRootPosts />}/>
           <Route path="/threadposts" element={<ThreadPosts />}/> 
-        </Routes>      
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        
-          <Groups />
-          <DITestComponent />  
-      </header>
+          <Route path="/users" element={<Users />}/> 
+        </Routes>                          
     </div>
     </ContainerProvider>
   );

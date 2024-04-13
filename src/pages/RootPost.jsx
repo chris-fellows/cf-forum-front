@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import UserInfo from "./UserInfo"
 
 // Displays root post
-// Params: PostId
+// Params: Post
 const RootPost = ({post}) => {
     //const [post, setPost] = useState([])
 
@@ -16,8 +16,8 @@ const RootPost = ({post}) => {
     
     return (
         <>
-            <div>{post.Text}</div>
-            <UserInfo id={post.UserID} />
+            <div>{post.Text}</div> 
+            <UserInfo name={post.UserName} logo={post.UserLogo}/>           
             <button onClick={() => handlePostClick(post.ID)}>Open</button>
         </>
     )
