@@ -2,13 +2,18 @@ import { useState, useEffect } from "react"
 import { useInject } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import UserInfo from "./UserInfo"
+import getUserInfo from '../userInfo';
 
 // Displays post
 // Params: PostId
 // TODO: Set isUserTheOwner correctly
-const Post = ({post, isUserTheOwner}) => {
-    //const [post, setPost] = useState([])
+const Post = ({post }) => {
+    const userInfo = getUserInfo(); 
     const deletePostByIdService = useInject('deletePostByIdService');  
+
+    // Determine if user is post owner    
+    const isUserTheOwner = userInfo != undefined && userInfo.userId == post.UserID;
+    console.log("Post:" + post.ID + "; isUserTheOwner=" + isUserTheOwner);
 
     const handleUpvoteClick = async () => {           
         window.alert("Upvoted");

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+//import useToken from '../useToken';
+//import getUserInfo from '../userInfo';
 
 // Navigation bar
 // Params: None
 const NavBar = () => {
-
    const navListStyle = {
       listStyle: "none"
    };
@@ -11,7 +12,7 @@ const NavBar = () => {
    const navListItemStyle = {
       display: "inline-block",
       marginRight: "10px"
-    };
+    };    
 
  return (
  <nav>
@@ -23,8 +24,8 @@ const NavBar = () => {
              <Link to="/groups">Groups</Link>
           </li>
           <li style={navListItemStyle}>
-             <Link to="/about">About</Link>
-          </li>
+             <Link to="/userposts">My Posts</Link>
+          </li>          
           <li style={navListItemStyle}>
              <Link to="/contact">Contact</Link>
           </li>
@@ -34,7 +35,10 @@ const NavBar = () => {
           <li style={navListItemStyle}>
              <Link to="/help">Help</Link>
           </li>
-       </ul>
+          <li style={navListItemStyle}>
+             <Link to="/about">About</Link>
+          </li>
+       </ul>     
  </nav>
  );
 };

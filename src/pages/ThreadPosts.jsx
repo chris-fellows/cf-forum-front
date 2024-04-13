@@ -21,10 +21,9 @@ const ThreadPosts = () => {
     console.log("ThreadPosts:" + postId);
 
     useEffect(() => {        
-        // TODO: Implement paging
-        const pageSize = 50;        
+        // TODO: Implement paging        
         const fetchPosts = async () => {            
-            const data = await getPostsByRootPostService(postId, pageSize, pageNumber)            
+            const data = await getPostsByRootPostService(postId, 100, pageNumber)            
             setPosts(data);
             console.log(data);            
         }
@@ -38,14 +37,11 @@ const ThreadPosts = () => {
         fetchPosts();
         fetchRandomAdverts();
     }, []);
-
-    // TODO: Optimise this and pass all post parameters so that the Post component doesn't have to load
-    // post from backend.
-    // TODO: Set isUserTheOwner
+        
     return (
         <>       
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
-            {posts.map(post => (<Post post={post} isUserTheOwner={true} />))}
+            {posts.map(post => (<Post post={post} />))}
         </>
     )
 }

@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Groups from "./pages/Groups.jsx"
 //import Group from "./pages/GroupInfo.jsx"
@@ -9,12 +10,17 @@ import React, { createContext, useContext } from 'react';
 import { useInject, useContainer } from './DependencyInjection.js';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
+import CurrentUser from './pages/CurrentUser.jsx';
 import Help from './pages/Help.jsx';
+import Home from './pages/Home.jsx';
 import GroupRootPosts from './pages/GroupRootPosts.jsx';
 import GroupInfo from './pages/GroupInfo.jsx';
+import Login from './pages/Login.jsx';
 import NavBar from './pages/NavBar.jsx';
 import ThreadPosts from './pages/ThreadPosts.jsx';
+import UserPosts from './pages/UserPosts.jsx';
 import Users from './pages/Users.jsx';
+import useToken from './useToken';
 
 // https://www.youtube.com/watch?v=fPuLnzSjPLE&t=3s
 // Pages:
@@ -61,6 +67,16 @@ const container = {
     myService: MyService(),
     myAppConfigService: MyAppConfigService(),
     userRoleService: new UserRoleService(),
+    loginService: async (username, password) => {       
+      const response = await fetch("http://localhost:8800/security/login")
+      const data = await response.json()      
+      return data;
+    },
+    logoutService: async () => {       
+      const response = await fetch("http://localhost:8800/security/logout")
+      const data = await response.json()      
+      return data;
+    },
     getGroupsService: async () => {    
       //const url = this.resolve["myAppConfigService"].backendURL;
       //console.log("getGroupsServiceURL=" + url);      
@@ -80,6 +96,11 @@ const container = {
     },
     getPostsByRootPostService: async (postId, pageSize, pageNumber) => { 
       const response = await fetch("http://localhost:8800/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber)
+      const data = await response.json()      
+      return data;
+    },
+    getPostsByUserService: async (userid, pageSize, pageNumber) => { 
+      const response = await fetch("http://localhost:8800/posts/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber)
       const data = await response.json()      
       return data;
     },
@@ -113,19 +134,31 @@ const container = {
 };
 
 function App() {
+  const { token, setToken } = useToken();
+
+  if(!token) {
+    return <Login setToken={setToken} />
+  } else {
+    console.log("Already got token");
+    console.log(token);
+  }
+
   return (
   <ContainerProvider container={container}>          
 
     <div className="App">                   
-        <NavBar />
+        <NavBar /><CurrentUser />
         <Routes> 
+          <Route path="/" element={<Home />}/>
           <Route path="/about" element={<About />}/>
           <Route path="/contact" element={<Contact />}/>
           <Route path="/help" element={<Help />}/>
           <Route path="/groups" element={<Groups />}/>
           <Route path="/groupinfo" element={<GroupInfo />}/>                    
-          <Route path="/grouprootposts" element={<GroupRootPosts />}/>
+          <Route path="/grouprootposts" element={<GroupRootPosts />}/>          
+          <Route path="/login" element={<Login setToken={setToken} />}/>
           <Route path="/threadposts" element={<ThreadPosts />}/> 
+          <Route path="/userposts" element={<UserPosts />}/> 
           <Route path="/users" element={<Users />}/> 
         </Routes>                          
     </div>

@@ -1,34 +1,28 @@
 import { useState, useEffect } from "react"
-import { useInject } from "../DependencyInjection";
-//import { useNavigate } from "react-router-dom";
+import { useInject } from "../DependencyInjection.js";
+import { useNavigate } from "react-router-dom";
+import { UserInfo } from "./UserInfo.jsx"
 import Advert from "./Advert.jsx"
 import Post from "./Post.jsx"
-import RootPost from "./RootPost.jsx";
-import { useSearchParams } from 'react-router-dom';
-//import useToken from '../useToken';
 
-// Displays root posts for group (Posts.GroupId=X, Posts.Sequence=1)
-// Params: GroupId
-const GroupRootPosts = () => {        
-    //const { token } = useToken();
+// Displays user posts
+// Params: UserId
+const UserPosts = ({userId}) => {
     const [posts, setPosts] = useState([])
     const [adverts, setAdverts] = useState([])
     const [pageNumber, setPageNumber] = useState(1);    
-    const getRootPostsByGroupService = useInject('getRootPostsByGroupService');  
+    const getPostsByUserService = useInject('getPostsByUserService');
     const getRandomAdvertsService = useInject('getRandomAdvertsService');
 
-    const [searchParams] = useSearchParams();
-    const groupId = searchParams.get("groupid");
-
-    //console.log("Entered GroupRootPosts")
-    //console.log(token);
+    console.log("Entered UserPosts");
+    console.log(Parse.User.Current);
 
     useEffect(() => {
-        //console.log("Entered GroupRootPosts:" + groupId);
+        console.log("Entered UserPosts:" + userId);
 
         // Get root posts
-        const fetchRootPosts = async () => {            
-            const data = await getRootPostsByGroupService(groupId, 100, pageNumber) // pageSize, pageNumber            
+        const fetchUserPosts = async () => {            
+            const data = await getPostsByUserService(userId, 100, pageNumber) // pageSize, pageNumber            
             setPosts(data);
             console.log(data);            
         }
@@ -39,7 +33,7 @@ const GroupRootPosts = () => {
             setAdverts(data);            
         }
 
-        fetchRootPosts();
+        fetchUserPosts();
         fetchRandomAdverts();
     }, []);
     
@@ -49,9 +43,9 @@ const GroupRootPosts = () => {
     return (
         <>           
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
-            {posts.map(post => <RootPost post={post}/>)}            
+            {posts.map(post => <Post post={post}/>)}            
         </>
     )          
 }
 
-export default GroupRootPosts
+export default UserPosts
