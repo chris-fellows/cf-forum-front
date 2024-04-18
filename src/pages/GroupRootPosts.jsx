@@ -43,11 +43,10 @@ const GroupRootPosts = () => {
         fetchRandomAdverts();
     }, []);
     
-    // Display root post (Summary)
-    // {posts.map(post => <div key={post.ID} class="Post">{post.ID} {post.Text}</div>)}
-    //  {adverts && <Advert advert={adverts[0]}/> }
+    // Display root post (Summary)    
     return (
         <>           
+            <div>Group Posts</div>
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
             {posts.map(post => <RootPost post={post}/>)}            
         </>

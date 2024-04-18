@@ -54,28 +54,31 @@ const MyAppConfigService =() => {
         };
 }
 
-// Test component
-//const DITestComponent = () => {
-//  const myService = useInject('myService');
-//  const myAppConfigService = useInject('myAppConfigService')
-//  return <div>{myService.foo} AppConfigService: {myAppConfigService.message} </div>; // Output: 'bar'
-//};
-
 // Define container for dependencies
 const container = {
   items: {
     myService: MyService(),
     myAppConfigService: MyAppConfigService(),
     userRoleService: new UserRoleService(),
-    loginService: async (username, password) => {       
-      const response = await fetch("http://localhost:8800/security/login")
+    loginService: async (credentials) => {       
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials)
+      };
+      const response = await fetch("http://localhost:8800/security/login", requestOptions)
       const data = await response.json()      
-      return data;
+      return data;        
     },
-    logoutService: async () => {       
-      const response = await fetch("http://localhost:8800/security/logout")
-      const data = await response.json()      
-      return data;
+    logoutService: async (token) => {       
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(token)
+      };     
+       const response = await fetch("http://localhost:8800/security/logout", requestOptions)
+       const data = await response.json()      
+       return data;
     },
     getGroupsService: async () => {    
       //const url = this.resolve["myAppConfigService"].backendURL;
@@ -109,6 +112,36 @@ const container = {
       const data = await response.json()      
       return data;
     },
+    updatePostByIdService: async (postId, details) => { 
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(details)
+      };     
+       const response = await fetch("http://localhost:8800/posts/" + postId, requestOptions)
+       const data = await response.json()      
+      return data;
+    },
+    upvotePostByIdService: async (postId, userId) => { 
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(details)
+      };     
+       const response = await fetch("http://localhost:8800/posts/" + postId + "/upvote", requestOptions)
+       const data = await response.json()      
+      return data;
+    },
+    downvotePostByIdService: async (postId, userId) => { 
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(details)
+      };     
+       const response = await fetch("http://localhost:8800/posts/" + postId + "/downvote", requestOptions)
+       const data = await response.json()      
+      return data;
+    },
     getUserService: async (id) => {       
       const response = await fetch("http://localhost:8800/users/" + id)
       const data = await response.json()      
@@ -134,20 +167,23 @@ const container = {
 };
 
 function App() {
-  const { token, setToken } = useToken();
+  const { token, setToken } = useToken();  
 
+  // Login if no token
   if(!token) {
-    return <Login setToken={setToken} />
-  } else {
-    console.log("Already got token");
-    console.log(token);
+    return (
+    <ContainerProvider container={container}> 
+      <div className="App">        
+        <Login setToken={setToken} />
+      </div>
+    </ContainerProvider>
+    )
   }
 
   return (
   <ContainerProvider container={container}>          
-
     <div className="App">                   
-        <NavBar /><CurrentUser />
+        <NavBar />
         <Routes> 
           <Route path="/" element={<Home />}/>
           <Route path="/about" element={<About />}/>

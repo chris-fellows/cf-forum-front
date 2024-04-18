@@ -39,7 +39,8 @@ const ThreadPosts = () => {
     }, []);
         
     return (
-        <>       
+        <>      
+            <div>Thread Posts</div> 
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
             {posts.map(post => (<Post post={post} />))}
         </>

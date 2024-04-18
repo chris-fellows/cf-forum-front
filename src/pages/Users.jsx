@@ -19,6 +19,7 @@ const Users = () => {
         
     return (
         <>
+            <div>Manage Users</div>
             <table>
                 <thead>
                     <tr>

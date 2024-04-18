@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
+import { useInject } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import clearToken from '../clearToken';
 import getUserInfo from '../userInfo';
@@ -9,31 +10,39 @@ import getUserInfo from '../userInfo';
 const CurrentUser = () => {   
    const userInfo = getUserInfo(); 
    const [isLoggedIn, setIsLoggedIn] = useState(userInfo != undefined);   
+   const logoutService = useInject('logoutService');
 
    const navigate = useNavigate()
 
-      // TODO: Fix this. Can't use DI
-    const logoutService = async () => {       
-        const response = await fetch("http://localhost:8800/security/logout")
-        const data = await response.json()      
-        return data;
-    }
-
+   const style = {
+    display: "inline-block",
+    fontSize: "10px"   // TODO: Remove nasty hard-coding    
+  };    
+   
     // Handle log out click
-     const handleLogOutClick = async () => { 
-        //await logoutService();
-        clearToken();
-        setIsLoggedIn(false);
+     const handleLogOutClick = async () => {       
+        const result = await logoutService({
+            token: userInfo.token
+        });
+        console.log("Log out response:");
+        console.log(result);
+
+        if (result.loggedOut) {
+            clearToken();
+            setIsLoggedIn(false);
+        } else {
+            window.alert("Failed to log out");
+        }
      }
 
      // Handle log in click
      const handleLogInClick = async () => { 
-        navigate("/");  // Home
+        navigate("/login");
      }
 
-     if (isLoggedIn) return ( <><div>{userInfo.userName}</div><button onClick={() => handleLogOutClick()}>Log out</button></> )
+     if (isLoggedIn) return ( <><div style={style}>{userInfo.userName}</div><button style={style} onClick={() => handleLogOutClick()}>Log out</button></> )
 
-     return <button onClick={() => handleLogInClick()}>Log in</button>
+     return <button style={style} onClick={() => handleLogInClick()}>Log in</button>
 };
 
 export default CurrentUser;

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-//import useToken from '../useToken';
-//import getUserInfo from '../userInfo';
+import CurrentUser from './CurrentUser';
 
 // Navigation bar
 // Params: None
@@ -38,7 +37,9 @@ const NavBar = () => {
           <li style={navListItemStyle}>
              <Link to="/about">About</Link>
           </li>
-       </ul>     
+
+          <CurrentUser />
+       </ul>            
  </nav>
  );
 };
