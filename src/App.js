@@ -20,7 +20,9 @@ import NavBar from './pages/NavBar.jsx';
 import ThreadPosts from './pages/ThreadPosts.jsx';
 import UserPosts from './pages/UserPosts.jsx';
 import Users from './pages/Users.jsx';
+import User from './pages/User.jsx';
 import useToken from './useToken';
+import getUserInfo from './userInfo.js';
 
 // https://www.youtube.com/watch?v=fPuLnzSjPLE&t=3s
 // Pages:
@@ -70,11 +72,13 @@ const container = {
       const data = await response.json()      
       return data;        
     },
-    logoutService: async (token) => {       
+    logoutService: async () => {       
+      const userInfo = getUserInfo();
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(token)
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }        
       };     
        const response = await fetch("http://localhost:8800/security/logout", requestOptions)
        const data = await response.json()      
@@ -83,77 +87,151 @@ const container = {
     getGroupsService: async () => {    
       //const url = this.resolve["myAppConfigService"].backendURL;
       //console.log("getGroupsServiceURL=" + url);      
-      const response = await fetch("http://localhost:8800/groups")
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };                   
+      const response = await fetch("http://localhost:8800/groups", requestOptions)
       const data = await response.json()      
       return data;
     },
     getGroupService: async (id) => {       
-      const response = await fetch("http://localhost:8800/groups/" + id)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/groups/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
     getRootPostsByGroupService: async (id) => {  // GroupID
-      const response = await fetch("http://localhost:8800/rootposts/bygroup/" + id)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/rootposts/bygroup/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
     getPostsByRootPostService: async (postId, pageSize, pageNumber) => { 
-      const response = await fetch("http://localhost:8800/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },
     getPostsByUserService: async (userid, pageSize, pageNumber) => { 
-      const response = await fetch("http://localhost:8800/posts/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/posts/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },
     deletePostByIdService: async (postId) => { 
-      const response = await delete("http://localhost:8800/posts/" + postId)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await delete("http://localhost:8800/posts/" + postId, requestOptions)
       const data = await response.json()      
       return data;
     },
     updatePostByIdService: async (postId, details) => { 
+      const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
         body: JSON.stringify(details)
       };     
        const response = await fetch("http://localhost:8800/posts/" + postId, requestOptions)
        const data = await response.json()      
       return data;
     },
-    upvotePostByIdService: async (postId, userId) => { 
+    votePostByIdService: async (postId, details) => { 
+      const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
         body: JSON.stringify(details)
       };     
-       const response = await fetch("http://localhost:8800/posts/" + postId + "/upvote", requestOptions)
+       const response = await fetch("http://localhost:8800/posts/" + postId + "/vote", requestOptions)
        const data = await response.json()      
       return data;
-    },
-    downvotePostByIdService: async (postId, userId) => { 
+    },   
+    trackPostByIdService: async (postId, details) => { 
+      const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
         body: JSON.stringify(details)
       };     
-       const response = await fetch("http://localhost:8800/posts/" + postId + "/downvote", requestOptions)
+       const response = await fetch("http://localhost:8800/posts/" + postId + "/track", requestOptions)
        const data = await response.json()      
       return data;
-    },
+    },   
     getUserService: async (id) => {       
-      const response = await fetch("http://localhost:8800/users/" + id)
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/users/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
     getUsersService: async () => {       
-      const response = await fetch("http://localhost:8800/users")
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch("http://localhost:8800/users", requestOptions)
       const data = await response.json()      
       return data;
     },
-    getRandomAdvertsService: async (number) => {       
-      const response = await fetch("http://localhost:8800/adverts/random/" + number)
+    getRandomAdvertsService: async (number) => {   
+      const userInfo = getUserInfo();
+      console.log("getRandomAdvertsService:");
+      console.log(userInfo);
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };           
+      const response = await fetch("http://localhost:8800/adverts/random/" + number, requestOptions)
       const data = await response.json()      
       return data;
     }
@@ -180,6 +258,8 @@ function App() {
     )
   }
 
+  //const userInfo = getUserInfo();
+
   return (
   <ContainerProvider container={container}>          
     <div className="App">                   
@@ -194,8 +274,9 @@ function App() {
           <Route path="/grouprootposts" element={<GroupRootPosts />}/>          
           <Route path="/login" element={<Login setToken={setToken} />}/>
           <Route path="/threadposts" element={<ThreadPosts />}/> 
-          <Route path="/userposts" element={<UserPosts />}/> 
-          <Route path="/users" element={<Users />}/> 
+          <Route path="/userdetails" element={<User />}/> 
+          <Route path="/userposts" element={<UserPosts />}/>                     
+          <Route path="/users" element={<Users />}/>           
         </Routes>                          
     </div>
     </ContainerProvider>

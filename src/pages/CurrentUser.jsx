@@ -21,9 +21,7 @@ const CurrentUser = () => {
    
     // Handle log out click
      const handleLogOutClick = async () => {       
-        const result = await logoutService({
-            token: userInfo.token
-        });
+        const result = await logoutService();
         console.log("Log out response:");
         console.log(result);
 

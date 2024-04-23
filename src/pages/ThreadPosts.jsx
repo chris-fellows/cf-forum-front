@@ -37,12 +37,18 @@ const ThreadPosts = () => {
         fetchPosts();
         fetchRandomAdverts();
     }, []);
+
+    //    PostID: post.ID,
+    //    UserID: post.UserID,
+    //    Vote: 0,     // 0: No vote, 1: Upvoted, 2: Downvoted
+    //    Track: 0     // 0: Not tracked, 1: Tracked
+    //};
         
     return (
         <>      
             <div>Thread Posts</div> 
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
-            {posts.map(post => (<Post post={post} />))}
+            {posts.map(post => (<Post post={post}/>))}
         </>
     )
 }

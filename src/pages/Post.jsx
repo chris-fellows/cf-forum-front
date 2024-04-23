@@ -7,7 +7,7 @@ import getUserInfo from '../userInfo';
 // Displays post
 // Params: PostId
 // TODO: Set isUserTheOwner correctly
-const Post = ({post }) => {
+const Post = ({ post }) => {
     const userInfo = getUserInfo();     
     const [editState, setEditState] = useState({ 
         active: false,
@@ -16,22 +16,21 @@ const Post = ({post }) => {
 
     const deletePostByIdService = useInject('deletePostByIdService');  
     const updatePostByIdService = useInject('updatePostByIdService');  
-    const upvotePostByIdService = useInject('upvotePostByIdService');  
-    const downvotePostByIdService = useInject('downvotePostByIdService');  
+    const votePostByIdService = useInject('votePostByIdService');      
 
     // Determine if user is post owner    
     const isUserTheOwner = userInfo != undefined && userInfo.userId == post.UserID;
-    console.log("Post:" + post.ID + "; isUserTheOwner=" + isUserTheOwner);
+    //console.log("Post:" + post.ID + "; isUserTheOwner=" + isUserTheOwner);
 
     // Handle upvote click
     const handleUpvoteClick = async () => {                   
-        const result = await upvotePostByIdService(post.ID, post.UserID);        
+        const result = await votePostByIdService(post.ID, { userId: post.UserID, vote: 1 });        
         window.alert("Upvoted");
     }
 
     // Handle downvote click
     const handleDownvoteClick = async () => {         
-        const result = await downvotePostByIdService(post.ID, post.UserID);        
+        const result = await votePostByIdService(post.ID, { userId: post.UserID, vote: 2 });        
         window.alert("Downvoted");
     }
 
@@ -93,13 +92,17 @@ const Post = ({post }) => {
         }); 
         document.getElementById("posttext_" + post.ID).value = post.Text;
     }    
-    
+
+    // Vote: 0=None, 1=Upvoted, 2=Downvoted
+    const canUpvote = !isUserTheOwner && post.UserPostInfoVote != 1;
+    const canDownvote = !isUserTheOwner && post.UserPostInfoVote != 2;
+
     return (
         <>
             <UserInfo name={post.UserName} logo={post.UserLogo}/><div>{post.CreatedDateTime}</div>            
             <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={!editState.active}>{post.Text}</textarea>                
-            {!isUserTheOwner && <button type="button" onClick={() => handleUpvoteClick()}>Upvote</button> }
-            {!isUserTheOwner && <button type="button" onClick={() => handleDownvoteClick()}>Downvote</button> }
+            <button type="button" disabled={!canUpvote}  onClick={() => handleUpvoteClick()}>Upvote</button>
+            <button type="button" disabled={!canDownvote} onClick={() => handleDownvoteClick()}>Downvote</button>
             {!isUserTheOwner && <button type="button" onClick={() => handleReplyClick()}>Reply</button> }
             {isUserTheOwner && <button type="button" onClick={(e) => handleEditClick(e)}>{editState.buttonText}</button> }
             {isUserTheOwner && editState.active && <button type="button" onClick={(e) => handleCancelEditClick(e)}>Cancel</button> }

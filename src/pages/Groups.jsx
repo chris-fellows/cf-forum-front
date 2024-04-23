@@ -2,14 +2,18 @@ import { useState, useEffect } from "react"
 //import { useNavigate } from "react-router-dom";
 import { useInject } from "../DependencyInjection";
 //import fetch from 'fetch';
+import Advert from "./Advert.jsx"
 import GroupInfo from "./GroupInfo";
+
 
 // Displays each group info
 const Groups = () => {
     const [groups, setGroups] = useState([])
+    const [adverts, setAdverts] = useState([])
     const [errorMessage, setErrorMessage] = useState([])
     const [debugMessage, setDebugMessage] = useState("No debug message")
     const getGroupsService = useInject('getGroupsService');
+    const getRandomAdvertsService = useInject('getRandomAdvertsService');
 
     //const navigate = useNavigate()
 
@@ -58,8 +62,15 @@ const Groups = () => {
             console.log("set Groups in state");
         }
 
+         // Get adverts
+         const fetchRandomAdverts = async () => {
+            const data = await getRandomAdvertsService(1)   // Get one advert            
+            setAdverts(data);            
+        }
+
         console.log("Calling fetchAllGroups");
         fetchAllGroups3()
+        fetchRandomAdverts();
         console.log("Called fetchAllGroups");
 
         console.log("Leaving Groups:useEffect");
@@ -73,6 +84,7 @@ const Groups = () => {
     return (
         <>
             <div>Groups</div>
+            {adverts && adverts.length && <Advert advert={adverts[0]}/> }
             <div>{errorMessage}</div>            
             <div>{debugMessage}</div>
             {groups.map(group => (                     

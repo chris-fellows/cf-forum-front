@@ -1,20 +1,18 @@
-//import { useState, useEffect } from "react"
-//import { useNavigate } from "react-router-dom";
 
 // Advert for display (Static image / Video)
 // Params: Advert
-const Advert = ({advert}) => {
-    //const [advert, setAdvert] = useState([])
-    //   <div>{advert.Name}</div>
-    //<img src={advert.Logo} alt="Logo" />
-
+const Advert = ({advert}) => {   
     const isImage = advert.LogoType == 1;
     const isMP4Video = advert.LogoType == 2;    // TODO: Support other video formats
 
-      // Handle group click, displays group root posts
-      const handleAdvertClick = async () => { 
-        //e.preventDefault();        
-        
+      // Handle advert click, pauses or plays video
+      const handleAdvertClick = async (e) => { 
+        //e.preventDefault();                
+        if (e.target.paused) {
+            e.target.play();
+        } else {
+            e.target.pause();
+        }        
     }
 
     return (
@@ -26,7 +24,7 @@ const Advert = ({advert}) => {
 
             {isMP4Video ?
             (
-                <video width="320" height="240" autoPlay onClick={() => handleAdvertClick() }>
+                <video width="160" height="120" autoPlay onClick={(e) => handleAdvertClick(e) }>
                     <source src={advert.Logo} type="video/mp4" />                                
                 </video>
             ):  ( <div/> )
