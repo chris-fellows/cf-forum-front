@@ -25,6 +25,8 @@ const CurrentUser = () => {
         console.log("Log out response:");
         console.log(result);
 
+        //clearToken();
+
         if (result.loggedOut) {
             clearToken();
             setIsLoggedIn(false);

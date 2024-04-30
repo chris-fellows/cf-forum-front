@@ -9,16 +9,17 @@ const RootPost = ({post}) => {
 
     const navigate = useNavigate()
       
-    const handlePostClick = async (postId) => { 
+    const handlePostClick = async (postId, groupId) => { 
         //e.preventDefault();                
-        navigate("/threadposts?postid=" + postId);              
+        //navigate("/threadposts?postid=" + postId + "&groupid=" + groupId);              
+        navigate(0);
     }
     
     return (
         <>
             <div>{post.Text}</div> 
             <UserInfo name={post.UserName} logo={post.UserLogo}/>           
-            <button onClick={() => handlePostClick(post.ID)}>Open</button>
+            <button onClick={() => handlePostClick(post.ID, post.GroupID)}>Open</button>
         </>
     )
 }

@@ -36,8 +36,8 @@ const Login = ({setToken}) => {
           username: username,
           password: password
         });
-        //console.log("Login response:");
-        //console.log(token);
+        console.log("Login response:");
+        console.log(token);
         if (token.token.length > 0) {   // Logged in
             setToken(token);
             console.log("Log in success");

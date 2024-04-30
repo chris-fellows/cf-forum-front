@@ -110,6 +110,19 @@ const container = {
       const data = await response.json()      
       return data;
     },
+    addPostService: async (post) => {
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
+        body: JSON.stringify(post)
+      };       
+      const response = await fetch("http://localhost:8800/posts", requestOptions)
+      const data = await response.json()      
+      return data;
+    },
     getRootPostsByGroupService: async (id) => {  // GroupID
       const userInfo = getUserInfo();
       const requestOptions = {
