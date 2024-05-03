@@ -2,36 +2,26 @@ import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Groups from "./pages/Groups.jsx"
-//import Group from "./pages/GroupInfo.jsx"
 import DITestComponent from './pages/DITestComponent.jsx';
 import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
-import { useInject, useContainer } from './DependencyInjection.js';
-import About from './pages/About.jsx';
-import Contact from './pages/Contact.jsx';
-import CurrentUser from './pages/CurrentUser.jsx';
-import Help from './pages/Help.jsx';
-import Home from './pages/Home.jsx';
-import GroupRootPosts from './pages/GroupRootPosts.jsx';
-import GroupInfo from './pages/GroupInfo.jsx';
-import Login from './pages/Login.jsx';
-import NavBar from './pages/NavBar.jsx';
-import ThreadPosts from './pages/ThreadPosts.jsx';
-import UserPosts from './pages/UserPosts.jsx';
-import Users from './pages/Users.jsx';
-import User from './pages/User.jsx';
+import { useInject, useContainer } from './DependencyInjection';
+import About from './pages/About'
+import Contact from './pages/Contact';
+import Help from './pages/Help';
+import Home from './pages/Home';
+import GroupRootPosts from './pages/GroupRootPosts';
+import GroupInfo from './pages/GroupInfo';
+import Groups from "./pages/Groups"
+import Login from './pages/Login';
+import NavBar from './pages/NavBar';
+import ThreadPosts from './pages/ThreadPosts';
+import UserPosts from './pages/UserPosts';
+import Users from './pages/Users';
+import User from './pages/User';
+import appConfig from './appConfig';
 import useToken from './useToken';
-import getUserInfo from './userInfo.js';
-
-// https://www.youtube.com/watch?v=fPuLnzSjPLE&t=3s
-// Pages:
-// Group list
-// - Displays list of groups.
-// - Click on group opens group.
-// Group
-// - Displays list of group posts (Post.Sequence=1)
-// - Click on group post opens group posts.
+import getUserInfo from './userInfo';
 
 // Create a new context for the container
 export const ContainerContext = createContext();
@@ -41,13 +31,16 @@ const ContainerProvider = ({ container, children }) => {
   return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
 };
 
+/*
 // Test service
 const MyService = () => {
   return { foo: 'bar' };
 };
+*/
 
 //const backendURL = "http://localhost:8880";
 
+/*
 const MyAppConfigService =() => {
   return { 
           backendURL: "http://localhost:8880",
@@ -55,12 +48,13 @@ const MyAppConfigService =() => {
            message: "Hello from MyAppConfigService" 
         };
 }
+*/
 
 // Define container for dependencies
 const container = {
   items: {
-    myService: MyService(),
-    myAppConfigService: MyAppConfigService(),
+    //myService: MyService(),
+    //myAppConfigService: MyAppConfigService(),
     userRoleService: new UserRoleService(),
     loginService: async (credentials) => {       
         const requestOptions = {
@@ -68,7 +62,7 @@ const container = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(credentials)
       };
-      const response = await fetch("http://localhost:8800/security/login", requestOptions)
+      const response = await fetch(appConfig.backendURL + "/security/login", requestOptions)
       const data = await response.json()      
       return data;        
     },
@@ -80,13 +74,11 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }        
       };     
-       const response = await fetch("http://localhost:8800/security/logout", requestOptions)
+       const response = await fetch(appConfig.backendURL + "/security/logout", requestOptions)
        const data = await response.json()      
        return data;
     },
-    getGroupsService: async () => {    
-      //const url = this.resolve["myAppConfigService"].backendURL;
-      //console.log("getGroupsServiceURL=" + url);      
+    getGroupsService: async () => {      
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -94,7 +86,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };                   
-      const response = await fetch("http://localhost:8800/groups", requestOptions)
+      const response = await fetch(appConfig.backendURL + "/groups", requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -106,7 +98,7 @@ const container = {
             'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/groups/" + id, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/groups/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -119,7 +111,7 @@ const container = {
         },
         body: JSON.stringify(post)
       };       
-      const response = await fetch("http://localhost:8800/posts", requestOptions)
+      const response = await fetch(appConfig.backendURL + "/posts", requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -131,7 +123,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/rootposts/bygroup/" + id, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/rootposts/bygroup/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -143,7 +135,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/posts/byroot/" + postId + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -155,7 +147,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/posts/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/posts/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -167,7 +159,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await delete("http://localhost:8800/posts/" + postId, requestOptions)
+      const response = await delete(appConfig.backendURL + "/posts/" + postId, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -180,7 +172,7 @@ const container = {
         },
         body: JSON.stringify(details)
       };     
-       const response = await fetch("http://localhost:8800/posts/" + postId, requestOptions)
+       const response = await fetch(appConfig.backendURL + "/posts/" + postId, requestOptions)
        const data = await response.json()      
       return data;
     },
@@ -193,7 +185,7 @@ const container = {
         },
         body: JSON.stringify(details)
       };     
-       const response = await fetch("http://localhost:8800/posts/" + postId + "/vote", requestOptions)
+       const response = await fetch(appConfig.backendURL + "/posts/" + postId + "/vote", requestOptions)
        const data = await response.json()      
       return data;
     },   
@@ -206,7 +198,7 @@ const container = {
         },
         body: JSON.stringify(details)
       };     
-       const response = await fetch("http://localhost:8800/posts/" + postId + "/track", requestOptions)
+       const response = await fetch(appConfig.backendURL + "/posts/" + postId + "/track", requestOptions)
        const data = await response.json()      
       return data;
     },   
@@ -218,7 +210,7 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/users/" + id, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/users/" + id, requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -230,10 +222,11 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch("http://localhost:8800/users", requestOptions)
+      const response = await fetch(appConfig.backendURL + "/users", requestOptions)
       const data = await response.json()      
       return data;
     },
+    //getRandomAdvertsService: async (number : number) : Promise<IAdvert[]> => {   
     getRandomAdvertsService: async (number) => {   
       const userInfo = getUserInfo();
       console.log("getRandomAdvertsService:");
@@ -244,7 +237,7 @@ const container = {
             'Authorization': 'Bearer ' + userInfo.token      
         }
       };           
-      const response = await fetch("http://localhost:8800/adverts/random/" + number, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/adverts/random/" + number, requestOptions)
       const data = await response.json()      
       return data;
     }

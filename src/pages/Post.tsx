@@ -2,15 +2,24 @@ import { useState, useEffect } from "react"
 import { useInject } from "../DependencyInjection";
 import UserInfo from "./UserInfo"
 import getUserInfo from '../userInfo';
-//import { UNSAFE_DataRouterStateContext } from "react-router-dom";
+import { IPost } from '../Interfaces';
+
+interface IPostProps {
+    post: IPost
+}
+
+interface IState {
+    active: boolean
+    buttonText: string
+}
 
 // Displays post
 // Params: PostId
-const Post = ({ post }) => {
+const Post = ({ post } : IPostProps) => {
     const userInfo = getUserInfo();     
-    const [vote, setVote] = useState(post.UserPostInfoVote);    
+    const [vote, setVote] = useState<number>(post.UserPostInfoVote);    
     //const [track, setTrack] = useState(post.UserPostInfoTrack);
-    const [editState, setEditState] = useState({ 
+    const [editState, setEditState] = useState<IState>({ 
         active: false,
         buttonText: "Edit"
     });
@@ -52,7 +61,7 @@ const Post = ({ post }) => {
     }
 
      // Updates post
-    const updatePost = async(postId, details) => {           
+    const updatePost = async(postId : string, details : any) => {           
         // Update DB        
         const result = await updatePostByIdService(postId, details);        
 
@@ -67,7 +76,7 @@ const Post = ({ post }) => {
     };
 
     // Handle start edit or save edit click
-    const handleEditClick = async (e) => {                
+    const handleEditClick = async (e : any) => {                
         switch(e.target.innerText)
         {
             case "Edit":
@@ -76,7 +85,8 @@ const Post = ({ post }) => {
                     buttonText: "Save"
                 });                
                 break;
-            case "Save":                         
+            case "Save":   
+                /*                      
                 //const newPostText = document.getElementById("posttext_" + post.ID).innerHTML;
                 const newPostText = document.getElementById("posttext_" + post.ID).value;
                 //window.alert("New post text is " + newPostText);
@@ -85,17 +95,19 @@ const Post = ({ post }) => {
                 } else {
                     window.alert("Cannot clear post text")
                 }
+                */
                 break;
         }                
     }
 
     // Handle cancel edit click
-    const handleCancelEditClick = async (e) => {
+    const handleCancelEditClick = async (e : any) => {
         setEditState({
             active: false,
             buttonText: "Edit"
         }); 
-        document.getElementById("posttext_" + post.ID).value = post.Text;
+        // TODO: Fix this
+        //document.getElementById("posttext_" + post.ID).value = post.Text;
     }    
 
     // Vote: 0=None, 1=Upvoted, 2=Downvoted

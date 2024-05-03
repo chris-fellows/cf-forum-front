@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react"
 import { useInject } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
+import { INewPostProps, IPost } from '../Interfaces';
+//import PropTypes from "prop-types";
 
 // New post
 // Params: None
-const NewPost = ({groupId, userId, rootPostId, parentPostId}) => {
+//const NewPost = ({groupId, userId, rootPostId, parentPostId}) => {
+//const NewPost = (props) => {
+const NewPost = ({groupId, userId, rootPostId, parentPostId} : INewPostProps) => {
     const addPostService = useInject('addPostService');
 
     const navigate = useNavigate()
     
     // Updates post
-    const addPost = async(post) => {           
+    const addPost = async(post : any) => {           
         // Update DB        
         const result = await addPostService(post);
         
         // Clear post
-        document.getElementById("newposttext_" + rootPostId).value = "";
+        // TODO: Fix this
+        //document.getElementById("newposttext_" + rootPostId).value = "";
 
         // Refresh page
         console.log("Navigating to /threadposts to refresh page");
@@ -23,10 +28,9 @@ const NewPost = ({groupId, userId, rootPostId, parentPostId}) => {
     };
 
     // Handle save click
-    const handleAddClick = async (e) => {                              
-                //const newPostText = document.getElementById("posttext_" + post.ID).innerHTML;
-                const newPostText = document.getElementById("newposttext_" + rootPostId).value;
-                //window.alert("New post text is " + newPostText);
+    const handleAddClick = async (e : any) => {                                              
+                /*
+                const newPostText = document.getElementById("newposttext_" + rootPostId).value;                
                 if (newPostText.length > 0) {
                     await addPost({ groupId: groupId,
                              userId: userId,
@@ -36,12 +40,14 @@ const NewPost = ({groupId, userId, rootPostId, parentPostId}) => {
                             });                     
                 } else {
                     window.alert("Cannot save post with no text");
-                }        
+                } 
+                */       
     }
 
     // Handle cancel edit click
-    const handleCancelClick = async (e) => {       
-        document.getElementById("newposttext_" + rootPostId).value = "";
+    const handleCancelClick = async (e : any) => {       
+        // TODO: Fix this
+        //document.getElementById("newposttext_" + rootPostId)!.value! = "";        
     }    
 
     return (
@@ -52,5 +58,14 @@ const NewPost = ({groupId, userId, rootPostId, parentPostId}) => {
         </>
     )
 }
+
+/*
+NewPost.propTypes = {
+    groupId : PropTypes.string.isRequired,
+    userId : PropTypes.string.isRequired,
+    rootPostId : PropTypes.string.isRequired,
+    parentPostId : PropTypes.string.isRequired        
+  };
+*/
 
 export default NewPost

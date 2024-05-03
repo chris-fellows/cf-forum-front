@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 import { useInject } from "../DependencyInjection";
 import getUserInfo from '../userInfo';
+import { IUser } from "../Interfaces";
 
 // Displays user, allows edit
 // Params: UserId
-const User = ({userId}) => {
+const User = ({userId} : any) => {
     const userInfo = getUserInfo();
-    const [user, setUser] = useState();
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [user, setUser] = useState<IUser>();
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
 
     //const [theUserId, setTheUserId] = useState(0);
     const getUserService = useInject('getUserService');      
@@ -18,9 +19,9 @@ const User = ({userId}) => {
       // Get user (Either passed userId, from querystring or default)
       let userDefault = "param";
       const [searchParams] = useSearchParams();
-      let theUserId = userId;   // Default to passed value
+      var theUserId = userId;   // Default to passed value
       if (theUserId == undefined) {   // Check query string        
-          theUserId = searchParams.get("userid");        
+          theUserId = searchParams.get("userid")!;        
           if (theUserId == undefined) {    // Current user
               theUserId = userInfo.userId;
               userDefault = "current";

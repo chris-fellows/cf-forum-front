@@ -9,7 +9,7 @@ import getUserInfo from '../userInfo';
 // Params: None
 const CurrentUser = () => {   
    const userInfo = getUserInfo(); 
-   const [isLoggedIn, setIsLoggedIn] = useState(userInfo != undefined);   
+   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userInfo != undefined);   
    const logoutService = useInject('logoutService');
 
    const navigate = useNavigate()

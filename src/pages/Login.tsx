@@ -3,16 +3,21 @@ import { useInject } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
 
+interface ICredentials {
+    username: string
+    password: string    
+ }
+
 // https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications
 // Login for user
 // Params: 
-const Login = ({setToken}) => {
+const Login = ({setToken}: any) => {
     const userInfo = getUserInfo(); 
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const loginService = useInject('loginService');
 
-    const loginUser = async (credentials)  => {
+    const loginUser = async (credentials: ICredentials)  => {
         const data = await loginService(credentials)
         return data;
        }
@@ -30,7 +35,7 @@ const Login = ({setToken}) => {
     //}
 
     // Handle submit of credentials
-    const handleSubmit = async e => {        
+    const handleSubmit = async (e: any) => {        
         e.preventDefault();
         const token = await loginUser({
           username: username,

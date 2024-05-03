@@ -1,12 +1,17 @@
+import { IAdvert } from "../Interfaces";
+
+interface IAdvertProps {
+    advert: IAdvert
+}
 
 // Advert for display (Static image / Video)
 // Params: Advert
-const Advert = ({advert}) => {   
+const Advert = ({advert} : IAdvertProps) => {   
     const isImage = advert.LogoType == 1;
     const isMP4Video = advert.LogoType == 2;    // TODO: Support other video formats
 
       // Handle advert click, pauses or plays video
-      const handleAdvertClick = async (e) => { 
+      const handleAdvertClick = async (e: any) => { 
         //e.preventDefault();                
         if (e.target.paused) {
             e.target.play();

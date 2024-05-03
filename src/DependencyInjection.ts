@@ -11,7 +11,7 @@ export const useContainer = () => {
   };
   
   // Define a hook to inject dependencies from the container
-export const useInject = (identifier) => {
+export const useInject = (identifier : string) => {
     const container = useContainer();
     return container.resolve(identifier);
   };

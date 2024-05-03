@@ -2,16 +2,16 @@ import { useState, useEffect } from "react"
 //import { useNavigate } from "react-router-dom";
 import { useInject } from "../DependencyInjection";
 //import fetch from 'fetch';
-import Advert from "./Advert.jsx"
+import Advert from "./Advert"
 import GroupInfo from "./GroupInfo";
-
+import { IAdvert, IGroup } from "../Interfaces";
 
 // Displays each group info
 const Groups = () => {
-    const [groups, setGroups] = useState([])
-    const [adverts, setAdverts] = useState([])
-    const [errorMessage, setErrorMessage] = useState([])
-    const [debugMessage, setDebugMessage] = useState("No debug message")
+    const [groups, setGroups] = useState<IGroup[]>([])
+    const [adverts, setAdverts] = useState<IAdvert[]>([])
+    const [errorMessage, setErrorMessage] = useState<any>([])
+    const [debugMessage, setDebugMessage] = useState<string>("No debug message")
     const getGroupsService = useInject('getGroupsService');
     const getRandomAdvertsService = useInject('getRandomAdvertsService');
 
@@ -80,11 +80,11 @@ const Groups = () => {
         //e.preventDefault();
         //navigate("/Group?id=" + id);
     //}
-
+    
     return (
-        <>
-            <div>Groups</div>
-            {adverts && adverts.length && <Advert advert={adverts[0]}/> }
+        <>            
+            <div>Groups</div>            
+            {adverts && adverts.length && <Advert  advert={adverts[0]}/> }
             <div>{errorMessage}</div>            
             <div>{debugMessage}</div>
             {groups.map(group => (                     
