@@ -11,8 +11,8 @@ const RootPost = ({post}) => {
       
     const handlePostClick = async (postId, groupId) => { 
         //e.preventDefault();                
-        //navigate("/threadposts?postid=" + postId + "&groupid=" + groupId);              
-        navigate(0);
+        navigate("/threadposts?postid=" + postId + "&groupid=" + groupId);              
+        //navigate(0);
     }
     
     return (
