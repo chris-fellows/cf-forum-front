@@ -20,6 +20,7 @@ const Groups = () => {
     useEffect(() => {
         console.log("Entered Groups:useEffect");
 
+        /*
         const fetchAllGroups = () => {
             try{
                 console.log("Fetching groups 100");
@@ -36,7 +37,9 @@ const Groups = () => {
                 console.log(error);
             }
         }
+        */
 
+        /*
         const fetchAllGroups2 = () => {        
             console.log("calling getGroupsService");
             //const groupList = getGroupsService();
@@ -53,13 +56,11 @@ const Groups = () => {
                 })
                 .catch((error2) => console.log(error2));
         }
+        */
 
-        const fetchAllGroups3 = async () => {
-            console.log("calling getGroupsService");
-            const data = await getGroupsService()
-            console.log("called getGroupsService");
-            setGroups(data);
-            console.log("set Groups in state");
+        const fetchAllGroups = async () => {            
+            const data = await getGroupsService()            
+            setGroups(data);            
         }
 
          // Get adverts
@@ -67,19 +68,10 @@ const Groups = () => {
             const data = await getRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);            
         }
-
-        console.log("Calling fetchAllGroups");
-        fetchAllGroups3()
-        fetchRandomAdverts();
-        console.log("Called fetchAllGroups");
-
-        console.log("Leaving Groups:useEffect");
+        
+        fetchAllGroups()
+        fetchRandomAdverts();    
     }, []);
-
-    //const handleGroupClick = async (id) => { 
-        //e.preventDefault();
-        //navigate("/Group?id=" + id);
-    //}
     
     return (
         <>            

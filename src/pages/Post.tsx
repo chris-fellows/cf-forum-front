@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useInject } from "../DependencyInjection";
 import UserInfo from "./UserInfo"
 import getUserInfo from '../userInfo';
@@ -16,8 +16,9 @@ interface IState {
 // Displays post
 // Params: PostId
 const Post = ({ post } : IPostProps) => {
-    const userInfo = getUserInfo();     
+    const userInfo = getUserInfo();      
     const [vote, setVote] = useState<number>(post.UserPostInfoVote);    
+    const [postText, setPostText] = useState<string>(post.Text);
     //const [track, setTrack] = useState(post.UserPostInfoTrack);
     const [editState, setEditState] = useState<IState>({ 
         active: false,
@@ -85,17 +86,15 @@ const Post = ({ post } : IPostProps) => {
                     buttonText: "Save"
                 });                
                 break;
-            case "Save":   
-                /*                      
+            case "Save":                                   
                 //const newPostText = document.getElementById("posttext_" + post.ID).innerHTML;
-                const newPostText = document.getElementById("posttext_" + post.ID).value;
+                //const newPostText = document.getElementById("posttext_" + post.ID).value;
                 //window.alert("New post text is " + newPostText);
-                if (newPostText.length > 0) {                    
-                    await updatePost(post.ID, { text: newPostText });                     
+                if (postText.length > 0) {                    
+                    await updatePost(post.ID, { text: postText });                     
                 } else {
                     window.alert("Cannot clear post text")
-                }
-                */
+                }                
                 break;
         }                
     }
@@ -107,7 +106,10 @@ const Post = ({ post } : IPostProps) => {
             buttonText: "Edit"
         }); 
         // TODO: Fix this
-        //document.getElementById("posttext_" + post.ID).value = post.Text;
+        //document.getElementById("posttext_" + post.ID).value = post.Text;        
+        //console.log("Resetting post text");
+        setPostText(post.Text);
+        //console.log("Reset post text to " + post.Text);
     }    
 
     // Vote: 0=None, 1=Upvoted, 2=Downvoted
@@ -117,7 +119,7 @@ const Post = ({ post } : IPostProps) => {
     return (
         <>
             <UserInfo name={post.UserName} logo={post.UserLogo}/><div>{post.CreatedDateTime}</div>            
-            <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={!editState.active}>{post.Text}</textarea>                
+            <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={!editState.active}>{postText}</textarea>                
             <button type="button" disabled={!canUpvote}  onClick={() => handleUpvoteClick()}>Up</button>
             <button type="button" disabled={!canDownvote} onClick={() => handleDownvoteClick()}>Down</button>
             {!isUserTheOwner && <button type="button" onClick={() => handleReplyClick()}>Reply</button> }

@@ -15,7 +15,7 @@ const GroupInfo = ({group} : IGroupInfoProps) => {
     // Handle group click, displays group root posts
     const handleGroupClick = async (groupId : string) => { 
         //e.preventDefault();        
-        console.log("navigating to /grouprootposts");
+        //console.log("navigating to /grouprootposts");
         navigate("/grouprootposts?groupid=" + groupId);        
     }
     
