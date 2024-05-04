@@ -1,11 +1,10 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import DITestComponent from './pages/DITestComponent.jsx';
+//import DITestComponent from './pages/DITestComponent.jsx';
 import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
-import { useInject, useContainer } from './DependencyInjection';
 import About from './pages/About'
 import Contact from './pages/Contact';
 import Help from './pages/Help';
@@ -22,41 +21,32 @@ import User from './pages/User';
 import appConfig from './appConfig';
 import useToken from './useToken';
 import getUserInfo from './userInfo';
+import { IAdvert, IGroup, INewPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
+
+interface IMyContainer
+{
+    items : any
+    resolve(any : string) : any    
+}
+
+interface ContainerProps {
+  container: IMyContainer
+  children: React.ReactNode  
+}
 
 // Create a new context for the container
-export const ContainerContext = createContext();
+export const ContainerContext = createContext<IMyContainer | null>(null);
 
 // Define a component that provides the container to its children
-const ContainerProvider = ({ container, children }) => {
+const ContainerProvider = ({ container, children } : ContainerProps) => {
   return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
 };
 
-/*
-// Test service
-const MyService = () => {
-  return { foo: 'bar' };
-};
-*/
-
-//const backendURL = "http://localhost:8880";
-
-/*
-const MyAppConfigService =() => {
-  return { 
-          backendURL: "http://localhost:8880",
-           //backendURL: process.env.BACKEND_URL,
-           message: "Hello from MyAppConfigService" 
-        };
-}
-*/
-
 // Define container for dependencies
 const container = {
-  items: {
-    //myService: MyService(),
-    //myAppConfigService: MyAppConfigService(),
-    userRoleService: new UserRoleService(),
-    loginService: async (credentials) => {       
+  items: {    
+    //userRoleService: new UserRoleService(),
+    loginService: async (credentials : IUserCredentials) => {       
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -78,7 +68,7 @@ const container = {
        const data = await response.json()      
        return data;
     },
-    getGroupsService: async () => {      
+    getGroupsService: async () : Promise<IGroup[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -90,7 +80,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    getGroupService: async (id) => {       
+    getGroupService: async (id : string) : Promise<IGroup[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -102,7 +92,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    addPostService: async (post) => {
+    addPostService: async (post : INewPost) => {
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'POST',
@@ -115,7 +105,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    getRootPostsByGroupService: async (id) => {  // GroupID
+    getRootPostsByGroupService: async (id : string, pageSize : number, pageNumber : number) : Promise<IPost[]> => {  // GroupID
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -123,11 +113,11 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch(appConfig.backendURL + "/rootposts/bygroup/" + id, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/rootposts/bygroup/" + id + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },
-    getPostsByRootPostService: async (postId, pageSize, pageNumber) => { 
+    getPostsByRootPostService: async (postId : string, pageSize : number, pageNumber : number) : Promise<IPost[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -139,7 +129,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    getPostsByUserService: async (userid, pageSize, pageNumber) => { 
+    getPostsByUserService: async (userid : string, pageSize : number, pageNumber : number) : Promise<IPost[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -151,7 +141,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    deletePostByIdService: async (postId) => { 
+    deletePostByIdService: async (postId : string) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'DELETE',
@@ -159,11 +149,11 @@ const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await delete(appConfig.backendURL + "/posts/" + postId, requestOptions)
+      const response = await fetch(appConfig.backendURL + "/posts/" + postId, requestOptions)
       const data = await response.json()      
       return data;
     },
-    updatePostByIdService: async (postId, details) => { 
+    updatePostByIdService: async (postId : string, details : any) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
@@ -176,7 +166,7 @@ const container = {
        const data = await response.json()      
       return data;
     },
-    votePostByIdService: async (postId, details) => { 
+    votePostByIdService: async (postId : string, details : IUserPostInfoVote) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
@@ -189,7 +179,7 @@ const container = {
        const data = await response.json()      
       return data;
     },   
-    trackPostByIdService: async (postId, details) => { 
+    trackPostByIdService: async (postId : string, details : IUserPostInfoTrack) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'PUT',
@@ -202,7 +192,7 @@ const container = {
        const data = await response.json()      
       return data;
     },   
-    getUserService: async (id) => {       
+    getUserService: async (id : string) : Promise<IUser[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -214,7 +204,7 @@ const container = {
       const data = await response.json()      
       return data;
     },
-    getUsersService: async () => {       
+    getUsersService: async () : Promise<IUser[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -225,12 +215,9 @@ const container = {
       const response = await fetch(appConfig.backendURL + "/users", requestOptions)
       const data = await response.json()      
       return data;
-    },
-    //getRandomAdvertsService: async (number : number) : Promise<IAdvert[]> => {   
-    getRandomAdvertsService: async (number) => {   
-      const userInfo = getUserInfo();
-      console.log("getRandomAdvertsService:");
-      console.log(userInfo);
+    },    
+    getRandomAdvertsService: async (number : number) : Promise<IAdvert[]> => {
+      const userInfo = getUserInfo();     
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
@@ -242,11 +229,11 @@ const container = {
       return data;
     }
   },
-  resolve(identifier) {
+  resolve(identifier : string) : any {
     if (!this.items.hasOwnProperty(identifier)) {
       throw new Error(`Object with identifier ${identifier} not found in container`);
-    }
-    return this.items[identifier];
+    }        
+    return this.items[identifier as keyof typeof container.items];
   }
 };
 
@@ -264,7 +251,11 @@ function App() {
     )
   }
 
-  //const userInfo = getUserInfo();
+  const dummyGroup = { ID: "1",
+        Name: "",
+        Description: "",
+        Logo: ""
+  };
 
   return (
   <ContainerProvider container={container}>          
@@ -276,7 +267,7 @@ function App() {
           <Route path="/contact" element={<Contact />}/>
           <Route path="/help" element={<Help />}/>
           <Route path="/groups" element={<Groups />}/>
-          <Route path="/groupinfo" element={<GroupInfo />}/>                    
+          <Route path="/groupinfo" element={<GroupInfo group={dummyGroup} />}/>                    
           <Route path="/grouprootposts" element={<GroupRootPosts />}/>          
           <Route path="/login" element={<Login setToken={setToken} />}/>
           <Route path="/threadposts" element={<ThreadPosts />}/> 

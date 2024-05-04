@@ -7,7 +7,8 @@ const Help = () => {
     
     return (
         <>
-            <div>Help</div>            
+            <div>Help</div>  
+            <div>This page will contain links for using the system</div>          
         </>
     )
 }

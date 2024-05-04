@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react"
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
+import { IUserCredentials, loginServiceType } from "../Interfaces";
 
+/*
 interface ICredentials {
     username: string
     password: string    
  }
+ */
 
 // https://www.digitalocean.com/community/tutorials/how-to-add-login-authentication-to-react-applications
 // Login for user
@@ -15,24 +18,12 @@ const Login = ({setToken}: any) => {
     const userInfo = getUserInfo(); 
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const loginService = useInject('loginService');
+    const loginService = useInject2<loginServiceType>('loginService');
 
-    const loginUser = async (credentials: ICredentials)  => {
+    const loginUser = async (credentials: IUserCredentials)  => {
         const data = await loginService(credentials)
         return data;
-       }
-
-    // TODO: Fix this. Can't use DI
-    //const loginService = async (credentials) => {                     
-    //    const requestOptions = {
-    //        method: 'POST',
-    //        headers: { 'Content-Type': 'application/json' },
-    //        body: JSON.stringify(credentials)
-    //    };
-    //    const response = await fetch("http://localhost:8800/security/login", requestOptions)
-    //    const data = await response.json()      
-    //    return data;
-    //}
+    }
 
     // Handle submit of credentials
     const handleSubmit = async (e: any) => {        

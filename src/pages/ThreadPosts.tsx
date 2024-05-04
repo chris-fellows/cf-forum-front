@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
 import Post from "./Post"
 import NewPost from "./NewPost";
 import getUserInfo from '../userInfo';
-import { IAdvert, INewPostProps, IPost } from "../Interfaces";
+import { IAdvert, INewPostProps, IPost, getPostsByRootPostServiceType, getRandomAdvertsServiceType } from "../Interfaces";
 
 // Displays posts for thread. Root post first then every other post
 // Params: PostId (Root post)
@@ -15,12 +15,12 @@ const ThreadPosts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const getPostsByRootPostService = useInject('getPostsByRootPostService');  
-    const getRandomAdvertsService = useInject('getRandomAdvertsService');
+    const getPostsByRootPostService = useInject2<getPostsByRootPostServiceType>('getPostsByRootPostService');  
+    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');
 
     const [searchParams] = useSearchParams();    
-    const postId = searchParams.get("postid");
-    const groupId = searchParams.get("groupid");
+    const postId = searchParams.get("postid")!
+    const groupId = searchParams.get("groupid")!;
 
     //console.log("ThreadPosts:PostID=" + postId + "; GroupID=" + groupId);
 

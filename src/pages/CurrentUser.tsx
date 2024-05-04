@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import clearToken from '../clearToken';
 import getUserInfo from '../userInfo';
+import { logoutServiceType } from "../Interfaces";
 
 // Current user info (Name, option to log out)
 // Params: None
 const CurrentUser = () => {   
    const userInfo = getUserInfo(); 
    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userInfo != undefined);   
-   const logoutService = useInject('logoutService');
+   const logoutService = useInject2<logoutServiceType>('logoutService');
 
    const navigate = useNavigate()
 

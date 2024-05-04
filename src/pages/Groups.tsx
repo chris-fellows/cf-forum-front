@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 //import { useNavigate } from "react-router-dom";
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 //import fetch from 'fetch';
 import Advert from "./Advert"
 import GroupInfo from "./GroupInfo";
-import { IAdvert, IGroup } from "../Interfaces";
+import { IAdvert, IGroup, getGroupsServiceType, getRandomAdvertsServiceType } from "../Interfaces";
 
 // Displays each group info
 const Groups = () => {
@@ -12,8 +12,8 @@ const Groups = () => {
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [errorMessage, setErrorMessage] = useState<any>([])
     const [debugMessage, setDebugMessage] = useState<string>("No debug message")
-    const getGroupsService = useInject('getGroupsService');
-    const getRandomAdvertsService = useInject('getRandomAdvertsService');
+    const getGroupsService = useInject2<getGroupsServiceType>('getGroupsService');    
+    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
 
     //const navigate = useNavigate()
 
@@ -64,7 +64,7 @@ const Groups = () => {
         }
 
          // Get adverts
-         const fetchRandomAdverts = async () => {
+         const fetchRandomAdverts = async () => {                        
             const data = await getRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);            
         }

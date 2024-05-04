@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
-import { INewPostProps, IPost } from '../Interfaces';
+import { INewPost, INewPostProps, IPost, addPostServiceType } from '../Interfaces';
 //import PropTypes from "prop-types";
 
 // New post
@@ -10,14 +10,14 @@ import { INewPostProps, IPost } from '../Interfaces';
 //const NewPost = (props) => {
 const NewPost = ({groupId, userId, rootPostId, parentPostId} : INewPostProps) => {
     const [postText, setPostText] = useState<string>("");
-    const addPostService = useInject('addPostService');
+    const addPostService = useInject2<addPostServiceType>('addPostService');
 
     const navigate = useNavigate()
     
     // Updates post
-    const addPost = async(post : any) => {           
+    const addPost = async(post : INewPost) => {           
         // Update DB        
-        const result = await addPostService(post);
+        const result = await addPostService(post);        
         
         // Clear post
         // TODO: Fix this

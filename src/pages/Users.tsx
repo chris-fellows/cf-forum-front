@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import { Link } from "react-router-dom";
 import { IUser } from "../Interfaces";
+import { getUsersServiceType } from "../Interfaces";
 
 // Users information
 // Params: None
 const Users = () => {
     const [users, setUsers] = useState<IUser[]>([])
-    const getUsersService = useInject('getUsersService');  
+    //const getUsersService = useInject('getUsersService');  
+    const getUsersService = useInject2<getUsersServiceType>('getUsersService');  
 
     const navigate = useNavigate()
 

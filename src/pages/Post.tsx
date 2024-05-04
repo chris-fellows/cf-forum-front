@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import UserInfo from "./UserInfo"
 import getUserInfo from '../userInfo';
-import { IPost } from '../Interfaces';
+import { IPost, deletePostByIdServiceType, votePostByIdServiceType } from '../Interfaces';
 
 interface IPostProps {
     post: IPost
@@ -27,9 +27,9 @@ const Post = ({ post } : IPostProps) => {
     const voteUpvoted = 1;
     const voteDownvoted = 2;
 
-    const deletePostByIdService = useInject('deletePostByIdService');  
+    const deletePostByIdService = useInject2<deletePostByIdServiceType>('deletePostByIdService');  
     const updatePostByIdService = useInject('updatePostByIdService');  
-    const votePostByIdService = useInject('votePostByIdService');      
+    const votePostByIdService = useInject2<votePostByIdServiceType>('votePostByIdService');      
 
     // Determine if user is post owner    
     const isUserTheOwner = userInfo != undefined && userInfo.userId == post.UserID;

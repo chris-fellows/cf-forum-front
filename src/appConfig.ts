@@ -1,5 +1,7 @@
+// TODO: Read from config file
 const appConfig  = {
     backendURL: "http://localhost:8800",
+    supportEmail: "support@cfforum.com",
     testMessage: "Hello"
   };
 

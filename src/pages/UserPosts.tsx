@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 //import { useNavigate } from "react-router-dom";
 //import { UserInfo } from "./UserInfo"
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
 import Post from "./Post"
 import getUserInfo from '../userInfo';
-import { IAdvert, IPost } from '../Interfaces';
+import { IAdvert, IPost, getPostsByUserServiceType, getRandomAdvertsServiceType } from '../Interfaces';
 
 // Displays user posts
 // Params: UserId
@@ -15,8 +15,8 @@ const UserPosts = ({ userId } : any) => {
     const [posts, setPosts] = useState<IPost[]>([])
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [pageNumber, setPageNumber] = useState<number>(1);    
-    const getPostsByUserService = useInject('getPostsByUserService');
-    const getRandomAdvertsService = useInject('getRandomAdvertsService');    
+    const getPostsByUserService = useInject2<getPostsByUserServiceType>('getPostsByUserService');
+    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
 
     // Get user (Either passed userId, from querystring or default)    
     const [searchParams] = useSearchParams();
@@ -33,7 +33,7 @@ const UserPosts = ({ userId } : any) => {
 
         // Get root posts
         const fetchUserPosts = async () => {                        
-            const data = await getPostsByUserService(theUserId, 100, pageNumber) // pageSize, pageNumber                        
+            const data = await getPostsByUserService(theUserId, 10000000, pageNumber) // pageSize, pageNumber                        
             setPosts(data);            
         }
 
