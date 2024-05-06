@@ -4,7 +4,7 @@ import { useInject, useInject2 } from "../DependencyInjection";
 //import { UserInfo } from "./UserInfo"
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
-import Post from "./Post"
+import UserPost from "./UserPost"
 import getUserInfo from '../userInfo';
 import { IAdvert, IPost, getPostsByUserServiceType, getRandomAdvertsServiceType } from '../Interfaces';
 
@@ -14,7 +14,7 @@ const UserPosts = ({ userId } : any) => {
     const userInfo = getUserInfo();
     const [posts, setPosts] = useState<IPost[]>([])
     const [adverts, setAdverts] = useState<IAdvert[]>([])
-    const [pageNumber, setPageNumber] = useState<number>(1);    
+    //const [pageNumber, setPageNumber] = useState<number>(1);    
     const getPostsByUserService = useInject2<getPostsByUserServiceType>('getPostsByUserService');
     const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
 
@@ -33,7 +33,7 @@ const UserPosts = ({ userId } : any) => {
 
         // Get root posts
         const fetchUserPosts = async () => {                        
-            const data = await getPostsByUserService(theUserId, 10000000, pageNumber) // pageSize, pageNumber                        
+            const data = await getPostsByUserService(theUserId, 10000000, 1) // pageSize, pageNumber                        
             setPosts(data);            
         }
 
@@ -51,7 +51,7 @@ const UserPosts = ({ userId } : any) => {
         <>      
             <div>My Posts</div>
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
-            {posts && posts.map(post => <Post post={post}/>)}            
+            {posts && posts.map(post => <UserPost post={post}/>)}            
         </>
     )          
 }

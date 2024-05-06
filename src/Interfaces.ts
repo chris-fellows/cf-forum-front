@@ -69,6 +69,12 @@ export interface INewPost {
     token : string
  }
 
+ export interface IPaginationProps {
+   items : any
+   pageSize : number
+   setPageItems(pageItems : any) : void
+}
+
  // Types for contain dependencies
  export type addPostServiceType = (post : INewPost) => any;
  export type deletePostByIdServiceType = (postId : string) => any;
