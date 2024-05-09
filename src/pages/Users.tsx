@@ -22,11 +22,6 @@ const Users = () => {
 
         fetchUsers();
     }, []);
-
-    // Handle user posts click
-    //const handleUserPostsClick = async (userId) => {                           
-    //    navigate("/userposts?userid=" + userId);
-    //}
         
     return (
         <>
@@ -36,17 +31,15 @@ const Users = () => {
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Edit</th>
-                        <th>Posts</th>
-                        <th>Posts2</th>
+                        <th></th>
+                        <th></th>                        
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => 
                         <tr key={user.ID}>
                             <td>{user.Name}</td>
-                            <td>{user.Email}</td>
-                            <td><button>Edit</button></td>                            
+                            <td>{user.Email}</td>                            
                             <td><Link to={"/userdetails?userid=" + user.ID }>Edit</Link></td>
                             <td><Link to={"/userposts?userid=" + user.ID }>Posts</Link></td>
                         </tr>

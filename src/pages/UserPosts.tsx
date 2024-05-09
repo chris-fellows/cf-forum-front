@@ -51,7 +51,10 @@ const UserPosts = ({ userId } : any) => {
         <>      
             <div>My Posts</div>
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
-            {posts && posts.map(post => <UserPost post={post}/>)}            
+
+            <ul style={ { listStyleType: "none" } }>
+                {posts && posts.map(post => <UserPost post={post}/>)}            
+            </ul>
         </>
     )          
 }

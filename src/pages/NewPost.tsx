@@ -52,11 +52,11 @@ const NewPost = ({groupId, userId, rootPostId, parentPostId} : INewPostProps) =>
     }    
 
     return (
-        <>            
+        <li>            
             <textarea id={"newposttext_" + rootPostId} title="post" placeholder="placeholder" rows={3} cols={100} >{postText}</textarea>                
             <button id={"newpostadd_" + rootPostId} type="button" onClick={(e) => handleAddClick(e)}>Post</button>
             <button id={"newpostcancel_" + rootPostId} type="button" onClick={(e) => handleCancelClick(e)}>Cancel</button>
-        </>
+        </li>
     )
 }
 

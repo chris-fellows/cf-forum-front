@@ -42,7 +42,10 @@ const GroupRootPosts = () => {
         <>           
             <div>Group Posts</div>
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
-            {posts.map(post => <RootPost post={post}/>)}            
+
+            <ul style={ { listStyleType: "none" } }>
+                {posts.map(post => <RootPost post={post}/>)}            
+            </ul>
         </>
     )          
 }

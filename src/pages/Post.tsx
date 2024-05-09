@@ -115,18 +115,20 @@ const Post = ({ post } : IPostProps) => {
     // Vote: 0=None, 1=Upvoted, 2=Downvoted
     const canUpvote = !isUserTheOwner && vote != voteUpvoted;
     const canDownvote = !isUserTheOwner && vote != voteDownvoted;   
-    
+        
     return (
-        <>            
+        <li>                        
             <div><UserInfo name={post.UserName} logo={post.UserLogo}/>Posted: {post.CreatedDateTime}</div>
             <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={!editState.active}>{postText}</textarea>                
-            <button type="button" disabled={!canUpvote}  onClick={() => handleUpvoteClick()}>Up</button>
-            <button type="button" disabled={!canDownvote} onClick={() => handleDownvoteClick()}>Down</button>
-            {!isUserTheOwner && <button type="button" onClick={() => handleReplyClick()}>Reply</button> }
-            {isUserTheOwner && <button type="button" onClick={(e) => handleEditClick(e)}>{editState.buttonText}</button> }
-            {isUserTheOwner && editState.active && <button type="button" onClick={(e) => handleCancelEditClick(e)}>Cancel</button> }
-            {isUserTheOwner && <button type="button" onClick={() => handleDeleteClick()}>Delete</button> }
-        </>
+            <div>                                        
+                    <button type="button" disabled={!canUpvote}  onClick={() => handleUpvoteClick()}>Up</button>
+                    <button type="button" disabled={!canDownvote} onClick={() => handleDownvoteClick()}>Down</button>
+                    {!isUserTheOwner && <button type="button" onClick={() => handleReplyClick()}>Reply</button> }
+                    {isUserTheOwner && <button type="button" onClick={(e) => handleEditClick(e)}>{editState.buttonText}</button> }
+                    {isUserTheOwner && editState.active && <button type="button" onClick={(e) => handleCancelEditClick(e)}>Cancel</button> }
+                    {isUserTheOwner && <button type="button" onClick={() => handleDeleteClick()}>Delete</button> }
+            </div>
+        </li>
     )
 }
 

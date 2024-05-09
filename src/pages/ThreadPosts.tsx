@@ -74,10 +74,12 @@ const ThreadPosts = () => {
     return (
         <>      
             <div>Thread Posts</div> 
-            {adverts && adverts.length && <Advert advert={adverts[0]}/> }             
-            {posts.map(post => (<Post post={post}/>))}            
-
-            <NewPost groupId={groupId!} userId={userInfo.userId!} rootPostId={postId!} parentPostId={postId!}/>
+            {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
+            <ul style={ { listStyleType: "none" } }>
+                {posts.map(post => (<Post post={post}/>))}            
+                
+                <NewPost groupId={groupId!} userId={userInfo.userId!} rootPostId={postId!} parentPostId={postId!}/>
+            </ul>        
        </>
     )
 }

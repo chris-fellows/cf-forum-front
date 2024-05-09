@@ -21,11 +21,11 @@ const RootPost = ({post} : IRootPostProps) => {
     }
     
     return (
-        <>
+        <li>
             <div>{post.Text}</div> 
             <UserInfo name={post.UserName} logo={post.UserLogo}/>           
             <button onClick={() => handlePostClick(post.ID, post.GroupID)}>Open</button>
-        </>
+        </li>
     )
 }
 

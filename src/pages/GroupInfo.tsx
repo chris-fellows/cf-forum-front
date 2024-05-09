@@ -22,8 +22,8 @@ const GroupInfo = ({group} : IGroupInfoProps) => {
     return (        
         <>            
             <div key={group.ID} className="Group" >
-                    <p>Name: {group.Name}</p>
-                    <p>Description: {group.Description}</p>                
+                    <h3>{group.Name}</h3>
+                    <h5>{group.Description}</h5>                
                     <img src={group.Logo} alt="Logo" />
                     <button onClick={() => handleGroupClick(group.ID)}>View Posts</button>
                 </div>            

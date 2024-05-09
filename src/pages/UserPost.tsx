@@ -31,12 +31,12 @@ const UserPost = ({ post } : IPostProps) => {
     }
     
     return (
-        <>
+        <li>
             <p>Posted: {post.CreatedDateTime}</p>                        
             <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={true}>{post.Text}</textarea>                            
             {isUserTheOwner && <button type="button" onClick={() => handleOpenRootPostClick()}>Open Thread</button> }
             {isUserTheOwner && <button type="button" onClick={() => handleDeleteClick()}>Delete</button> }            
-        </>
+        </li>
     )
 }
 
