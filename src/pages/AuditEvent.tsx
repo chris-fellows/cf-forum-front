@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
 import { IAuditEvent } from "../Interfaces";
 
@@ -17,11 +15,11 @@ const AuditEvent = ({ auditEvent } : IAuditEventProps) => {
    // entity (E.g. If data contains PostID then add link for post)
    return(
         <tr>
-            <td>{auditEvent.ID}</td>           
-            <td>{auditEvent.CreatedDateTime}</td> 
-            <td>{auditEvent.EventTypeName}</td>            
-            <td>{auditEvent.UserName}</td>
-            <td>{auditEvent.Data}</td>
+            <td className="AuditEventTableCell">{auditEvent.ID}</td>           
+            <td className="AuditEventTableCell">{auditEvent.CreatedDateTime}</td> 
+            <td className="AuditEventTableCell">{auditEvent.EventTypeName}</td>            
+            <td className="AuditEventTableCell">{auditEvent.UserName}</td>
+            <td className="AuditEventTableCell">{auditEvent.Data}</td>
         </tr>
    )
 

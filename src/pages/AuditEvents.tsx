@@ -2,52 +2,51 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
-import Advert from "./Advert";
 import AuditEvent from "./AuditEvent";
-import appConfig  from "../appConfig";
 import getUserInfo from '../userInfo';
 import Loading from "./Loading";
 import LoginCheck from "./LoginCheck";
-import { IAdvert, IAuditEvent, getRandomAdvertsServiceType, getAuditByHoursServiceType } from "../Interfaces";
+import { IAuditEvent, getAuditByHoursServiceType, getAuditByUserServiceType } from "../Interfaces";
 
 // Audit Event information
 // Params: None
-const AuditEvents = () => {
+const AuditEvents = ( {userId} : any) => {
     const userInfo = getUserInfo(); 
-    const [auditEvents, setAuditEvents] = useState<IAuditEvent[]>([]);
-    const [adverts, setAdverts] = useState<IAdvert[]>([])   
-    const [isLoading, setIsLoading] = useState<boolean>(true); 
+    const [auditEvents, setAuditEvents] = useState<IAuditEvent[]>([]);    
+    const [isLoading, setIsLoading] = useState<boolean>(true);     
+    let countActiveQueries = 0;
 
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
+    const getAuditByHoursService = useInject2<getAuditByHoursServiceType>('getAuditByHoursService');      
+    const getAuditByUserService = useInject2<getAuditByUserServiceType>('getAuditByUserService');      
 
-    const getAuditByHoursService = useInject2<getAuditByHoursServiceType>('getAuditByHoursService');  
-    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');
+     // Get user (Either passed user or query string, anything else means all users)
+     const [searchParams] = useSearchParams();
+     let theUserId = userId;   // Default to passed value
+     if (theUserId == undefined) {   // Check query string        
+         theUserId = searchParams.get("userid")!;        
+    }    
 
-    useEffect(() => {        
-        setIsLoading(true);
+    useEffect(() => {                
         const fetchAuditEvents = async () => {                        
-            const data = await getAuditByHoursService(24, 1000000, 1)                        
-            setAuditEvents(data);
-            console.log(data);            
-            setIsLoading(false);
+            if (theUserId == undefined)   // Get events for all users
+            {                
+                const data = await getAuditByHoursService(24, 1000000, 1)                        
+                setAuditEvents(data);            
+            } else {    // Get events for specific user                
+                const data = await getAuditByUserService(theUserId, 1000000, 1)
+                setAuditEvents(data);            
+            }
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
-        // Get adverts
-        const fetchRandomAdverts = async () => {
-            const data = await getRandomAdvertsService(1)   // Get one advert            
-            setAdverts(data);
-            setIsLoading(false);         
-        }
-
-        fetchAuditEvents();
-        fetchRandomAdverts();
-    }, []);
-
-    //<ul style={ { listStyleType: "none" } }>
-    //            {auditEvents.map(auditEvent => (<AuditEvent auditEvent={auditEvent}/>))}                                            
-    //        </ul>        
-
+        countActiveQueries = 1;
+        setIsLoading(true);
+        fetchAuditEvents();        
+    }, []);   
+ 
     if (isLoading && getUserInfo().userName.length) {
         return <Loading />;
     }
@@ -55,16 +54,15 @@ const AuditEvents = () => {
     return (
         <>
             <LoginCheck/>
-            <div>Audit Events</div>                                    
-            {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
-            <table>
+            <div>Audit Events</div>                                                
+            <table className="AuditEventTable">
                 <thead>
                     <tr>
-                        <th>ID</th>                        
-                        <th>Time</th>
-                        <th>Event</th>
-                        <th>User</th>
-                        <th>Data</th>                        
+                        <th className="AuditEventTableCell">ID</th>                        
+                        <th className="AuditEventTableCell">Time</th>
+                        <th className="AuditEventTableCell">Event</th>
+                        <th className="AuditEventTableCell">User</th>
+                        <th className="AuditEventTableCell">Data</th>                        
                     </tr>
                 </thead>
                 <tbody>

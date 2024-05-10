@@ -14,17 +14,20 @@ const Users = () => {
     const [users, setUsers] = useState<IUser[]>([])    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
     const getUsersService = useInject2<getUsersServiceType>('getUsersService');  
+    let countActiveQueries = 0;
 
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchUsers = async () => {            
-            const data = await getUsersService()    
-            console.log(data);
+            const data = await getUsersService()            
             setUsers(data);
-            setIsLoading(false);
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
+        countActiveQueries = 1;
+        setIsLoading(true);
         fetchUsers();
     }, []);
 
@@ -36,22 +39,24 @@ const Users = () => {
         <>
             <LoginCheck/>
             <div>Manage Users</div>          
-            <table>
+            <table className="UsersTable">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th></th>
-                        <th></th>                        
+                        <th className="UsersTableCell">Name</th>
+                        <th className="UsersTableCell">Email</th>
+                        <th className="UsersTableCell"></th>
+                        <th className="UsersTableCell"></th>                        
+                        <th className="UsersTableCell"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => 
                         <tr key={user.ID}>
-                            <td>{user.Name}</td>
-                            <td>{user.Email}</td>                            
-                            <td><Link to={"/userdetails?userid=" + user.ID }>Edit</Link></td>
-                            <td><Link to={"/userposts?userid=" + user.ID }>Posts</Link></td>
+                            <td className="UsersTableCell">{user.Name}</td>
+                            <td className="UsersTableCell">{user.Email}</td>                            
+                            <td className="UsersTableCell"><Link to={"/userdetails?userid=" + user.ID }>Edit</Link></td>
+                            <td className="UsersTableCell"><Link to={"/userposts?userid=" + user.ID }>Posts</Link></td>
+                            <td className="UsersTableCell"><Link to={"/auditevents?userid=" + user.ID }>Audit Events</Link></td>
                         </tr>
                     )}            
                 </tbody>

@@ -98,6 +98,7 @@ export interface ITokenPayload {
  export type loginServiceType = (credentials : IUserCredentials) => any;
  export type logoutServiceType = () => any;
  export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
+ export type getAuditByUserServiceType = (userid: string, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getGroupServiceType = () => Promise<IGroup[]>;
  export type getGroupsServiceType = () => Promise<IGroup[]>;
  export type getPostsByRootPostServiceType = (postId : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;

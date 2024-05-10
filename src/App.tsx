@@ -241,6 +241,18 @@ const container = {
       const data = await response.json()      
       return data;
     },
+    getAuditByUserService: async (userid: string, pageSize : number, pageNumber : number) : Promise<IAuditEvent[]> => { 
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch(appConfig.backendURL + "/audit/byuser/" + userid + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
+      const data = await response.json()      
+      return data;
+    },
   },
   resolve(identifier : string) : any {
     if (!this.items.hasOwnProperty(identifier)) {

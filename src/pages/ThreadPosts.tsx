@@ -19,6 +19,7 @@ const ThreadPosts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
     const [adverts, setAdverts] = useState<IAdvert[]>([])    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
+    let countActiveQueries = 0;
 
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
@@ -30,21 +31,24 @@ const ThreadPosts = () => {
     const postId = searchParams.get("postid")!
     const groupId = searchParams.get("groupid")!;
 
-    //console.log("ThreadPosts:PostID=" + postId + "; GroupID=" + groupId);
-
     useEffect(() => {                 
         const fetchPosts = async () => {                        
             const data = await getPostsByRootPostService(postId, 1000000, 1)                        
-            setPosts(data);
-            console.log(data);            
+            setPosts(data);                        
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
         // Get adverts
         const fetchRandomAdverts = async () => {
             const data = await getRandomAdvertsService(1)   // Get one advert            
-            setAdverts(data);            
+            setAdverts(data);    
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
+        countActiveQueries = 2;
+        setIsLoading(true);
         fetchPosts();
         fetchRandomAdverts();
     }, []);

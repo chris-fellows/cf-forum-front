@@ -17,6 +17,7 @@ const UserPosts = ({ userId } : any) => {
     const [posts, setPosts] = useState<IPost[]>([])
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true); 
+    let countActiveQueries = 0;
     //const [pageNumber, setPageNumber] = useState<number>(1);    
     const getPostsByUserService = useInject2<getPostsByUserServiceType>('getPostsByUserService');
     const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
@@ -31,23 +32,25 @@ const UserPosts = ({ userId } : any) => {
         }
     }
 
-    useEffect(() => {
-        console.log("Entered UserPosts:" + theUserId);
-
+    useEffect(() => {        
         // Get root posts
         const fetchUserPosts = async () => {                        
             const data = await getPostsByUserService(theUserId, 10000000, 1) // pageSize, pageNumber                        
             setPosts(data);   
-            setIsLoading(false);
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
         // Get adverts
         const fetchRandomAdverts = async () => {
             const data = await getRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);   
-            setIsLoading(false);
+            countActiveQueries--;
+            if (countActiveQueries == 0) setIsLoading(false);
         }
 
+        countActiveQueries = 2;
+        setIsLoading(true);
         fetchUserPosts();
         fetchRandomAdverts();
     }, []);  

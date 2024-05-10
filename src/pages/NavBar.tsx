@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import CurrentUser from './CurrentUser';
+import getUserInfo from '../userInfo';
 
 // Navigation bar
 // Params: None
 const NavBar = () => {
+   const userInfo = getUserInfo();
+
    const navListStyle = {
       listStyle: "none"
    };
@@ -12,6 +15,8 @@ const NavBar = () => {
       display: "inline-block",
       marginRight: "10px"
     };    
+
+ const isAdmin = userInfo.role === "admin";
 
  return (
  <nav>
@@ -28,12 +33,12 @@ const NavBar = () => {
           <li style={navListItemStyle}>
              <Link to="/contact">Contact</Link>
           </li>
-          <li style={navListItemStyle}>
+          {isAdmin && <li style={navListItemStyle}>
              <Link to="/users">Manage Users</Link>
-          </li>
-          <li style={navListItemStyle}>
+          </li>}
+          {isAdmin && <li style={navListItemStyle}>
              <Link to="/auditevents">Audit Events</Link>
-          </li>          
+          </li>}   
           <li style={navListItemStyle}>
              <Link to="/help">Help</Link>
           </li>

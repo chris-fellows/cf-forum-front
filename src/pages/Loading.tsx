@@ -1,10 +1,10 @@
-import React from 'react';
+//import React from 'react';
     
 // Displays loading component
 function Loading() {
   return (
-    <div className="loader-container">
-      <div className="loader">Loading...</div>
+    <div className="LoadingContainer">
+      <div>Loading...</div>
     </div>
   );
 }

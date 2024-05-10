@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.AuditEventTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AuditEventTableCell {
+  border: 1px solid;  
+}
+
+.UsersTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.UsersTableCell {
+  border: 1px solid;  
+}
+
+.LoadingContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
