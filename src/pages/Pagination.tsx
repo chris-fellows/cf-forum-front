@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import usePagination from "../pagination";
 import { IPaginationProps } from "../Interfaces";
 
+// Pagination for array of items. User can select specific page or sequentially page next/previous
 const Pagination = ( {items, pageSize, setPageItems} : IPaginationProps) => {
   const { pageNumber, pageCount, pageItems, setPage, nextPage, previousPage } = usePagination(items, pageSize);  
 

@@ -4,6 +4,16 @@ export interface IAdvert {
     Name: string
 }
 
+export interface IAuditEvent {
+    ID: string
+    CreatedDateTime: any,
+    UserID: string
+    UserName: string
+    EventTypeName: string
+    EventTypeInternalName: string
+    Data: any
+}
+
 export interface IGroup {
     ID: string
     Name : string
@@ -63,9 +73,10 @@ export interface INewPost {
  }
 
  export interface ICurrentUserInfo {    
-    email: string
+    //email: string
     userName: string
     userId: string
+    role: string
     token : string
  }
 
@@ -75,11 +86,18 @@ export interface INewPost {
    setPageItems(pageItems : any) : void
 }
 
+export interface ITokenPayload {
+   username: string
+   userid: number
+   role: string
+}
+
  // Types for contain dependencies
  export type addPostServiceType = (post : INewPost) => any;
  export type deletePostByIdServiceType = (postId : string) => any;
  export type loginServiceType = (credentials : IUserCredentials) => any;
  export type logoutServiceType = () => any;
+ export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getGroupServiceType = () => Promise<IGroup[]>;
  export type getGroupsServiceType = () => Promise<IGroup[]>;
  export type getPostsByRootPostServiceType = (postId : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
@@ -89,3 +107,4 @@ export interface INewPost {
  export type getUserServiceType = () => Promise<IUser[]>;
  export type getUsersServiceType = () => Promise<IUser[]>;
  export type votePostByIdServiceType = (postId : string, details : IUserPostInfoVote) =>  any;
+

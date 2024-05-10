@@ -32,6 +32,9 @@ const NavBar = () => {
              <Link to="/users">Manage Users</Link>
           </li>
           <li style={navListItemStyle}>
+             <Link to="/auditevents">Audit Events</Link>
+          </li>          
+          <li style={navListItemStyle}>
              <Link to="/help">Help</Link>
           </li>
           <li style={navListItemStyle}>

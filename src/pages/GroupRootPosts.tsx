@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
-import Post from "./Post"
+import LoginCheck from "./LoginCheck";
 import RootPost from "./RootPost";
 import { useSearchParams } from 'react-router-dom';
 import { IAdvert, IPost, getRootPostsByGroupServiceType, getRandomAdvertsServiceType } from "../Interfaces";
@@ -39,7 +39,8 @@ const GroupRootPosts = () => {
     
     // Display root post (Summary)    
     return (
-        <>           
+        <>          
+            <LoginCheck/> 
             <div>Group Posts</div>
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
 

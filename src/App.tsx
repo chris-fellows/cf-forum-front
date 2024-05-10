@@ -21,7 +21,8 @@ import User from './pages/User';
 import appConfig from './appConfig';
 import useToken from './useToken';
 import getUserInfo from './userInfo';
-import { IAdvert, IGroup, INewPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
+import { IAdvert, IAuditEvent, IGroup, INewPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
+import AuditEvents from './pages/AuditEvents';
 
 interface IMyContainer
 {
@@ -227,7 +228,19 @@ const container = {
       const response = await fetch(appConfig.backendURL + "/adverts/random/" + number, requestOptions)
       const data = await response.json()      
       return data;
-    }
+    },
+    getAuditByHoursService: async (hours: number, pageSize : number, pageNumber : number) : Promise<IAuditEvent[]> => { 
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }
+      };       
+      const response = await fetch(appConfig.backendURL + "/audit/byhours/" + hours + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
+      const data = await response.json()      
+      return data;
+    },
   },
   resolve(identifier : string) : any {
     if (!this.items.hasOwnProperty(identifier)) {
@@ -238,10 +251,11 @@ const container = {
 };
 
 function App() {
-  const { token, setToken } = useToken();  
+  const { token, setToken } = useToken();    
 
   // Login if no token
   if(!token) {
+    console.log("Displaying Login page");
     return (
     <ContainerProvider container={container}> 
       <div className="App">        
@@ -264,6 +278,7 @@ function App() {
         <Routes> 
           <Route path="/" element={<Home />}/>
           <Route path="/about" element={<About />}/>
+          <Route path="/auditevents" element={<AuditEvents />}/>
           <Route path="/contact" element={<Contact />}/>
           <Route path="/help" element={<Help />}/>
           <Route path="/groups" element={<Groups />}/>

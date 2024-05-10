@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
 //import Pagination from "./Pagination";
+import Loading from "./Loading";
+import LoginCheck from "./LoginCheck";
 import Post from "./Post"
 import NewPost from "./NewPost";
 import getUserInfo from '../userInfo';
@@ -16,6 +18,7 @@ const ThreadPosts = () => {
     const userInfo = getUserInfo(); 
     const [posts, setPosts] = useState<IPost[]>([]);
     const [adverts, setAdverts] = useState<IAdvert[]>([])    
+    const [isLoading, setIsLoading] = useState<boolean>(true); 
 
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
@@ -69,10 +72,15 @@ const ThreadPosts = () => {
     </>
     */
 
+    if (isLoading && getUserInfo().userName.length) {
+        return <Loading />;
+    }
+
     // TODO: Change so that user can post for any other post, not just root post
     // <NewPost groupId={groupId} userId={userInfo.userId} rootPostId={postId} parentPostId={postId}/>
     return (
         <>      
+            <LoginCheck/>
             <div>Thread Posts</div> 
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
             <ul style={ { listStyleType: "none" } }>
