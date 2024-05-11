@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
 import { IUserCredentials, loginServiceType } from "../Interfaces";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { useAuth } from "../authContext";
 
-// TODO: Change to JWT
 // Login for user
 // Params: 
-const Login = ({setToken}: any) => {
-    console.log("Entered Login function");
-
-    const userInfo = getUserInfo(); 
+const Login = () => {    
+    const userInfo = getUserInfo();        
+    const { token, setToken } = useAuth();
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const loginService = useInject2<loginServiceType>('loginService');
+
+    const navigate = useNavigate()
 
     const loginUser = async (credentials: IUserCredentials)  => {
         const data = await loginService(credentials)
@@ -24,37 +25,39 @@ const Login = ({setToken}: any) => {
     // Handle submit of credentials
     const handleSubmit = async (e: any) => {        
         e.preventDefault();
-        const token = await loginUser({
-          username: username,
-          password: password
-        });
-        console.log("Login response:");
-        console.log(token);
-        
-        setToken(token);
+        try
+        {
+            const result = await loginUser({
+                username: username,
+                password: password
+            });              
 
-        console.log("Decoding JWT:");
-        const decoded = jwtDecode(token);
-        console.log(decoded);
+            console.log(result);                    
+            console.log("Login: Saving token " + result);
+            setToken(result);
+            console.log("Login: Saved token");
 
-        /*
-        if (token.token.length > 0) {   // Logged in
-            setToken(token);
-            console.log("Log in success");
-        } else {            
-            window.alert("Log in failed");
+            //console.log("Decoding JWT:");
+            const decoded = jwtDecode(result);
+            //console.log(decoded);
+
+              // Navigate home        
+            console.log("Login: Navigating home");
+            navigate("/");
         }
-        */
+        catch (error)
+        {
+            window.alert("Failed to log in");
+        }
     }
 
     // Sanity check if logged in already
-    //const isLoggedIn = (userInfo.userName.length > 0);
-    const isLoggedIn = false;
+    const isLoggedIn = (userInfo.userName.length > 0);    
     if (isLoggedIn) return <div>Logged in</div>;
     
         return(
             <>
-                <h1>Please Log In</h1>
+                <h3>Enter username and password</h3>
                 <form onSubmit={handleSubmit}>
                     <label>
                     <p>Username</p>

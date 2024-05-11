@@ -1,14 +1,13 @@
 import { useState } from 'react';
-//import { ICurrentUserInfo } from './Interfaces';
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
+// Handles token management. Persisted to local storage
 export default function useToken() {
   const getToken = () => {    
     const tokenString = localStorage.getItem('token')!;
 
     // Check token is actvie
-    if (tokenString) {
-        //console.log("getToken: Checking if token valid");
+    if (tokenString) {        
         const decoded = jwtDecode<JwtPayload>(tokenString);
         if (decoded.exp != null)
         {
@@ -18,21 +17,29 @@ export default function useToken() {
               return "";              
           }
         }
+    } else {
+      console.log("getToken: No token");
     }
     
     return tokenString
   };
 
-  const [token, setToken] = useState<string>(getToken());
+  const [token, setToken] = useState<string>(getToken());  
 
-  const saveToken = (userToken : string) => {
-    //localStorage.setItem('token', JSON.stringify(userToken));
-    localStorage.setItem('token', userToken);
-    //setToken(userToken.token);
+  const saveToken = (userToken : string) => {          
+      console.log("saveToken: " + userToken);
+      localStorage.setItem('token', userToken);      
+      setToken(userToken);
   };
 
+  const clearToken = () => {
+    localStorage.removeItem('token');
+    setToken("");
+  }
+ 
   return {
     setToken: saveToken,
+    clearToken: clearToken,
     token
   }
 }

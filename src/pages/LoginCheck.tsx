@@ -1,15 +1,21 @@
 import getUserInfo from '../userInfo';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-// Login Check. Redirects to login page if not logged in. This component should be added to each 
-// page that needs the login check.
+// Login Check. Navigates to home page if not logged in. This is really for where the token expires
+// and would automatically redirect to the login page.
 // Params: None
-const LoginCheck = () => {
+const LoginCheck = () => {    
+    /*
     const userInfo = getUserInfo();
+    const navigate = useNavigate()
+    
+    // Navigate to Home page so that they can click the Login button first.
+    // return <Navigate to='/login' replace={true} />
     if (userInfo.userName.length == 0)
     {
-        return <Navigate to='/login' replace={true} />
-    }
+        navigate("/");
+    } 
+    */   
     
     return (
         <>            

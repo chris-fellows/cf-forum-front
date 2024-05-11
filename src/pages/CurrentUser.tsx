@@ -2,15 +2,15 @@ import { useState, useEffect } from "react"
 import { Link } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
-import clearToken from '../clearToken';
 import getUserInfo from '../userInfo';
 import { logoutServiceType } from "../Interfaces";
+import { useAuth } from "../authContext";
 
-// Current user info (Name, option to log out)
+// Current user info (Logged in user name or Log in/Register functions)
 // Params: None
 const CurrentUser = () => {   
    const userInfo = getUserInfo(); 
-   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userInfo != undefined);   
+   const { clearToken } = useAuth();   
    const logoutService = useInject2<logoutServiceType>('logoutService');
 
    const navigate = useNavigate()
@@ -26,11 +26,9 @@ const CurrentUser = () => {
         console.log("Log out response:");
         console.log(result);
 
-        //clearToken();
-
-        if (result.loggedOut) {
-            clearToken();
-            setIsLoggedIn(false);
+        if (result.loggedOut) {      
+            clearToken();            
+            navigate("/");    // Home
         } else {
             window.alert("Failed to log out");
         }
@@ -41,9 +39,28 @@ const CurrentUser = () => {
         navigate("/login");
      }
 
-     if (isLoggedIn) return ( <><div style={style}>{userInfo.userName}</div><button style={style} onClick={() => handleLogOutClick()}>Log out</button></> )
+     // Handle register click
+     const handleRegisterClick = async () => { 
+      navigate("/userregistration");
+   }
 
-     return <button style={style} onClick={() => handleLogInClick()}>Log in</button>
+   const isLoggedIn = userInfo.userName.length > 0;
+
+   // Allow log out if logged in
+     if (isLoggedIn) return ( 
+         <>
+            <div style={style}>{userInfo.userName}</div>
+            <button style={style} onClick={() => handleLogOutClick()}>Log out</button>
+         </>
+     )
+
+     // Allow log in or register
+     return (
+      <>
+         <button style={style} onClick={() => handleLogInClick()}>Log in</button>
+         <button style={style} onClick={() => handleRegisterClick()}>Register</button>
+      </>
+     )
 };
 
 export default CurrentUser;

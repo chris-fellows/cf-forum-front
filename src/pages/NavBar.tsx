@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import CurrentUser from './CurrentUser';
 import getUserInfo from '../userInfo';
+import { useAuth } from '../authContext';
 
 // Navigation bar
 // Params: None
 const NavBar = () => {
    const userInfo = getUserInfo();
-
+   const { token } = useAuth();
+   
    const navListStyle = {
       listStyle: "none"
    };
@@ -17,38 +19,42 @@ const NavBar = () => {
     };    
 
  const isAdmin = userInfo.role === "admin";
+ const isLoggedIn = userInfo.userName.length > 0;
 
  return (
- <nav>
-       <ul style={navListStyle}>
-          <li style={navListItemStyle}>
-             <Link to="/">Home</Link>
-          </li>
-          <li style={navListItemStyle}>
-             <Link to="/groups">Groups</Link>
-          </li>
-          <li style={navListItemStyle}>
-             <Link to="/userposts">My Posts</Link>
-          </li>          
-          <li style={navListItemStyle}>
-             <Link to="/contact">Contact</Link>
-          </li>
-          {isAdmin && <li style={navListItemStyle}>
-             <Link to="/users">Manage Users</Link>
-          </li>}
-          {isAdmin && <li style={navListItemStyle}>
-             <Link to="/auditevents">Audit Events</Link>
-          </li>}   
-          <li style={navListItemStyle}>
-             <Link to="/help">Help</Link>
-          </li>
-          <li style={navListItemStyle}>
-             <Link to="/about">About</Link>
-          </li>
+   <nav>
+         <ul style={navListStyle}>
+            <li style={navListItemStyle}>
+               <Link to="/">Home</Link>
+            </li>
+            {isLoggedIn && <li style={navListItemStyle}>
+               <Link to="/groups">Groups</Link>
+            </li>}
+            {isLoggedIn && <li style={navListItemStyle}>
+               <Link to="/userposts">My Posts</Link>
+            </li>}
+            <li style={navListItemStyle}>
+               <Link to="/contact">Contact</Link>
+            </li>
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/users">Manage Users</Link>
+            </li>}
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/auditevents">Audit Events</Link>
+            </li>}   
+            {isLoggedIn && <li style={navListItemStyle}>
+               <Link to="/usersettings">My Settings</Link>
+            </li>}   
+            <li style={navListItemStyle}>
+               <Link to="/help">Help</Link>
+            </li>
+            <li style={navListItemStyle}>
+               <Link to="/about">About</Link>
+            </li>
 
-          <CurrentUser />
-       </ul>            
- </nav>
+            <CurrentUser />
+         </ul>            
+   </nav>
  );
 };
 
