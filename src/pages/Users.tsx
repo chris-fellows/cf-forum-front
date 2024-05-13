@@ -20,7 +20,7 @@ const Users = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {            
-            const data = await getUsersService()            
+            const data = await getUsersService(1000000, 1)            
             setUsers(data);
             countActiveQueries--;
             if (countActiveQueries == 0) setIsLoading(false);

@@ -106,6 +106,6 @@ export interface ITokenPayload {
  export type getRandomAdvertsServiceType = (number : number) => Promise<IAdvert[]>;
  export type getRootPostsByGroupServiceType = (id : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
  export type getUserServiceType = () => Promise<IUser[]>;
- export type getUsersServiceType = () => Promise<IUser[]>;
+ export type getUsersServiceType = (pageSize : number, pageNumber : number) => Promise<IUser[]>;
  export type votePostByIdServiceType = (postId : string, details : IUserPostInfoVote) =>  any;
 

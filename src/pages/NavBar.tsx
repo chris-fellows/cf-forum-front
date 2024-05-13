@@ -18,7 +18,8 @@ const NavBar = () => {
       marginRight: "10px"
     };    
 
- const isAdmin = userInfo.role === "admin";
+ // TODO: Consider reading user_role_functions so that we can configure the nav bar from the DB
+ const isAdmin = userInfo.role === "ADMIN";
  const isLoggedIn = userInfo.userName.length > 0;
 
  return (

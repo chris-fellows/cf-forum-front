@@ -189,7 +189,7 @@ export const container = {
       const data = await response.json()      
       return data;
     },
-    getUsersService: async () : Promise<IUser[]> => {       
+    getUsersService: async (pageSize : number, pageNumber : number) : Promise<IUser[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'GET',
@@ -197,7 +197,7 @@ export const container = {
           'Authorization': 'Bearer ' + userInfo.token      
         }
       };       
-      const response = await fetch(appConfig.backendURL + "/users", requestOptions)
+      const response = await fetch(appConfig.backendURL + "/users" + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },    

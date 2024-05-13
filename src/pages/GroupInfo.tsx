@@ -18,13 +18,13 @@ const GroupInfo = ({group} : IGroupInfoProps) => {
         //console.log("navigating to /grouprootposts");
         navigate("/grouprootposts?groupid=" + groupId);        
     }
-    
+
     return (        
         <>            
             <div key={group.ID} className="Group" >
                     <h3>{group.Name}</h3>
                     <h5>{group.Description}</h5>                
-                    <img src={group.Logo} alt="Logo" />
+                    <img src={group.Logo} alt="Logo" width={100} height={100} />
                     <button onClick={() => handleGroupClick(group.ID)}>View Posts</button>
                 </div>            
         </>
