@@ -1,5 +1,4 @@
 import { IAdvert } from "../Interfaces";
-import { Link } from "react-router-dom";
 
 interface IAdvertProps {
     advert: IAdvert

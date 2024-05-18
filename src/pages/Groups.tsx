@@ -2,17 +2,15 @@ import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
 import GroupInfo from "./GroupInfo";
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
+import SearchBar from "./SearchBar";
 import { IAdvert, IGroup, getGroupsServiceType, getRandomAdvertsServiceType } from "../Interfaces";
-import getUserInfo from "../userInfo";
-import useFindDelay from "../useFindDelay";
 
 // Displays each group info
 const Groups = () => {
     const [groups, setGroups] = useState<IGroup[]>([])
     const [find, setFind] = useState<string>("");
-    const { findInternal, setFindInternal } = useFindDelay(setFind, 1000);
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);     
     const activeQueries = useRef<number>(0);
@@ -35,22 +33,30 @@ const Groups = () => {
             if (activeQueries.current == 0) setIsLoading(false);
         }
         
-        activeQueries.current = 2;
+        if (adverts == null || adverts.length == 0) { activeQueries.current = 2 } else { activeQueries.current = 1};        
         setIsLoading(true);
         fetchAllGroups()
-        fetchRandomAdverts();    
+        if (adverts == null || adverts.length == 0)  {
+            fetchRandomAdverts();
+        }
+                   
+        /*
+        setTimeout(function(){            
+            fetchAllGroups()
+            if (adverts == null || adverts.length == 0) {
+                fetchRandomAdverts();   
+            }
+        }, 3000);
+        */
     }, [find]);
-
-    if (isLoading && getUserInfo().userName.length) {
-        return <Loading />;
-    }
-    
+   
     return (
         <>           
             <LoginCheck/> 
-            <div>Groups</div>            
-            {adverts && adverts.length && <Advert advert={adverts[0]}/> }            
-            <label htmlFor={"groupfind"}>Search:</label><input type="text" id={"groupfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />   
+            <div>Groups</div>        
+            <LoaderOverlay loading={isLoading} message="Loading groups..." />
+            <SearchBar setFind={setFind} delay={1000} />
+            {adverts && adverts.length && <Advert advert={adverts[0]}/> }                        
             {groups.map(group => (                     
                 <GroupInfo group={group}/>         
             ))}            

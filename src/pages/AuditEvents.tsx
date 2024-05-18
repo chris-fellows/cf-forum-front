@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import AuditEvent from "./AuditEvent";
 import getUserInfo from '../userInfo';
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import { IAuditEvent, getAuditByHoursServiceType, getAuditByUserServiceType } from "../Interfaces";
 
@@ -45,15 +45,12 @@ const AuditEvents = ( {userId} : any) => {
         setIsLoading(true);
         fetchAuditEvents();        
     }, []);   
- 
-    if (isLoading && getUserInfo().userName.length) {
-        return <Loading />;
-    }
-    
+   
     return (
         <>
             <LoginCheck/>
             <div>Audit Events</div>                                                
+            <LoaderOverlay loading={isLoading} message="Loading audit events..." />
             <table className="AuditEventTable">
                 <thead>
                     <tr>

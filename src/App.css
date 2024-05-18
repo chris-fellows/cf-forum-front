@@ -55,11 +55,33 @@
   border: 1px solid;  
 }
 
+/*
 .LoadingContainer {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+*/
+
+.LoaderOverlayContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: lightblue;
+  border: 2px solid black;
+  width: 200px;
+  height: 30px;
+  font-size: large;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.LoaderOverlayImage {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;  
 }
 
 .AdvertsTable {

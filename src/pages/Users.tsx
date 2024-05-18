@@ -2,19 +2,17 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 import { useInject, useInject2 } from "../DependencyInjection";
 import { Link } from "react-router-dom";
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import { IUser } from "../Interfaces";
-import getUserInfo from "../userInfo";
 import { getUsersServiceType } from "../Interfaces";
 import LoginCheck from "./LoginCheck";
-import useFindDelay from "../useFindDelay";
+import SearchBar from "./SearchBar";
 
 // Users information
 // Params: None
 const Users = () => {
     const [users, setUsers] = useState<IUser[]>([])        
-    const [find, setFind] = useState<string>("");
-    const { findInternal, setFindInternal } = useFindDelay(setFind, 1000);    
+    const [find, setFind] = useState<string>("");    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
     const activeQueries = useRef<number>(0);
     const getUsersService = useInject2<getUsersServiceType>('getUsersService');      
@@ -22,7 +20,7 @@ const Users = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log("Searching users for " + find + " (Find internal=" + findInternal + ")");
+        console.log("Searching users for " + find);
         const fetchUsers = async () => {            
             const data = await getUsersService(find, 1000000, 1)                        
             setUsers(data);
@@ -33,23 +31,21 @@ const Users = () => {
         activeQueries.current = 1;        
         setIsLoading(true);
         fetchUsers();
-
-        /* Simulate slow load
-        setTimeout(function(){
+                    
+        /*
+        setTimeout(function(){            
             fetchUsers();
-        }, 3000);        
+        }, 3000);                        
         */
-    }, [find]);    
-
-    if (isLoading && getUserInfo().userName.length) {        
-        return <Loading />;
-    }
-         
+    }, [find]);       
+            
+    // <label htmlFor={"userfind"}>Search:</label><input type="text" id={"userfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />            
     return (
         <>
             <LoginCheck/>
-            <div>Manage Users</div> 
-            <label htmlFor={"userfind"}>Search:</label><input type="text" id={"userfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />            
+            <div>Manage Users</div>             
+            <LoaderOverlay loading={isLoading} message="Loading users..."/>
+            <SearchBar setFind={setFind} delay={1000} />
             <table className="UsersTable">
                 <thead>
                     <tr>

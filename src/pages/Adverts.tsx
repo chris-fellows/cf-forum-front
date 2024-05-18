@@ -1,19 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { Link } from "react-router-dom";
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import { IAdvert } from "../Interfaces";
-import getUserInfo from "../userInfo";
 import { getAdvertsServiceType } from "../Interfaces";
 import LoginCheck from "./LoginCheck";
-import useFindDelay from "../useFindDelay";
+import SearchBar from "./SearchBar";
 
 // Displays adverts. Allows edit of advert.
 // Params: None
 const Adverts = () => {
     const [adverts, setAdverts] = useState<IAdvert[]>([])   
-    const [find, setFind] = useState<string>("");
-    const { findInternal, setFindInternal } = useFindDelay(setFind, 1000);     
+    const [find, setFind] = useState<string>("");    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
     const getAdvertsService = useInject2<getAdvertsServiceType>('getAdvertsService');  
     const activeQueries = useRef<number>(0);
@@ -29,17 +27,14 @@ const Adverts = () => {
         activeQueries.current = 1;
         setIsLoading(true);
         fetchAdverts();
-    }, [find]);
-
-    if (isLoading && getUserInfo().userName.length) {
-        return <Loading />;
-    }
+    }, [find]);   
         
     return (
         <>
             <LoginCheck/>
             <div>Manage Adverts</div>     
-            <label htmlFor={"advertfind"}>Search:</label><input type="text" id={"advertfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />                 
+            <LoaderOverlay loading={isLoading} message="Loading adverts..." />
+            <SearchBar setFind={setFind} delay={1000} />            
             <table className="AdvertsTable">
                 <thead>
                     <tr>

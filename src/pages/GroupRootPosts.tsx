@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import RootPost from "./RootPost";
-import getUserInfo from '../userInfo';
+import SearchBar from "./SearchBar";
 import { useSearchParams } from 'react-router-dom';
 import { IAdvert, IPost, getRootPostsByGroupServiceType, getRandomAdvertsServiceType } from "../Interfaces";
-import useFindDelay from "../useFindDelay";
 
 // Displays root posts for group (Posts.GroupId=X, Posts.Sequence=1)
 // Params: GroupId
@@ -15,7 +14,6 @@ const GroupRootPosts = () => {
     //const { token } = useToken();
     const [posts, setPosts] = useState<IPost[]>([]);   
     const [find, setFind] = useState<string>("");
-    const { findInternal, setFindInternal } = useFindDelay(setFind, 1000);    
     const [adverts, setAdverts] = useState<IAdvert[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(1);    
     const [isLoading, setIsLoading] = useState<boolean>(true);     
@@ -27,9 +25,7 @@ const GroupRootPosts = () => {
     const [searchParams] = useSearchParams();
     const groupId = searchParams.get("groupid")!;
 
-    useEffect(() => {
-        console.log("Use effect");
-
+    useEffect(() => {    
         // Get root posts
         const fetchRootPosts = async () => {        
             console.log("Getting root posts with find " + find);
@@ -48,23 +44,28 @@ const GroupRootPosts = () => {
             if (activeQueries.current == 0) setIsLoading(false);         
         }
 
-        activeQueries.current = 2;
-        setIsLoading(true);     
-        fetchRootPosts();
-        fetchRandomAdverts();
+        if (adverts == null || adverts.length == 0) { activeQueries.current = 2 } else { activeQueries.current = 1};        
+        setIsLoading(true);
+        fetchRootPosts()
+        if (adverts == null || adverts.length == 0)  {
+            fetchRandomAdverts();
+        }
     }, [find]);
 
+    /*
     if (isLoading && getUserInfo().userName.length) {
         return <Loading />;
     }
+    */
 
     // Display root post (Summary)        
     return (
         <>          
             <LoginCheck/> 
             <div>Group Posts</div>
-            {adverts && adverts.length && <Advert advert={adverts[0]}/> }            
-            <label htmlFor={"postfind"}>Search:</label><input type="text" id={"postfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />   
+            <LoaderOverlay loading={isLoading} message="Loading posts..." />
+            <SearchBar setFind={setFind} delay={1000} />
+            {adverts && adverts.length && <Advert advert={adverts[0]}/> }                        
             <ul style={ { listStyleType: "none" } }>
                 {posts.map(post => <RootPost post={post}/>)}            
             </ul>

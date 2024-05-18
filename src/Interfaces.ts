@@ -98,6 +98,16 @@ export interface ITokenPayload {
    role: string
 }
 
+export interface ILoaderOverlapProps {
+   loading: boolean
+   message: string
+}
+
+export interface ISearchBarProps {
+   setFind: (text : string) => void
+   delay: number   
+}
+
  // Types for contain dependencies
  export type addPostServiceType = (post : INewPost) => any;
  export type deletePostByIdServiceType = (postId : string) => any;

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
-import Loading from "./Loading";
+import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import UserPost from "./UserPost"
 import getUserInfo from '../userInfo';
@@ -47,20 +47,19 @@ const UserPosts = ({ userId } : any) => {
             if (activeQueries.current == 0) setIsLoading(false);
         }
 
-        activeQueries.current = 2;
+        if (adverts == null || adverts.length == 0) { activeQueries.current = 2 } else { activeQueries.current = 1};        
         setIsLoading(true);
-        fetchUserPosts();
-        fetchRandomAdverts();
+        fetchUserPosts()
+        if (adverts == null || adverts.length == 0)  {
+            fetchRandomAdverts();
+        }
     }, []);  
-
-    if (isLoading && getUserInfo().userName.length) {
-        return <Loading />;
-    }
-        
+   
     return (
         <>      
             <LoginCheck/>
             <div>My Posts</div>
+            <LoaderOverlay loading={isLoading} message="Loading posts..." />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
 
             <ul style={ { listStyleType: "none" } }>
