@@ -1,7 +1,11 @@
 export interface IAdvert {
+    ID: string
+    FromDateTime: string
+    ToDateTime: string
     Logo: string
     LogoType: number
-    Name: string
+    Name: string,
+    External: string
 }
 
 export interface IAuditEvent {
@@ -65,6 +69,8 @@ export interface INewPost {
     Name: string
     Email: string
     Logo: string
+    UserRoleName: string
+    UserRoleInternalName: string
  }
 
  export interface IUserCredentials {
@@ -97,15 +103,17 @@ export interface ITokenPayload {
  export type deletePostByIdServiceType = (postId : string) => any;
  export type loginServiceType = (credentials : IUserCredentials) => any;
  export type logoutServiceType = () => any;
+ export type getAdvertServiceType = (advertid : string) => Promise<IAdvert[]>;
+ export type getAdvertsServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IAdvert[]>;
  export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getAuditByUserServiceType = (userid: string, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getGroupServiceType = () => Promise<IGroup[]>;
- export type getGroupsServiceType = () => Promise<IGroup[]>;
+ export type getGroupsServiceType = (find : string) => Promise<IGroup[]>;
  export type getPostsByRootPostServiceType = (postId : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
  export type getPostsByUserServiceType = (userid : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
  export type getRandomAdvertsServiceType = (number : number) => Promise<IAdvert[]>;
- export type getRootPostsByGroupServiceType = (id : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
- export type getUserServiceType = () => Promise<IUser[]>;
- export type getUsersServiceType = (pageSize : number, pageNumber : number) => Promise<IUser[]>;
+ export type getRootPostsByGroupServiceType = (id : string, find : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
+ export type getUserServiceType = (userid : string) => Promise<IUser[]>;
+ export type getUsersServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IUser[]>;
  export type votePostByIdServiceType = (postId : string, details : IUserPostInfoVote) =>  any;
 

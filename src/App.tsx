@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 //import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import About from './pages/About'
+import Adverts from './pages/Adverts';
 import AuditEvents from './pages/AuditEvents';
 import Contact from './pages/Contact';
 import Help from './pages/Help';
@@ -17,12 +18,13 @@ import Groups from "./pages/Groups"
 import Login from './pages/Login';
 import NavBar from './pages/NavBar';
 import ThreadPosts from './pages/ThreadPosts';
-import User from './pages/User';
+import UserEdit from './pages/UserEdit';
 import UserPosts from './pages/UserPosts';
 import UserRegistration from './pages/UserRegistration';
 import UserSettings from './pages/UserSettings';
 import Users from './pages/Users';
 import { ContainerProvider, container } from './containerContext';
+import AdvertEdit from './pages/AdvertEdit';
 
 function App() {    
   // Don't prompt for login, let user click Login button
@@ -52,6 +54,8 @@ function App() {
           <NavBar />
           <Routes> 
             <Route path="/" element={<Home />}/>
+            <Route path="/adverts" element={<Adverts />}/>
+            <Route path="/advertedit" element={<AdvertEdit />}/>
             <Route path="/about" element={<About />}/>
             <Route path="/auditevents" element={<AuditEvents />}/>
             <Route path="/contact" element={<Contact />}/>
@@ -62,7 +66,7 @@ function App() {
             <Route path="/home" element={<Home />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/threadposts" element={<ThreadPosts />}/> 
-            <Route path="/userdetails" element={<User />}/> 
+            <Route path="/useredit" element={<UserEdit />}/> 
             <Route path="/userposts" element={<UserPosts />}/>     
             <Route path="/useregistration" element={<UserRegistration />}/>          
             <Route path="/usersettings" element={<UserSettings />}/>

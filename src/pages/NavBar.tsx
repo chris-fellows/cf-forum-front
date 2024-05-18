@@ -41,6 +41,9 @@ const NavBar = () => {
                <Link to="/users">Manage Users</Link>
             </li>}
             {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/adverts">Manage Adverts</Link>
+            </li>}
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
                <Link to="/auditevents">Audit Events</Link>
             </li>}   
             {isLoggedIn && <li style={navListItemStyle}>

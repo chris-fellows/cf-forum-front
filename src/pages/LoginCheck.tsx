@@ -1,5 +1,5 @@
-import getUserInfo from '../userInfo';
-import { useNavigate } from "react-router-dom";
+//import getUserInfo from '../userInfo';
+//import { useNavigate } from "react-router-dom";
 
 // Login Check. Navigates to home page if not logged in. This is really for where the token expires
 // and would automatically redirect to the login page.

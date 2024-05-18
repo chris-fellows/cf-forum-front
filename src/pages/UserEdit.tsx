@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
-import { useInject } from "../DependencyInjection";
+import { useInject, useInject2 } from "../DependencyInjection";
 import getUserInfo from '../userInfo';
-import { IUser } from "../Interfaces";
+import { getUserServiceType, IUser } from "../Interfaces";
 
-// Displays user, allows edit
+// User edit
 // Params: UserId
-const User = ({userId} : any) => {
+const UserEdit = ({userId} : any) => {
     const userInfo = getUserInfo();
     const [user, setUser] = useState<IUser>();
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-
-    //const [theUserId, setTheUserId] = useState(0);
-    const getUserService = useInject('getUserService');      
+    
+    const getUserService = useInject2<getUserServiceType>('getUserService');      
 
       // Get user (Either passed userId, from querystring or default)
       let userDefault = "param";
@@ -44,14 +43,7 @@ const User = ({userId} : any) => {
             console.log(data);            
         }
 
-        // Get adverts
-        //const fetchRandomAdverts = async () => {
-        //    const data = await getRandomAdvertsService(1)   // Get one advert            
-        //    setAdverts(data);            
-        //}
-
-        fetchUser();
-        //fetchRandomAdverts();
+        fetchUser();        
     }, []);   
 
     console.log(user);
@@ -61,11 +53,19 @@ const User = ({userId} : any) => {
     return (
         <>
         <div>User</div>
-        <div>Name:</div><input type="text" value={name} onChange={event => setName(event.target.value)} />
-        <div>Email:</div><input type="text" value={email} onChange={event => setEmail(event.target.value)} />        
-        {user && user.Logo && <img src={user.Logo} alt="Logo" />}
+        <ul style={ { listStyleType: "none" } }>
+            <li>
+                <label htmlFor={"username"}>Name:</label><input type="text" id={"username"} value={name} onChange={event => setName(event.target.value)} />
+            </li>
+            <li>
+                <label htmlFor={"useremail"}>Email:</label><input type="text" id= {"useremail"} value={email} onChange={event => setEmail(event.target.value)} />        
+            </li>
+            <li>
+                {user && user.Logo && <img src={user.Logo} alt="Logo" />}
+            </li>
+        </ul>
         </>
     )
 }
 
-export default User
+export default UserEdit

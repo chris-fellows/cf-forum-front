@@ -3,7 +3,7 @@ import { useInject, useInject2 } from "../DependencyInjection";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
 import { IUserCredentials, loginServiceType } from "../Interfaces";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../authContext";
 
 // Login for user

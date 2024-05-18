@@ -1,4 +1,5 @@
 import { IAdvert } from "../Interfaces";
+import { Link } from "react-router-dom";
 
 interface IAdvertProps {
     advert: IAdvert
@@ -10,26 +11,29 @@ const Advert = ({advert} : IAdvertProps) => {
     const isImage = advert.LogoType == 1;
     const isMP4Video = advert.LogoType == 2;    // TODO: Support other video formats
 
-      // Handle advert click, pauses or plays video
-      const handleAdvertClick = async (e: any) => { 
-        //e.preventDefault();                
+      // Handle advert click
+      const handleAdvertClick = async (e: any) => {    
+        console.log("Opening advert " + advert.External);
+        window.open(advert.External,'_blank', 'noreferrer');
+
+        /* Don't pause/play video
         if (e.target.paused) {
             e.target.play();
         } else {
             e.target.pause();
-        }        
+        } 
+        */       
     }
 
     return (
-        <>
-            <div>{advert.Name}</div>
-            {isImage ? ( <img src={advert.Logo} alt="Logo" /> ) 
+        <>            
+            {isImage ? ( <img src={advert.Logo} alt= {advert.Name} /> ) 
                 : ( <div/> )             
             }
 
             {isMP4Video ?
             (
-                <video width="160" height="120" autoPlay onClick={(e) => handleAdvertClick(e) }>
+                <video width="160" height="120" title={advert.Name} autoPlay onClick={(e) => handleAdvertClick(e) }>
                     <source src={advert.Logo} type="video/mp4" />                                
                 </video>
             ):  ( <div/> )

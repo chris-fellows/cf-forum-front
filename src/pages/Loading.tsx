@@ -1,6 +1,4 @@
-//import React from 'react';
-    
-// Displays loading component
+  // Displays loading component to indicate busy
 function Loading() {
   return (
     <div className="LoadingContainer">

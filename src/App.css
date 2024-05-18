@@ -61,3 +61,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.AdvertsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdvertsTableCell {
+  border: 1px solid;  
+}

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react"
 import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import AuditEvent from "./AuditEvent";
@@ -14,7 +13,7 @@ const AuditEvents = ( {userId} : any) => {
     const userInfo = getUserInfo(); 
     const [auditEvents, setAuditEvents] = useState<IAuditEvent[]>([]);    
     const [isLoading, setIsLoading] = useState<boolean>(true);     
-    let countActiveQueries = 0;
+    const activeQueries = useRef<number>(0);
 
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
@@ -38,11 +37,11 @@ const AuditEvents = ( {userId} : any) => {
                 const data = await getAuditByUserService(theUserId, 1000000, 1)
                 setAuditEvents(data);            
             }
-            countActiveQueries--;
-            if (countActiveQueries == 0) setIsLoading(false);
+            activeQueries.current--;
+            if (activeQueries.current == 0) setIsLoading(false);
         }
 
-        countActiveQueries = 1;
+        activeQueries.current = 1;
         setIsLoading(true);
         fetchAuditEvents();        
     }, []);   

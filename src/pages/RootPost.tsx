@@ -9,15 +9,11 @@ interface IRootPostProps {
 
 // Displays root post
 // Params: Post
-const RootPost = ({post} : IRootPostProps) => {
-    //const [post, setPost] = useState([])
-
+const RootPost = ({post} : IRootPostProps) => {    
     const navigate = useNavigate()
       
-    const handlePostClick = async (postId : string, groupId : string) => { 
-        //e.preventDefault();                
-        navigate("/threadposts?postid=" + postId + "&groupid=" + groupId);              
-        //navigate(0);
+    const handlePostClick = async (postId : string, groupId : string) => {         
+        navigate("/threadposts?postid=" + postId + "&groupid=" + groupId);                      
     }
     
     return (

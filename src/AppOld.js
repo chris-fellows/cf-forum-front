@@ -18,7 +18,7 @@ import NavBar from './pages/NavBar.js';
 import ThreadPosts from './pages/ThreadPosts.js';
 import UserPosts from './pages/UserPosts.js';
 import Users from './pages/Users.js';
-import User from './pages/User.js';
+import User from './pages/UserEdit.js';
 import appConfig from './appConfig.js';
 import useToken from './useToken.js';
 import getUserInfo from './userInfo.js';

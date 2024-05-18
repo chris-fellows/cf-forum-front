@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useInject } from "../DependencyInjection";
 import { IGroup } from "../Interfaces";
 
 interface IGroupInfoProps {
@@ -13,9 +12,7 @@ const GroupInfo = ({group} : IGroupInfoProps) => {
     const navigate = useNavigate()
 
     // Handle group click, displays group root posts
-    const handleGroupClick = async (groupId : string) => { 
-        //e.preventDefault();        
-        //console.log("navigating to /grouprootposts");
+    const handleGroupClick = async (groupId : string) => {         
         navigate("/grouprootposts?groupid=" + groupId);        
     }
 

@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
-//import { useNavigate } from "react-router-dom";
-//import { UserInfo } from "./UserInfo"
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
 import Loading from "./Loading";
@@ -17,7 +15,7 @@ const UserPosts = ({ userId } : any) => {
     const [posts, setPosts] = useState<IPost[]>([])
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true); 
-    let countActiveQueries = 0;
+    const activeQueries = useRef<number>(0);    
     //const [pageNumber, setPageNumber] = useState<number>(1);    
     const getPostsByUserService = useInject2<getPostsByUserServiceType>('getPostsByUserService');
     const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
@@ -37,19 +35,19 @@ const UserPosts = ({ userId } : any) => {
         const fetchUserPosts = async () => {                        
             const data = await getPostsByUserService(theUserId, 10000000, 1) // pageSize, pageNumber                        
             setPosts(data);   
-            countActiveQueries--;
-            if (countActiveQueries == 0) setIsLoading(false);
+            activeQueries.current--;
+            if (activeQueries.current == 0) setIsLoading(false);
         }
 
         // Get adverts
         const fetchRandomAdverts = async () => {
             const data = await getRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);   
-            countActiveQueries--;
-            if (countActiveQueries == 0) setIsLoading(false);
+            activeQueries.current--;
+            if (activeQueries.current == 0) setIsLoading(false);
         }
 
-        countActiveQueries = 2;
+        activeQueries.current = 2;
         setIsLoading(true);
         fetchUserPosts();
         fetchRandomAdverts();
