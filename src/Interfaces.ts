@@ -108,6 +108,12 @@ export interface ISearchBarProps {
    delay: number   
 }
 
+export interface IDownloadCSVProps<T> {
+   items: T[],
+   file: string   
+   delimiter: string
+}
+
  // Types for contain dependencies
  export type addPostServiceType = (post : INewPost) => any;
  export type deletePostByIdServiceType = (postId : string) => any;

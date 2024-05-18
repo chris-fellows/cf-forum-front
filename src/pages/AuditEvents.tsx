@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import AuditEvent from "./AuditEvent";
+import DownloadAuditEventsCSV from "./DownloadAuditEventsCSV";
 import getUserInfo from '../userInfo';
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
@@ -44,13 +45,30 @@ const AuditEvents = ( {userId} : any) => {
         activeQueries.current = 1;
         setIsLoading(true);
         fetchAuditEvents();        
-    }, []);   
-   
+    }, []);
+    
+    /*
+    const downloadTestFile = () => {
+        // text content
+        const texts = ["line 1", "line 2", "line 3"]
+    // file object
+        const file = new Blob(texts, {type: 'text/plain'});
+    // anchor link
+        const element = document.createElement("a");
+        element.href = URL.createObjectURL(file);
+        element.download = "100ideas-" + Date.now() + ".txt";
+    // simulate link click
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+    }
+    */
+     
     return (
         <>
             <LoginCheck/>
-            <div>Audit Events</div>                                                
-            <LoaderOverlay loading={isLoading} message="Loading audit events..." />
+            <div>Audit Events</div>                                                          
+            <LoaderOverlay loading={isLoading} message="Loading audit events..." />            
+            <DownloadAuditEventsCSV items={auditEvents} file="Audit Events.txt" delimiter="\t" />
             <table className="AuditEventTable">
                 <thead>
                     <tr>

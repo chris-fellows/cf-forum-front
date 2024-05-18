@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import LoaderOverlay from "./LoaderOverlay";
 import { IUser } from "../Interfaces";
 import { getUsersServiceType } from "../Interfaces";
+import DownloadUsersCSV from "./DownloadUsersCSV";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
 
@@ -45,6 +46,7 @@ const Users = () => {
             <LoginCheck/>
             <div>Manage Users</div>             
             <LoaderOverlay loading={isLoading} message="Loading users..."/>
+            <DownloadUsersCSV items={users} file="Users.txt" delimiter="\t" />
             <SearchBar setFind={setFind} delay={1000} />
             <table className="UsersTable">
                 <thead>

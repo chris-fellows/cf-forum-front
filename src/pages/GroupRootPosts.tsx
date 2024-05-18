@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
+import DownloadPostsCSV from "./DownloadPostsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import RootPost from "./RootPost";
@@ -64,6 +65,7 @@ const GroupRootPosts = () => {
             <LoginCheck/> 
             <div>Group Posts</div>
             <LoaderOverlay loading={isLoading} message="Loading posts..." />
+            <DownloadPostsCSV items={posts} file="Root Posts.txt" delimiter="\t" />
             <SearchBar setFind={setFind} delay={1000} />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }                        
             <ul style={ { listStyleType: "none" } }>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
+import DownloadPostsCSV from "./DownloadPostsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import UserPost from "./UserPost"
@@ -53,13 +54,14 @@ const UserPosts = ({ userId } : any) => {
         if (adverts == null || adverts.length == 0)  {
             fetchRandomAdverts();
         }
-    }, []);  
+    }, []);    
    
     return (
         <>      
             <LoginCheck/>
             <div>My Posts</div>
             <LoaderOverlay loading={isLoading} message="Loading posts..." />
+            <DownloadPostsCSV items={posts} file="User Posts.txt" delimiter="\t" />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
 
             <ul style={ { listStyleType: "none" } }>

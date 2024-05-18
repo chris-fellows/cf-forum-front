@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { Link } from "react-router-dom";
+import DownloadAdvertsCSV from "./DownloadAdvertsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import { IAdvert } from "../Interfaces";
 import { getAdvertsServiceType } from "../Interfaces";
@@ -34,6 +35,7 @@ const Adverts = () => {
             <LoginCheck/>
             <div>Manage Adverts</div>     
             <LoaderOverlay loading={isLoading} message="Loading adverts..." />
+            <DownloadAdvertsCSV items={adverts} file="Adverts.txt" delimiter="\t" />
             <SearchBar setFind={setFind} delay={1000} />            
             <table className="AdvertsTable">
                 <thead>

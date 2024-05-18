@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
 //import Pagination from "./Pagination";
+import DownloadPostsCSV from "./DownloadPostsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import Post from "./Post"
@@ -53,7 +54,7 @@ const ThreadPosts = () => {
         if (adverts == null || adverts.length == 0)  {
             fetchRandomAdverts();
         }
-    }, []);
+    }, []);  
 
     /*
     <>      
@@ -85,6 +86,7 @@ const ThreadPosts = () => {
             <LoginCheck/>
             <div>Thread Posts</div> 
             <LoaderOverlay loading={isLoading} message="Loading posts..." />
+            <DownloadPostsCSV items={posts} file="Thread Posts.txt" delimiter="\t" />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }     
             <ul style={ { listStyleType: "none" } }>
                 {posts.map(post => (<Post post={post}/>))}            
