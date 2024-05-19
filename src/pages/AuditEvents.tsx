@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react"
 import { useSearchParams } from 'react-router-dom';
 import { useInject, useInject2 } from "../DependencyInjection";
 import AuditEvent from "./AuditEvent";
-import DownloadAuditEventsCSV from "./DownloadAuditEventsCSV";
+import DownloadItemsCSV from "./DownloadItemsCSV";
 import getUserInfo from '../userInfo';
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import { IAuditEvent, getAuditByHoursServiceType, getAuditByUserServiceType } from "../Interfaces";
+import appConfig from "../appConfig";
 
 // Audit Event information
 // Params: None
@@ -62,13 +63,24 @@ const AuditEvents = ( {userId} : any) => {
         element.click();
     }
     */
+
+    // Set function for export CSV
+    const getCSVLine = (auditEvent : IAuditEvent, delimiter : string) : string => {
+        const line = `${auditEvent.ID}${delimiter}${auditEvent.UserName}${delimiter}${auditEvent.CreatedDateTime}${delimiter}${auditEvent.EventTypeName}\n`;
+        return line;
+    };
      
     return (
         <>
             <LoginCheck/>
             <div>Audit Events</div>                                                          
             <LoaderOverlay loading={isLoading} message="Loading audit events..." />            
-            <DownloadAuditEventsCSV items={auditEvents} file="Audit Events.txt" delimiter="\t" />
+            <DownloadItemsCSV title="Download" 
+                        columns={["ID", "User_Name", "Created", "Event_Type"]}
+                        items={auditEvents} 
+                        file= { "Audit Events" + appConfig.downloadCSVExtension } 
+                        delimiter={appConfig.downloadCSVDelimiter} 
+                        getLine={getCSVLine} />
             <table className="AuditEventTable">
                 <thead>
                     <tr>

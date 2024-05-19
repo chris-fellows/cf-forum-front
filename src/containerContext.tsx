@@ -5,7 +5,7 @@ import appConfig from './appConfig';
 //import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import getUserInfo from './userInfo';
-import { IAdvert, IAuditEvent, IGroup, INewPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
+import { IAdvert, IAuditEvent, IGroup, INewPost, INewRootPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
 
 export interface IMyContainer
 {
@@ -78,7 +78,7 @@ export const container = {
       const data = await response.json()      
       return data;
     },
-    addPostService: async (post : INewPost) => {
+    addPostService: async (post : INewPost) : Promise<IPost[]> => {
       const userInfo = getUserInfo();
       const requestOptions = {
         method: 'POST',
@@ -89,6 +89,20 @@ export const container = {
       };       
       const response = await fetch(appConfig.backendURL + "/posts", requestOptions)
       const data = await response.json()      
+      return data;
+    },
+    addRootPostService: async (post : INewRootPost) : Promise<IPost[]> => {      
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
+        body: JSON.stringify(post)
+      };       
+      const response = await fetch(appConfig.backendURL + "/rootposts", requestOptions)      
+      const data = await response.json()      
+      console.log(data);      
       return data;
     },
     getRootPostsByGroupService: async (id : string, find : string,  pageSize : number, pageNumber : number) : Promise<IPost[]> => {  // GroupID

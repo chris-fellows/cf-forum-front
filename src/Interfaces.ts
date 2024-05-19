@@ -40,6 +40,12 @@ export interface INewPost {
    parentPostId: string
 }
 
+export interface INewRootPost {
+   groupId: string
+   userId: string
+   text: string   
+}
+
  export interface IPost {
     ID: string
     Text : string     
@@ -109,13 +115,17 @@ export interface ISearchBarProps {
 }
 
 export interface IDownloadCSVProps<T> {
-   items: T[],
+   title: string
+   columns: string[],
+   items: T[]
    file: string   
    delimiter: string
+   getLine: (item : T, delimiter : string) => string
 }
 
  // Types for contain dependencies
- export type addPostServiceType = (post : INewPost) => any;
+ export type addPostServiceType = (post : INewPost) => Promise<IPost[]>;
+ export type addRootPostServiceType = (post : INewRootPost) => Promise<IPost[]>;
  export type deletePostByIdServiceType = (postId : string) => any;
  export type loginServiceType = (credentials : IUserCredentials) => any;
  export type logoutServiceType = () => any;
@@ -123,7 +133,7 @@ export interface IDownloadCSVProps<T> {
  export type getAdvertsServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IAdvert[]>;
  export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getAuditByUserServiceType = (userid: string, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
- export type getGroupServiceType = () => Promise<IGroup[]>;
+ export type getGroupServiceType = (id : string) => Promise<IGroup[]>;
  export type getGroupsServiceType = (find : string) => Promise<IGroup[]>;
  export type getPostsByRootPostServiceType = (postId : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
  export type getPostsByUserServiceType = (userid : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;

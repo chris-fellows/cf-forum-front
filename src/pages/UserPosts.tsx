@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
-import DownloadPostsCSV from "./DownloadPostsCSV";
+import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import UserPost from "./UserPost"
 import getUserInfo from '../userInfo';
 import { IAdvert, IPost, getPostsByUserServiceType, getRandomAdvertsServiceType } from '../Interfaces';
+import appConfig from "../appConfig";
 
 // Displays user posts
 // Params: UserId
@@ -54,14 +55,25 @@ const UserPosts = ({ userId } : any) => {
         if (adverts == null || adverts.length == 0)  {
             fetchRandomAdverts();
         }
-    }, []);    
+    }, []); 
+    
+    // Set function for export CSV
+    const getCSVLine = (post : IPost, delimiter : string) : string => {
+        const line = `${post.ID}${delimiter}${post.GroupID}${delimiter}${post.CreatedDateTime}${delimiter}${post.UserName}${delimiter}${post.Text}\n`;
+        return line;
+    };
    
     return (
         <>      
             <LoginCheck/>
             <div>My Posts</div>
             <LoaderOverlay loading={isLoading} message="Loading posts..." />
-            <DownloadPostsCSV items={posts} file="User Posts.txt" delimiter="\t" />
+            <DownloadItemsCSV title="Download" 
+                        columns={["ID", "Group_ID", "Created", "User_Name", "Text"]}
+                        items={posts} 
+                        file= { "User Posts" + appConfig.downloadCSVExtension }
+                        delimiter={appConfig.downloadCSVDelimiter} 
+                        getLine={getCSVLine} />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }
 
             <ul style={ { listStyleType: "none" } }>

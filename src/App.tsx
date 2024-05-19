@@ -25,6 +25,7 @@ import UserSettings from './pages/UserSettings';
 import Users from './pages/Users';
 import { ContainerProvider, container } from './containerContext';
 import AdvertEdit from './pages/AdvertEdit';
+import NewRootPost from './pages/NewRootPost';
 
 function App() {    
   // Don't prompt for login, let user click Login button
@@ -54,6 +55,7 @@ function App() {
           <NavBar />
           <Routes> 
             <Route path="/" element={<Home />}/>
+            <Route path="/addrootpost" element={<NewRootPost />}/>
             <Route path="/adverts" element={<Adverts />}/>
             <Route path="/advertedit" element={<AdvertEdit />}/>
             <Route path="/about" element={<About />}/>

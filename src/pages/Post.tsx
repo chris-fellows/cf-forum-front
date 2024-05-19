@@ -117,7 +117,7 @@ const Post = ({ post } : IPostProps) => {
     const canDownvote = !isUserTheOwner && vote != voteDownvoted;   
         
     return (
-        <li>                        
+        <li key={post.ID}>                        
             <div><UserInfo name={post.UserName} logo={post.UserLogo}/>Posted: {post.CreatedDateTime}</div>
             <textarea id={"posttext_" + post.ID} title="post" placeholder="placeholder" rows={3} cols={100} disabled={!editState.active}>{postText}</textarea>                
             <div>                                        

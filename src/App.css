@@ -55,6 +55,25 @@
   border: 1px solid;  
 }
 
+.GroupsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.GroupsTableCell {
+  border: 1px solid;  
+}
+
+.RootPostsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.RootPostsTableCell {
+  border: 1px solid;  
+}
+
+
 /*
 .LoadingContainer {
   position: fixed;

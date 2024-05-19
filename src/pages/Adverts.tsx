@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import { Link } from "react-router-dom";
-import DownloadAdvertsCSV from "./DownloadAdvertsCSV";
+import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import { IAdvert } from "../Interfaces";
 import { getAdvertsServiceType } from "../Interfaces";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
+import appConfig from "../appConfig";
 
 // Displays adverts. Allows edit of advert.
 // Params: None
@@ -28,15 +29,26 @@ const Adverts = () => {
         activeQueries.current = 1;
         setIsLoading(true);
         fetchAdverts();
-    }, [find]);   
-        
+    }, [find]);       
+
+    // Set function for export CSV
+    const getCSVLine = (advert : IAdvert, delimiter : string) : string => {
+        const line = `${advert.ID}${delimiter}${advert.Name}${delimiter}${advert.FromDateTime}${delimiter}${advert.ToDateTime}${delimiter}${advert.Logo}${delimiter}${advert.LogoType}${delimiter}${advert.External}\n`;
+        return line;
+    };
+            
     return (
         <>
             <LoginCheck/>
             <div>Manage Adverts</div>     
-            <LoaderOverlay loading={isLoading} message="Loading adverts..." />
-            <DownloadAdvertsCSV items={adverts} file="Adverts.txt" delimiter="\t" />
-            <SearchBar setFind={setFind} delay={1000} />            
+            <LoaderOverlay loading={isLoading} message="Loading adverts..." />          
+            <SearchBar setFind={setFind} delay={appConfig.searchDelay} /><br/>
+            <DownloadItemsCSV title="Download" 
+                    columns={["ID", "Name", "From", "To", "Logo", "Logo_Type", "External"]} 
+                    items={adverts} 
+                    file= { "Adverts" + appConfig.downloadCSVExtension }
+                    delimiter={appConfig.downloadCSVDelimiter}
+                    getLine={getCSVLine} />
             <table className="AdvertsTable">
                 <thead>
                     <tr>

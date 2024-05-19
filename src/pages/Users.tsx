@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import LoaderOverlay from "./LoaderOverlay";
 import { IUser } from "../Interfaces";
 import { getUsersServiceType } from "../Interfaces";
-import DownloadUsersCSV from "./DownloadUsersCSV";
+import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
+import appConfig from "../appConfig";
 
 // Users information
 // Params: None
@@ -38,16 +39,27 @@ const Users = () => {
             fetchUsers();
         }, 3000);                        
         */
-    }, [find]);       
+    }, [find]);  
+    
+    // Set function for export CSV
+    const getCSVLine = (user : IUser, delimiter : string) : string => {
+        const line = `${user.ID}${delimiter}${user.Email}${delimiter}${user.Name}${delimiter}${user.UserRoleName}\n`;
+        return line;
+    };
             
     // <label htmlFor={"userfind"}>Search:</label><input type="text" id={"userfind"} value={findInternal} onChange={event => setFindInternal(event.target.value)} />            
     return (
         <>
             <LoginCheck/>
             <div>Manage Users</div>             
-            <LoaderOverlay loading={isLoading} message="Loading users..."/>
-            <DownloadUsersCSV items={users} file="Users.txt" delimiter="\t" />
-            <SearchBar setFind={setFind} delay={1000} />
+            <LoaderOverlay loading={isLoading} message="Loading users..."/>           
+            <SearchBar setFind={setFind} delay={appConfig.searchDelay} /><br/>
+            <DownloadItemsCSV title="Download"
+                    columns={["ID", "Email", "Name", "Role"]} 
+                    items={users} 
+                    file= { "Users" + appConfig.downloadCSVExtension }
+                    delimiter={appConfig.downloadCSVDelimiter}
+                    getLine={getCSVLine} />
             <table className="UsersTable">
                 <thead>
                     <tr>

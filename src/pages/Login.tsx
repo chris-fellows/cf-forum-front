@@ -51,15 +51,8 @@ const Login = () => {
         }
     }
 
-    // Sanity check if logged in already
-    const isLoggedIn = (userInfo.userName.length > 0);    
-    if (isLoggedIn) return <div>Logged in</div>;
-    
-        return(
-            <>
-                <h3>Enter username and password</h3>
-                <form onSubmit={handleSubmit}>
-                    <label>
+    /*
+    <label>
                     <p>Username</p>
                     <input type="text" onChange={e => setUserName(e.target.value)}/>
                     </label>
@@ -70,6 +63,27 @@ const Login = () => {
                     <div>
                     <button type="submit" >Submit</button>
                     </div>
+    */
+
+    // Sanity check if logged in already
+    const isLoggedIn = (userInfo.userName.length > 0);    
+    if (isLoggedIn) return <div>Logged in</div>;
+    
+        return(
+            <>
+                <h3>Enter username and password</h3>
+                <form onSubmit={handleSubmit}>
+                    <ul style={ { listStyleType: "none" } }>
+                        <li>
+                            <label htmlFor={"username"}>User:</label><input type="text" id={"username"} onChange={e => setUserName(e.target.value) } />
+                        </li>
+                        <li>
+                            <label htmlFor={"userpassword"}>Password:</label><input type="password" id= {"userpassword"} onChange={e => setPassword(e.target.value)} />        
+                        </li>                    
+                    </ul>
+                    <div>
+                        <button type="submit" >Submit</button>
+                    </div>                    
                 </form>
             </>
           )

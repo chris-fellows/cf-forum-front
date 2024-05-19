@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react"
 import { useInject, useInject2 } from "../DependencyInjection";
 import Advert from "./Advert"
-import DownloadPostsCSV from "./DownloadPostsCSV";
+import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import RootPost from "./RootPost";
 import SearchBar from "./SearchBar";
 import { useSearchParams } from 'react-router-dom';
 import { IAdvert, IPost, getRootPostsByGroupServiceType, getRandomAdvertsServiceType } from "../Interfaces";
+import appConfig from "../appConfig";
 
 // Displays root posts for group (Posts.GroupId=X, Posts.Sequence=1)
 // Params: GroupId
@@ -53,6 +54,13 @@ const GroupRootPosts = () => {
         }
     }, [find]);
 
+    // Set function for export CSV
+    const getCSVLine = (post : IPost, delimiter : string) : string => {
+        const line = `${post.ID}${delimiter}${post.GroupID}${delimiter}${post.CreatedDateTime}${delimiter}${post.UserName}${delimiter}${post.Text}\n`;
+        return line;
+    };
+
+
     /*
     if (isLoading && getUserInfo().userName.length) {
         return <Loading />;
@@ -63,14 +71,30 @@ const GroupRootPosts = () => {
     return (
         <>          
             <LoginCheck/> 
-            <div>Group Posts</div>
-            <LoaderOverlay loading={isLoading} message="Loading posts..." />
-            <DownloadPostsCSV items={posts} file="Root Posts.txt" delimiter="\t" />
-            <SearchBar setFind={setFind} delay={1000} />
+            <div>Threads</div>
+            <LoaderOverlay loading={isLoading} message="Loading posts..." />           
+            <SearchBar setFind={setFind} delay={appConfig.searchDelay} />
+            <DownloadItemsCSV title="Download" 
+                    columns={["ID", "Group_ID", "Created", "User_Name", "Text"]}
+                    items={posts} 
+                    file= { "Root Posts" + appConfig.downloadCSVExtension }
+                    delimiter={appConfig.downloadCSVDelimiter} 
+                    getLine={getCSVLine} />
             {adverts && adverts.length && <Advert advert={adverts[0]}/> }                        
-            <ul style={ { listStyleType: "none" } }>
-                {posts.map(post => <RootPost post={post}/>)}            
-            </ul>
+
+            <table className="RootPostsTable">
+                <thead>
+                    <tr>
+                        <th className="RootPostsTableCell">User</th>
+                        <th className="RootPostsTableCell">Created</th>
+                        <th className="RootPostsTableCell">Post</th>                                                
+                        <th className="RootPostsTableCell"></th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map(post => <RootPost post={post}/>)}                
+                </tbody>
+            </table>
         </>
     )          
 }
