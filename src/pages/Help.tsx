@@ -1,27 +1,33 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 // Help information
 // Params: None
-const Help = () => {    
-    const [itemUrl, setItemUrl] = useState<string>("");
+const Help = () => {        
+    const frameRef = useRef<HTMLIFrameElement>(null);       
     
-    // List of help articles
+    // List of help items
     const items =  [ 
-                { display : "Terms of Service", url: "help/termsofservice.html" },
-                { display: "Troubleshooting", url: "help/troubleshooting.html" },                          
+                { display: "<None>", url: "" },
+                { display: "Frequently Asked Questions", url: "help/faq.html" },
+                { display: "Privacy", url: "help/privacy.html" },
+                { display: "Terms of Service", url: "help/termsofservice.html" },
+                { display: "Troubleshooting", url: "help/troubleshooting.html" }                
             ];
-               
+
+    const handleItemSelected = (e : any) => {
+        e.preventDefault();
+        frameRef.current!.src = e.target.value;        
+    };
+    
     return (
         <>
-            <div>Help</div>              
-            <ul style={ { listStyleType: "none" } }>
-                {items.map(item =>
-                    <li>
-                        <a href={item.url} onClick={() => setItemUrl(item.url)}>{item.display}</a>
-                    </li>
+            <div>Help</div>                                                     
+            <div>Items:<select name="items" title="items" onChange={(e) => handleItemSelected(e)} style={{width: "300px" }}>
+                {items.map(item =>                        
+                    <option value={item.url}>{item.display}</option>
                 )}
-            </ul>
-            <iframe width="860" height="484" src={itemUrl}/>
+            </select></div>
+            <iframe ref={frameRef} title="item" width="1000" height="680" style={{ border: "none" }} />
         </>
     )
 }
