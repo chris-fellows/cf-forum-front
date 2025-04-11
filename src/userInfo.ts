@@ -10,6 +10,7 @@ export default function getUserInfo () : ICurrentUserInfo {
             userName: "",
             userId: "",
             role: "",
+            isLoggedIn: false,
             token: ""
         };
     }    
@@ -23,6 +24,7 @@ export default function getUserInfo () : ICurrentUserInfo {
                 userName: "",
                 userId: "",
                 role: "",
+                isLoggedIn: false,
                 token: ""
             };
           }
@@ -32,6 +34,7 @@ export default function getUserInfo () : ICurrentUserInfo {
         userName: payload.username,
         userId: payload.userid.toString(),        
         role: payload.role,
+        isLoggedIn: payload.username.length > 0,
         token: tokenString       
     };
 

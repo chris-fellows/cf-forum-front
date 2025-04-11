@@ -15,11 +15,16 @@ const Login = () => {
     const [password, setPassword] = useState<string>("");
     const loginService = useInject2<loginServiceType>('loginService');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const loginUser = async (credentials: IUserCredentials)  => {
         const data = await loginService(credentials)
         return data;
+    }
+
+    const handleForgotPassword = async () =>
+    {
+        navigate("/userforgotpassword");
     }
 
     // Handle submit of credentials
@@ -65,9 +70,8 @@ const Login = () => {
                     </div>
     */
 
-    // Sanity check if logged in already
-    const isLoggedIn = (userInfo.userName.length > 0);    
-    if (isLoggedIn) return <div>Logged in</div>;
+    // Sanity check if logged in already    
+    if (userInfo.isLoggedIn) return <div>Logged in</div>;
     
         return(
             <>
@@ -84,6 +88,7 @@ const Login = () => {
                     <div>
                         <button type="submit" >Submit</button>
                     </div>                    
+                    <button type="button" onClick={() => handleForgotPassword()}>Forgot Password</button>
                 </form>
             </>
           )

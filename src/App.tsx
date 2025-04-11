@@ -1,10 +1,8 @@
 //import logo from './logo.svg';
 import './App.css';
 import appConfig from './appConfig';
-import { useState, useEffect } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-//import DITestComponent from './pages/DITestComponent.jsx';
-//import { UserRoleService } from './services/UserRoleService.js';
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { createContext, useContext } from 'react';
 import About from './pages/About'
 import Adverts from './pages/Adverts';
@@ -19,6 +17,7 @@ import Login from './pages/Login';
 import NavBar from './pages/NavBar';
 import ThreadPosts from './pages/ThreadPosts';
 import UserEdit from './pages/UserEdit';
+import UserForgotPassword from './pages/UserForgotPassword';
 import UserPosts from './pages/UserPosts';
 import UserRegistration from './pages/UserRegistration';
 import UserSettings from './pages/UserSettings';
@@ -69,6 +68,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/threadposts" element={<ThreadPosts />}/> 
             <Route path="/useredit" element={<UserEdit />}/> 
+            <Route path="/userforgotpassword" element={<UserForgotPassword />}/> 
             <Route path="/userposts" element={<UserPosts />}/>     
             <Route path="/useregistration" element={<UserRegistration />}/>          
             <Route path="/usersettings" element={<UserSettings />}/>

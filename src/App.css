@@ -73,6 +73,13 @@
   border: 1px solid;  
 }
 
+.SearchInput {
+  border-radius: 12px;
+  padding: 4px;
+  width: 250px;
+  background-color: lightgray;
+}
+
 
 /*
 .LoadingContainer {
@@ -110,4 +117,34 @@
 
 .AdvertsTableCell {
   border: 1px solid;  
+}
+
+.PopupContainer {
+  position: relative;  
+  display: inline-block;
+}
+
+.PopupMenuDiv {
+  border: 1px solid black;
+  background-color: white;  
+  padding: 2px;
+  position: absolute;  
+  display: block;
+  width: max-content;
+}
+
+.PopupMenuList {
+  margin: 0px;
+  padding: 0px;
+}
+
+.PopupMenuButton {  
+  border: 0px;  
+  background-color: white;
+  padding: 0px;
+  text-align: left;      
+}
+
+.PopupMenuButton:hover {    
+  background-color: lightgray;  
 }

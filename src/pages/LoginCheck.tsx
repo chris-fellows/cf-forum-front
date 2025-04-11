@@ -11,7 +11,7 @@ const LoginCheck = () => {
     
     // Navigate to Home page so that they can click the Login button first.
     // return <Navigate to='/login' replace={true} />
-    if (userInfo.userName.length == 0)
+    if (!userInfo.isLoggedIn)
     {
         navigate("/");
     } 

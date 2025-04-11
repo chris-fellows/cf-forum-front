@@ -5,7 +5,7 @@ import appConfig from './appConfig';
 //import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import getUserInfo from './userInfo';
-import { IAdvert, IAuditEvent, IGroup, INewPost, INewRootPost, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack } from './Interfaces';
+import { IAdvert, IAuditEvent, IGroup, INewPost, INewRootPost, IPage, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack, ILanguage, ITag } from './Interfaces';
 
 export interface IMyContainer
 {
@@ -53,6 +53,20 @@ export const container = {
        const data = await response.json()      
        return data;
     },
+    addUserForgotPasswordService: async (username : string) => {
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
+        body: JSON.stringify(username)
+      };       
+      const response = await fetch(appConfig.backendURL + "/users/forgotpassword", requestOptions)
+      const data = await response.json()      
+      return data;
+    },
+
     getGroupsService: async (find : string) : Promise<IGroup[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -75,6 +89,42 @@ export const container = {
         }
       };       
       const response = await fetch(appConfig.backendURL + "/groups/" + id, requestOptions)
+      const data = await response.json()      
+      return data;
+    },
+    getLanguagesService: async () : Promise<ILanguage[]> => {      
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }        
+      };                   
+      const response = await fetch(appConfig.backendURL + "/languages", requestOptions)
+      const data = await response.json()      
+      return data;
+    },
+    getPagesService: async () : Promise<IPage[]> => {      
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }        
+      };                   
+      const response = await fetch(appConfig.backendURL + "/pages", requestOptions)
+      const data = await response.json()      
+      return data;
+    },
+    getTagsService: async () : Promise<ITag[]> => {      
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        }        
+      };                   
+      const response = await fetch(appConfig.backendURL + "/tags", requestOptions)
       const data = await response.json()      
       return data;
     },
@@ -115,6 +165,19 @@ export const container = {
         body: JSON.stringify({ find: find})
       };       
       const response = await fetch(appConfig.backendURL + "/rootposts/bygroup/" + id + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
+      const data = await response.json()      
+      return data;
+    },
+    getRootPostsByPopularityService: async (find : string,  pageSize : number, pageNumber : number) : Promise<IPost[]> => {
+      const userInfo = getUserInfo();      
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer ' + userInfo.token      
+        },
+        body: JSON.stringify({ find: find})
+      };       
+      const response = await fetch(appConfig.backendURL + "/rootposts/bypopularity?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
     },

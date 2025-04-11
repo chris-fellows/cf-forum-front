@@ -24,7 +24,7 @@ const SearchBar = ({ setFind, delay } : ISearchBarProps) => {
     return (
         <>           
             <label htmlFor={"findInput"}>Search:</label>
-            <input type="text" id={"findInput"} value={findInternalX} onChange={event => storeFind(event.target.value)} />            
+            <input className="SearchInput" type="text" id={"findInput"} value={findInternalX} onChange={event => storeFind(event.target.value)} />            
         </>
     )
 }

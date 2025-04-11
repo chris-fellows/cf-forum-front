@@ -20,7 +20,8 @@ const NavBar = () => {
 
  // TODO: Consider reading user_role_functions so that we can configure the nav bar from the DB
  const isAdmin = userInfo.role === "ADMIN";
- const isLoggedIn = userInfo.userName.length > 0;
+ //const isLoggedIn = userInfo.userName.length > 0;
+ const isLoggedIn = userInfo.isLoggedIn;
 
  return (
    <nav>
