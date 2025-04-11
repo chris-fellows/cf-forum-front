@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import Advert from "./Advert"
 import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoaderOverlay from "./LoaderOverlay";
@@ -7,7 +7,9 @@ import LoginCheck from "./LoginCheck";
 import RootPost from "./RootPost";
 import SearchBar from "./SearchBar";
 import { useSearchParams } from 'react-router-dom';
-import { IAdvert, IPost, getRootPostsByGroupServiceType, getRandomAdvertsServiceType } from "../Interfaces";
+import { IAdvert, IPost } from "../Interfaces";
+import { IAdvertsService } from "../serviceInterfaces";
+import { IRootPostsService } from "../serviceInterfaces";
 import appConfig from "../appConfig";
 
 // Displays root posts for group (Posts.GroupId=X, Posts.Sequence=1)
@@ -21,8 +23,8 @@ const GroupRootPosts = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);     
     const activeQueries = useRef<number>(0);
 
-    const getRootPostsByGroupService = useInject2<getRootPostsByGroupServiceType>('getRootPostsByGroupService');  
-    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');
+    const rootPostsService = useInject2<IRootPostsService>('rootPostsService');  
+    const advertsService = useInject2<IAdvertsService>('advertsService');
 
     const [searchParams] = useSearchParams();
     const groupId = searchParams.get("groupid")!;
@@ -31,7 +33,7 @@ const GroupRootPosts = () => {
         // Get root posts
         const fetchRootPosts = async () => {        
             console.log("Getting root posts with find " + find);
-            const data = await getRootPostsByGroupService(groupId, find, 10000000, pageNumber) // pageSize, pageNumber            
+            const data = await rootPostsService.GetRootPostsByGroupService(groupId, find, 10000000, pageNumber) // pageSize, pageNumber            
             setPosts(data);
             console.log(data);   
             activeQueries.current--;
@@ -40,7 +42,7 @@ const GroupRootPosts = () => {
 
         // Get adverts
         const fetchRandomAdverts = async () => {
-            const data = await getRandomAdvertsService(1)   // Get one advert            
+            const data = await advertsService.GetRandomAdvertsService(1)   // Get one advert            
             setAdverts(data); 
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);         

@@ -1,7 +1,7 @@
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
-import { logoutServiceType } from "../Interfaces";
+import { ISecurityService } from "../serviceInterfaces";
 import { useAuth } from "../authContext";
 
 // Current user info (Logged in user name or Log in/Register functions)
@@ -9,7 +9,7 @@ import { useAuth } from "../authContext";
 const CurrentUser = () => {   
    const userInfo = getUserInfo(); 
    const { clearToken } = useAuth();   
-   const logoutService = useInject2<logoutServiceType>('logoutService');
+   const securityService = useInject2<ISecurityService>('securityService');
 
    const navigate = useNavigate()
 
@@ -20,7 +20,7 @@ const CurrentUser = () => {
    
     // Handle log out click
      const handleLogOutClick = async () => {       
-        const result = await logoutService();
+        const result = await securityService.Logout();
         console.log("Log out response:");
         console.log(result);
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useSearchParams } from 'react-router-dom';
 import Advert from "./Advert"
 import DownloadItemsCSV from "./DownloadItemsCSV";
@@ -7,7 +7,9 @@ import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import UserPost from "./UserPost"
 import getUserInfo from '../userInfo';
-import { IAdvert, IPost, getPostsByUserServiceType, getRandomAdvertsServiceType } from '../Interfaces';
+import { IAdvert, IPost } from '../Interfaces';
+import { IAdvertsService } from "../serviceInterfaces";
+import { IPostsService } from "../serviceInterfaces";
 import appConfig from "../appConfig";
 
 // Displays user posts
@@ -19,8 +21,8 @@ const UserPosts = ({ userId } : any) => {
     const [isLoading, setIsLoading] = useState<boolean>(true); 
     const activeQueries = useRef<number>(0);    
     //const [pageNumber, setPageNumber] = useState<number>(1);    
-    const getPostsByUserService = useInject2<getPostsByUserServiceType>('getPostsByUserService');
-    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
+    const postsService = useInject2<IPostsService>('postsService');
+    const advertsService = useInject2<IAdvertsService>('advertsService');    
 
     // Get user (Either passed userId, from querystring or default)    
     const [searchParams] = useSearchParams();
@@ -35,7 +37,7 @@ const UserPosts = ({ userId } : any) => {
     useEffect(() => {        
         // Get root posts
         const fetchUserPosts = async () => {                        
-            const data = await getPostsByUserService(theUserId, 10000000, 1) // pageSize, pageNumber                        
+            const data = await postsService.GetPostsByUser(theUserId, 10000000, 1) // pageSize, pageNumber                        
             setPosts(data);   
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);
@@ -43,7 +45,7 @@ const UserPosts = ({ userId } : any) => {
 
         // Get adverts
         const fetchRandomAdverts = async () => {
-            const data = await getRandomAdvertsService(1)   // Get one advert            
+            const data = await advertsService.GetRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);   
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);

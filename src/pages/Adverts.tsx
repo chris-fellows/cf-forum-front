@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { Link } from "react-router-dom";
 import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoaderOverlay from "./LoaderOverlay";
 import { IAdvert } from "../Interfaces";
-import { getAdvertsServiceType } from "../Interfaces";
+import { IAdvertsService } from "../serviceInterfaces";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
 import appConfig from "../appConfig";
@@ -15,12 +15,12 @@ const Adverts = () => {
     const [adverts, setAdverts] = useState<IAdvert[]>([])   
     const [find, setFind] = useState<string>("");    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
-    const getAdvertsService = useInject2<getAdvertsServiceType>('getAdvertsService');  
+    const advertsService = useInject2<IAdvertsService>('advertsService');  
     const activeQueries = useRef<number>(0);
 
     useEffect(() => {
         const fetchAdverts = async () => {            
-            const data = await getAdvertsService(find, 1000000, 1);         
+            const data = await advertsService.GetAdverts(find, 1000000, 1);         
             setAdverts(data);
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);

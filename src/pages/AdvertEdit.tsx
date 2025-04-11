@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useSearchParams } from 'react-router-dom';
 import LoginCheck from "./LoginCheck";
-import { IAdvert, getAdvertServiceType } from "../Interfaces";
+import { IAdvert } from "../Interfaces";
+import { IAdvertsService } from "../serviceInterfaces";
 
 // Advert edit
 // Params: AdvertId
@@ -16,7 +17,7 @@ const AdvertEdit = ({advertId} : any) => {
     const [logo, setLogo] = useState<string>("");  
     const [external, setExternal] = useState<string>("");      
 
-    const getAdvertService = useInject2<getAdvertServiceType>('getAdvertService');      
+    const advertsService = useInject2<IAdvertsService>('advertsService');      
 
     // Get user (Either passed userId, from querystring or default)    
     const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const AdvertEdit = ({advertId} : any) => {
       // Get advert
       const fetchAdvert = async () => {            
           console.log("User: Getting user details");
-          const data = await getAdvertService(theAdvertId)          
+          const data = await advertsService.GetAdvert(theAdvertId)          
           //setAdvert(data[0]);
           setName(data[0].Name);
           setFromDateTime(data[0].FromDateTime);

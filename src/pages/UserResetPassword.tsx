@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useInject, useInject2 } from "../DependencyInjection";
-import { IPasswordService, addUserForgotPasswordServiceType } from "../Interfaces";
+import { useInject2 } from "../useInject";
+import { IPasswordService } from "../serviceInterfaces";
+import { IUsersService } from "../serviceInterfaces";
 import getUserInfo from '../userInfo';
 
 // User reset password
@@ -14,7 +15,7 @@ const UserResetPassword = () => {
 
     const passwordService = useInject2<IPasswordService>('passwordService');
 
-    const addUserForgotPasswordService = useInject2<addUserForgotPasswordServiceType>('addUserForgotPasswordService');  
+    const usersService = useInject2<IUsersService>('usersService');  
 
     const navigate = useNavigate();
       
@@ -28,7 +29,7 @@ const UserResetPassword = () => {
                 }
                 else if (passwordService.isValidPasswordFormat(password1))
                 {
-                    const result = await addUserForgotPasswordService(username);                                                                  
+                    const result = await usersService.AddUserForgotPassword(username);                                                                  
                     navigate("/login");
                 }
                 else

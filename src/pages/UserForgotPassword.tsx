@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { useInject, useInject2 } from "../DependencyInjection";
-import { addUserForgotPasswordServiceType } from "../Interfaces";
+import { useInject2 } from "../useInject";
+import { IUsersService } from "../serviceInterfaces";
 import getUserInfo from '../userInfo';
 
 // User forgot password
@@ -10,7 +10,7 @@ const UserForgotPassword = () => {
     const userInfo = getUserInfo();        
     const [username, setUserName] = useState<string>("");
 
-    const addUserForgotPasswordService = useInject2<addUserForgotPasswordServiceType>('addUserForgotPasswordService');  
+    const usersService = useInject2<IUsersService>('usersService');  
 
     const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const UserForgotPassword = () => {
             e.preventDefault();
             try
             {
-                const result = await addUserForgotPasswordService(username);                
+                const result = await usersService.AddUserForgotPassword(username);                
                   
                 // Navigate home                        
                 navigate("/userforgotpasswordsent");

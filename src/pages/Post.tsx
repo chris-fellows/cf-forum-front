@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import UserInfo from "./UserInfo"
 import getUserInfo from '../userInfo';
-import { IPost, deletePostByIdServiceType, votePostByIdServiceType } from '../Interfaces';
+import { IPost } from '../Interfaces';
+import { IPostsService } from "../serviceInterfaces";
 
 interface IPostProps {
     post: IPost
@@ -27,9 +28,7 @@ const Post = ({ post } : IPostProps) => {
     const voteUpvoted = 1;
     const voteDownvoted = 2;
 
-    const deletePostByIdService = useInject2<deletePostByIdServiceType>('deletePostByIdService');  
-    const updatePostByIdService = useInject('updatePostByIdService');  
-    const votePostByIdService = useInject2<votePostByIdServiceType>('votePostByIdService');      
+    const postsService = useInject2<IPostsService>('postsService');      
 
     // Determine if user is post owner    
     const isUserTheOwner = userInfo != undefined && userInfo.userId == post.UserID;
@@ -37,14 +36,14 @@ const Post = ({ post } : IPostProps) => {
 
     // Handle upvote click
     const handleUpvoteClick = async () => {                   
-        const result = await votePostByIdService(post.ID, { userId: post.UserID, vote: voteUpvoted });        
+        const result = await postsService.VotePostById(post.ID, { userId: post.UserID, vote: voteUpvoted });        
         setVote(voteUpvoted);
         //window.alert("Upvoted");
     }
 
     // Handle downvote click
     const handleDownvoteClick = async () => {         
-        const result = await votePostByIdService(post.ID, { userId: post.UserID, vote: voteDownvoted });        
+        const result = await postsService.VotePostById(post.ID, { userId: post.UserID, vote: voteDownvoted });        
         setVote(voteDownvoted);
         //window.alert("Downvoted");
     }
@@ -58,13 +57,13 @@ const Post = ({ post } : IPostProps) => {
     // Handle delete click
     const handleDeleteClick = async () => {         
         window.alert("Delete");
-        deletePostByIdService(post.ID);
+        postsService.DeletePostById(post.ID);
     }
 
      // Updates post
     const updatePost = async(postId : string, details : any) => {           
         // Update DB        
-        const result = await updatePostByIdService(postId, details);        
+        const result = await postsService.UpdatePostById(postId, details);        
 
         // Update memory
         post.Text = details.text;

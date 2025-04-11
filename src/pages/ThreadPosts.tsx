@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import Advert from "./Advert"
 //import Pagination from "./Pagination";
 import DownloadItemsCSV from "./DownloadItemsCSV";
@@ -10,7 +10,10 @@ import LoginCheck from "./LoginCheck";
 import Post from "./Post"
 import NewPost from "./NewPost";
 import getUserInfo from '../userInfo';
-import { IAdvert, IGroup, INewPostProps, IPost, getGroupServiceType, getPostsByRootPostServiceType, getRandomAdvertsServiceType } from "../Interfaces";
+import { IAdvert, IGroup, INewPostProps, IPost } from "../Interfaces";
+import { IAdvertsService } from "../serviceInterfaces";
+import { IGroupsService } from "../serviceInterfaces";
+import { IPostsService } from "../serviceInterfaces";
 import appConfig from "../appConfig";
 //import usePagination from "../pagination";
 
@@ -27,9 +30,9 @@ const ThreadPosts = () => {
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
 
-    const getGroupService = useInject2<getGroupServiceType>('getGroupService');
-    const getPostsByRootPostService = useInject2<getPostsByRootPostServiceType>('getPostsByRootPostService');  
-    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');
+    const groupsService = useInject2<IGroupsService>('groupsService');
+    const postsService = useInject2<IPostsService>('postsService');  
+    const advertsService = useInject2<IAdvertsService>('advertsService');
 
     const [searchParams] = useSearchParams();    
     const postId = searchParams.get("postid")!
@@ -37,14 +40,14 @@ const ThreadPosts = () => {
 
     useEffect(() => {   
         const fetchGroup = async () => {
-            const data = await getGroupService(groupId);                                    
+            const data = await groupsService.GetGroup(groupId);                                    
             setGroups(data);
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);
         }
         
         const fetchPosts = async () => {                        
-            const data = await getPostsByRootPostService(postId, 1000000, 1)                        
+            const data = await postsService.GetPostsByRootPost(postId, 1000000, 1)                        
             setPosts(data);                        
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);
@@ -52,7 +55,7 @@ const ThreadPosts = () => {
 
         // Get adverts
         const fetchRandomAdverts = async () => {
-            const data = await getRandomAdvertsService(1)   // Get one advert            
+            const data = await advertsService.GetRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);    
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);

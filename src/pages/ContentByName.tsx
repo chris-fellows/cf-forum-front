@@ -1,8 +1,8 @@
 import getUserInfo from '../userInfo';
-import { useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useEffect, useState } from "react";
 import StringAsHTML from "./StringAsHTML";
-import { getContentByNameServiceType } from "../Interfaces";
+import { IContentsService } from '../serviceInterfaces';
 
 interface IContentProps {
     name : string
@@ -14,11 +14,11 @@ const ContentByName = ( { name } : IContentProps) => {
     const userInfo = getUserInfo();
     const [contentData, setContentData] = useState<string>("");
 
-    const getContentByNameService = useInject2<getContentByNameServiceType>('getContentByNameService');  
+    const contentsService = useInject2<IContentsService>('contentsService');  
 
      useEffect(() => {
             const fetchContent = async (name : string) => {                                            
-                const content = await getContentByNameService(name); 
+                const content = await contentsService.GetContentByName(name); 
                 if (content.length > 0)             
                 {
                     setContentData(content[0].Data);

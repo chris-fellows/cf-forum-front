@@ -1,4 +1,4 @@
-import { IPasswordService } from "../Interfaces";
+import { IPasswordService } from "../serviceInterfaces";
 
 // Password service for validating passwords
 export class PasswordService implements IPasswordService {

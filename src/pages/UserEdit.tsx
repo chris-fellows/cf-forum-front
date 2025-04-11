@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import getUserInfo from '../userInfo';
-import { getUserServiceType, IUser } from "../Interfaces";
+import { IUser } from "../Interfaces";
+import { IUsersService } from "../serviceInterfaces";
 
 // User edit
 // Params: UserId
@@ -13,7 +14,7 @@ const UserEdit = ({userId} : any) => {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     
-    const getUserService = useInject2<getUserServiceType>('getUserService');      
+    const userService = useInject2<IUsersService>('userService');      
 
       // Get user (Either passed userId, from querystring or default)
       let userDefault = "param";
@@ -36,7 +37,7 @@ const UserEdit = ({userId} : any) => {
         // Get root posts
         const fetchUser = async () => {            
             console.log("User: Getting user details");
-            const data = await getUserService(theUserId)
+            const data = await userService.GetUser(theUserId)
             setUser(data[0]);
             setName(data[0].Name);
             setEmail(data[0].Email);

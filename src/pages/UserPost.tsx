@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
-import { IPost, deletePostByIdServiceType, votePostByIdServiceType } from '../Interfaces';
+import { IPost } from '../Interfaces';
+import { IPostsService } from "../serviceInterfaces";
 
 interface IPostProps {
     post: IPost
@@ -14,7 +15,7 @@ const UserPost = ({ post } : IPostProps) => {
     const userInfo = getUserInfo();    
     const navigate = useNavigate()  
     
-    const deletePostByIdService = useInject2<deletePostByIdServiceType>('deletePostByIdService');      
+    const postsService = useInject2<IPostsService>('postsService');      
 
     // Determine if user is post owner    
     const isUserTheOwner = userInfo != undefined && userInfo.userId == post.UserID;    
@@ -27,7 +28,7 @@ const UserPost = ({ post } : IPostProps) => {
     // Handle delete click
     const handleDeleteClick = async () => {         
         window.alert("Delete");
-        deletePostByIdService(post.ID);
+        postsService.DeletePostById(post.ID);
     }
     
     return (

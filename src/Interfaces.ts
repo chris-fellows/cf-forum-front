@@ -1,3 +1,5 @@
+import { ServiceFunctionType } from "./customTypes"
+
 export interface IAdvert {
     ID: string
     FromDateTime: string
@@ -76,14 +78,6 @@ export interface INewRootPost {
 export interface IPage {
    ID: string
    Name: string   
-}
-
-export interface IPasswordService {
-   isValidPasswordFormat(password : string) : boolean;
-}
-
-export interface IPopupMenuFactoryService {
-   GetTestMenuItems() : IMenuItem[]
 }
 
  export interface IPost {
@@ -175,30 +169,3 @@ export interface IDownloadCSVProps<T> {
    delimiter: string
    getLine: (item : T, delimiter : string) => string
 }
-
- // Types for contain dependencies
- export type addPostServiceType = (post : INewPost) => Promise<IPost[]>;
- export type addRootPostServiceType = (post : INewRootPost) => Promise<IPost[]>;
- export type addUserForgotPasswordServiceType = (username : string) => any;
- export type deletePostByIdServiceType = (postId : string) => any;
- export type loginServiceType = (credentials : IUserCredentials) => any;
- export type logoutServiceType = () => any;
- export type getAdvertServiceType = (advertid : string) => Promise<IAdvert[]>;
- export type getAdvertsServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IAdvert[]>;
- export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
- export type getAuditByUserServiceType = (userid: string, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
- export type getContentByNameServiceType = (name: string) => Promise<IContent[]>;
- export type getGroupServiceType = (id : string) => Promise<IGroup[]>;
- export type getGroupsServiceType = (find : string) => Promise<IGroup[]>;
- export type getLanguagesServiceType = () => Promise<ILanguage[]>;
- export type getPagesServiceType = () => Promise<IPage[]>;
- export type getPostsByRootPostServiceType = (postId : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
- export type getPostsByUserServiceType = (userid : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
- export type getRandomAdvertsServiceType = (number : number) => Promise<IAdvert[]>;
- export type getRootPostsByGroupServiceType = (id : string, find : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
- export type getRootPostsByPopularityServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IPost[]>;
- export type getTagsServiceType = () => Promise<ITag[]>;
- export type getUserServiceType = (userid : string) => Promise<IUser[]>;
- export type getUsersServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IUser[]>;
- export type votePostByIdServiceType = (postId : string, details : IUserPostInfoVote) =>  any;
-

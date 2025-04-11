@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { Link } from "react-router-dom";
 import LoaderOverlay from "./LoaderOverlay";
 import { IUser } from "../Interfaces";
-import { getUsersServiceType } from "../Interfaces";
+import { IUsersService } from "../serviceInterfaces";
 import DownloadItemsCSV from "./DownloadItemsCSV";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
@@ -17,14 +17,14 @@ const Users = () => {
     const [find, setFind] = useState<string>("");    
     const [isLoading, setIsLoading] = useState<boolean>(true); 
     const activeQueries = useRef<number>(0);
-    const getUsersService = useInject2<getUsersServiceType>('getUsersService');      
+    const usersService = useInject2<IUsersService>('usersService');      
 
     const navigate = useNavigate()
 
     useEffect(() => {
         console.log("Searching users for " + find);
         const fetchUsers = async () => {            
-            const data = await getUsersService(find, 1000000, 1)                        
+            const data = await usersService.GetUsers(find, 1000000, 1)                        
             setUsers(data);
             activeQueries.current--;            
             if (activeQueries.current == 0) setIsLoading(false);            

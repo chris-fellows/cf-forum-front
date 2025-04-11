@@ -1,19 +1,28 @@
-//import logo from './logo.svg';
-//import './App.css';
 import appConfig from './appConfig';
-//import DITestComponent from './pages/DITestComponent.jsx';
-//import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import getUserInfo from './userInfo';
 import { IAdvert, IAuditEvent, IContent, IGroup, INewPost, INewRootPost, IPage, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack, ILanguage, ITag } from './Interfaces';
-import { IPasswordService, IPopupMenuFactoryService } from './Interfaces';
+import { IAdvertsService, IAuditEventsService, IContentsService, IDependencyService, IGroupsService, ILanguagesService, IPagesService, IPasswordService, IPopupMenuFactoryService, IPostsService, IRootPostsService, ISecurityService, ITagsService, IUsersService } from './serviceInterfaces';
+import { DependencyService } from './services/DependencyService';
+import { AdvertsService } from './services/AdvertsService';
+import { AuditEventsService } from './services/AuditEventsService';
+import { ContentsService } from './services/ContentsService';
+import { GroupsService } from './services/GroupsService';
+import { LanguagesService } from './services/LanguagesService';
+import { PagesService } from './services/PagesService';
 import { PasswordService } from './services/PasswordService';
 import { PopupMenuFactoryService } from './services/PopupMenuFactoryService';
+import { PostsService } from './services/PostsService';
+import { RootPostsService } from './services/RootPostsService';
+import { SecurityService } from './services/SecurityService';
+import { TagsService } from './services/TagsService';
+import { UsersService } from './services/UsersService';
 
 export interface IMyContainer
 {
-    items : any
-    resolve(any : string) : any    
+    dependencyServiceObject : IDependencyService
+    //items : any
+    //resolve(any : string) : any    
 }
 
 interface ContainerProps {
@@ -29,12 +38,32 @@ export const ContainerProvider = ({ container, children } : ContainerProps) => {
   return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
 };
 
+// Register services
+let dependencyService = new DependencyService();
+dependencyService.RegisterService("advertsService", () => new AdvertsService());
+dependencyService.RegisterService("auditEventsService", () => new AuditEventsService());
+dependencyService.RegisterService("contentsService", () => new ContentsService());
+dependencyService.RegisterService("groupsService", () => new GroupsService());
+dependencyService.RegisterService("languagesService", () => new LanguagesService());
+dependencyService.RegisterService("pagesService", () => new PagesService());
+dependencyService.RegisterService("passwordService", () => new PasswordService());
+dependencyService.RegisterService("popupMenuFactoryService", () => new PopupMenuFactoryService());
+dependencyService.RegisterService("postsService", () => new PostsService());
+dependencyService.RegisterService("rootPostsService", () => new RootPostsService());
+dependencyService.RegisterService("securityService", () => new SecurityService());
+dependencyService.RegisterService("tagsService", () => new TagsService());
+dependencyService.RegisterService("usersService", () => new UsersService());
+
 // Define container for dependencies
 export const container = {    
-  items: {            
-    passwordService : new PasswordService(),
-    popupMenuFactoryService : new PopupMenuFactoryService(),
-
+  dependencyServiceObject : dependencyService
+}
+  //items: {        
+  //  rootPostsService : new RootPostsService(),    
+  //  passwordService : new PasswordService(),
+  //  popupMenuFactoryService : new PopupMenuFactoryService(),
+    
+    /*
     loginService: async (credentials : IUserCredentials) => {       
         const requestOptions = {
           method: 'POST',
@@ -46,6 +75,8 @@ export const container = {
       const data = await response.json()            
       return data;        
     },
+    */
+   /*
     logoutService: async () => {       
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -58,6 +89,8 @@ export const container = {
        const data = await response.json()      
        return data;
     },
+    */
+    /*
     addUserForgotPasswordService: async (username : string) => {
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -71,6 +104,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     getContentByNameService: async (name : string) : Promise<IContent[]> =>
     {
       const userInfo = getUserInfo();
@@ -85,6 +120,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     getGroupsService: async (find : string) : Promise<IGroup[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -98,6 +135,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     getGroupService: async (id : string) : Promise<IGroup[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -110,6 +149,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     getLanguagesService: async () : Promise<ILanguage[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -122,6 +163,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     getPagesService: async () : Promise<IPage[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -134,6 +177,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     getTagsService: async () : Promise<ITag[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -146,6 +191,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     addPostService: async (post : INewPost) : Promise<IPost[]> => {
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -159,6 +206,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     addRootPostService: async (post : INewRootPost) : Promise<IPost[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -199,6 +248,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     getPostsByRootPostService: async (postId : string, pageSize : number, pageNumber : number) : Promise<IPost[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -211,6 +262,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     getPostsByUserService: async (userid : string, pageSize : number, pageNumber : number) : Promise<IPost[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -223,6 +276,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     deletePostByIdService: async (postId : string) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -235,6 +290,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     updatePostByIdService: async (postId : string, details : any) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -248,6 +305,8 @@ export const container = {
        const data = await response.json()      
       return data;
     },
+    */
+   /*
     votePostByIdService: async (postId : string, details : IUserPostInfoVote) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -261,6 +320,8 @@ export const container = {
        const data = await response.json()      
       return data;
     },   
+    */
+   /*
     trackPostByIdService: async (postId : string, details : IUserPostInfoTrack) => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -274,6 +335,8 @@ export const container = {
        const data = await response.json()      
       return data;
     },   
+    */
+    /*
     getUserService: async (id : string) : Promise<IUser[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -285,7 +348,9 @@ export const container = {
       const response = await fetch(appConfig.backendURL + "/users/" + id, requestOptions)
       const data = await response.json()      
       return data;
-    },
+    },]
+    */
+    /*
     getUsersService: async (find : string, pageSize : number, pageNumber : number) : Promise<IUser[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -298,7 +363,9 @@ export const container = {
       const response = await fetch(appConfig.backendURL + "/users" + "?pageSize=" + pageSize + "&pageNumber=" + pageNumber, requestOptions)
       const data = await response.json()      
       return data;
-    },    
+    },
+    */    
+    /*
     getAdvertsService: async (find : string, pageSize : number, pageNumber : number) : Promise<IAdvert[]> => {       
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -336,6 +403,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+    /*
     getAuditByHoursService: async (hours: number, pageSize : number, pageNumber : number) : Promise<IAuditEvent[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -348,6 +417,8 @@ export const container = {
       const data = await response.json()      
       return data;
     },
+    */
+   /*
     getAuditByUserService: async (userid: string, pageSize : number, pageNumber : number) : Promise<IAuditEvent[]> => { 
       const userInfo = getUserInfo();
       const requestOptions = {
@@ -360,11 +431,12 @@ export const container = {
       const data = await response.json()      
       return data;
     },
-  },
-  resolve(identifier : string) : any {
-    if (!this.items.hasOwnProperty(identifier)) {
-      throw new Error(`Object with identifier ${identifier} not found in container`);
-    }        
-    return this.items[identifier as keyof typeof container.items];
-  }
-};
+    */
+  //},
+  //resolve(identifier : string) : any {
+  //  if (!this.items.hasOwnProperty(identifier)) {
+  //    throw new Error(`Object with identifier ${identifier} not found in container`);
+  //  }        
+  //  return this.items[identifier as keyof typeof container.items];
+  //}
+//};

@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react"
-import { useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { INewRootPost } from "../Interfaces";
 import getUserInfo from "../userInfo";
-import { addRootPostServiceType } from "../Interfaces";
+import { IRootPostsService } from "../serviceInterfaces";
 
 // New root post
 // Params: None
 const NewRootPost = () => {    
     const userInfo = getUserInfo();
     const [postText, setPostText] = useState<string>("");
-    const addRootPostService = useInject2<addRootPostServiceType>('addRootPostService');
+    const rootPostsService = useInject2<IRootPostsService>('rootPostsService');
 
     const [searchParams] = useSearchParams();        
     const groupId = searchParams.get("groupid")!;
@@ -21,7 +21,7 @@ const NewRootPost = () => {
     // Updates post
     const addPost = async(post : INewRootPost) => {           
         // Add root post
-        const result = await addRootPostService(post);            
+        const result = await rootPostsService.AddRootPost(post);            
 
         // Navigate to thread posts (Will show this post)    
         navigate("/threadposts?postid=" + result[0].ID + "&groupid=" + result[0].GroupID);

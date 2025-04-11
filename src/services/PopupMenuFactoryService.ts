@@ -1,4 +1,5 @@
-import { IMenuItem, IPopupMenuFactoryService } from "../Interfaces";
+import { IMenuItem } from "../Interfaces";
+import { IPopupMenuFactoryService } from "../serviceInterfaces";
 
 // Password service for validating passwords
 export class PopupMenuFactoryService implements IPopupMenuFactoryService {

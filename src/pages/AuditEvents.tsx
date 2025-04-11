@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import { useSearchParams } from 'react-router-dom';
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import AuditEvent from "./AuditEvent";
 import DownloadItemsCSV from "./DownloadItemsCSV";
 import getUserInfo from '../userInfo';
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
-import { IAuditEvent, getAuditByHoursServiceType, getAuditByUserServiceType } from "../Interfaces";
+import { IAuditEvent } from "../Interfaces";
+import { IAuditEventsService } from "../serviceInterfaces";
 import appConfig from "../appConfig";
 
 // Audit Event information
@@ -19,8 +20,7 @@ const AuditEvents = ( {userId} : any) => {
 
     //const pageSize = 5;
     //const [pagePosts, setPagePosts] = useState<IPost[]>([]);
-    const getAuditByHoursService = useInject2<getAuditByHoursServiceType>('getAuditByHoursService');      
-    const getAuditByUserService = useInject2<getAuditByUserServiceType>('getAuditByUserService');      
+    const auditEventsService = useInject2<IAuditEventsService>('auditEventsService');          
 
      // Get user (Either passed user or query string, anything else means all users)
      const [searchParams] = useSearchParams();
@@ -33,10 +33,10 @@ const AuditEvents = ( {userId} : any) => {
         const fetchAuditEvents = async () => {                        
             if (theUserId == undefined)   // Get events for all users
             {                
-                const data = await getAuditByHoursService(24, 1000000, 1)                        
+                const data = await auditEventsService.GetAuditByHoursService(24, 1000000, 1)                        
                 setAuditEvents(data);            
             } else {    // Get events for specific user                
-                const data = await getAuditByUserService(theUserId, 1000000, 1)
+                const data = await auditEventsService.GetAuditByUserService(theUserId, 1000000, 1)
                 setAuditEvents(data);            
             }
             activeQueries.current--;

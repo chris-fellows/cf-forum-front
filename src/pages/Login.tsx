@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import { useNavigate } from "react-router-dom";
 import getUserInfo from '../userInfo';
-import { IUserCredentials, loginServiceType } from "../Interfaces";
+import { IUserCredentials } from "../Interfaces";
+import { ISecurityService } from "../serviceInterfaces";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../authContext";
 
@@ -13,12 +14,12 @@ const Login = () => {
     const { token, setToken } = useAuth();
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const loginService = useInject2<loginServiceType>('loginService');
+    const securityService = useInject2<ISecurityService>('securityService');
 
     const navigate = useNavigate();
 
     const loginUser = async (credentials: IUserCredentials)  => {
-        const data = await loginService(credentials)
+        const data = await securityService.Login(credentials)
         return data;
     }
 

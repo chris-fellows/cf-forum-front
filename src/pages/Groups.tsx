@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react"
-import { useInject, useInject2 } from "../DependencyInjection";
+import { useInject2 } from "../useInject";
 import Advert from "./Advert"
 import DownloadItemsCSV from "./DownloadItemsCSV";
 import GroupInfo from "./GroupInfo";
 import LoaderOverlay from "./LoaderOverlay";
 import LoginCheck from "./LoginCheck";
 import SearchBar from "./SearchBar";
-import { IAdvert, IGroup, getGroupsServiceType, getRandomAdvertsServiceType } from "../Interfaces";
+import { IAdvert, IGroup } from "../Interfaces";
+import { IAdvertsService } from "../serviceInterfaces";
+import { IGroupsService } from "../serviceInterfaces";
 import appConfig from "../appConfig";
 
 // Displays each group info
@@ -16,12 +18,12 @@ const Groups = () => {
     const [adverts, setAdverts] = useState<IAdvert[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true);     
     const activeQueries = useRef<number>(0);
-    const getGroupsService = useInject2<getGroupsServiceType>('getGroupsService');    
-    const getRandomAdvertsService = useInject2<getRandomAdvertsServiceType>('getRandomAdvertsService');    
+    const groupsService = useInject2<IGroupsService>('groupsService');    
+    const advertsService = useInject2<IAdvertsService>('advertsService');    
 
     useEffect(() => {
         const fetchAllGroups = async () => {            
-            const data = await getGroupsService(find)            
+            const data = await groupsService.GetGroups(find)            
             setGroups(data);            
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);
@@ -29,7 +31,7 @@ const Groups = () => {
 
          // Get adverts
          const fetchRandomAdverts = async () => {                        
-            const data = await getRandomAdvertsService(1)   // Get one advert            
+            const data = await advertsService.GetRandomAdvertsService(1)   // Get one advert            
             setAdverts(data);   
             activeQueries.current--;
             if (activeQueries.current == 0) setIsLoading(false);
