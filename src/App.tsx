@@ -15,11 +15,15 @@ import GroupInfo from './pages/GroupInfo';
 import Groups from "./pages/Groups"
 import Login from './pages/Login';
 import NavBar from './pages/NavBar';
+import Privacy  from './pages/Privacy';
+import SiteMaintenance from './pages/SiteMaintenance';
 import ThreadPosts from './pages/ThreadPosts';
 import UserEdit from './pages/UserEdit';
 import UserForgotPassword from './pages/UserForgotPassword';
+import UserForgotPasswordSent from './pages/UserForgotPasswordSent';
 import UserPosts from './pages/UserPosts';
 import UserRegistration from './pages/UserRegistration';
+import UserResetPassword from './pages/UserResetPassword';
 import UserSettings from './pages/UserSettings';
 import Users from './pages/Users';
 import { ContainerProvider, container } from './containerContext';
@@ -66,11 +70,15 @@ function App() {
             <Route path="/grouprootposts" element={<GroupRootPosts />}/>          
             <Route path="/home" element={<Home />}/>
             <Route path="/login" element={<Login />}/>
+            <Route path="/privacy" element={<Privacy />}/>
+            <Route path="/sitemaintenance" element={<SiteMaintenance />}/>
             <Route path="/threadposts" element={<ThreadPosts />}/> 
             <Route path="/useredit" element={<UserEdit />}/> 
             <Route path="/userforgotpassword" element={<UserForgotPassword />}/> 
+            <Route path="/userforgotpasswordsent" element={<UserForgotPasswordSent />}/> 
             <Route path="/userposts" element={<UserPosts />}/>     
-            <Route path="/useregistration" element={<UserRegistration />}/>          
+            <Route path="/userregistration" element={<UserRegistration />}/>                      
+            <Route path="/userresetpassword" element={<UserResetPassword />}/>                      
             <Route path="/usersettings" element={<UserSettings />}/>
             <Route path="/users" element={<Users />}/>           
           </Routes>                          

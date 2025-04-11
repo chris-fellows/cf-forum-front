@@ -18,6 +18,11 @@ export interface IAuditEvent {
     Data: any
 }
 
+export interface IContent {
+   Name: string
+   Data: string
+}
+
 export interface IGroup {
     ID: string
     Name : string
@@ -71,6 +76,14 @@ export interface INewRootPost {
 export interface IPage {
    ID: string
    Name: string   
+}
+
+export interface IPasswordService {
+   isValidPasswordFormat(password : string) : boolean;
+}
+
+export interface IPopupMenuFactoryService {
+   GetTestMenuItems() : IMenuItem[]
 }
 
  export interface IPost {
@@ -174,6 +187,7 @@ export interface IDownloadCSVProps<T> {
  export type getAdvertsServiceType = (find : string, pageSize : number, pageNumber : number) => Promise<IAdvert[]>;
  export type getAuditByHoursServiceType = (hours: number, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
  export type getAuditByUserServiceType = (userid: string, pageSize : number, pageNumber : number) => Promise<IAuditEvent[]>;
+ export type getContentByNameServiceType = (name: string) => Promise<IContent[]>;
  export type getGroupServiceType = (id : string) => Promise<IGroup[]>;
  export type getGroupsServiceType = (find : string) => Promise<IGroup[]>;
  export type getLanguagesServiceType = () => Promise<ILanguage[]>;

@@ -5,7 +5,10 @@ import appConfig from './appConfig';
 //import { UserRoleService } from './services/UserRoleService.js';
 import React, { createContext, useContext } from 'react';
 import getUserInfo from './userInfo';
-import { IAdvert, IAuditEvent, IGroup, INewPost, INewRootPost, IPage, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack, ILanguage, ITag } from './Interfaces';
+import { IAdvert, IAuditEvent, IContent, IGroup, INewPost, INewRootPost, IPage, IPost, IUser, IUserPostInfoVote, IUserCredentials, IUserPostInfoTrack, ILanguage, ITag } from './Interfaces';
+import { IPasswordService, IPopupMenuFactoryService } from './Interfaces';
+import { PasswordService } from './services/PasswordService';
+import { PopupMenuFactoryService } from './services/PopupMenuFactoryService';
 
 export interface IMyContainer
 {
@@ -28,8 +31,10 @@ export const ContainerProvider = ({ container, children } : ContainerProps) => {
 
 // Define container for dependencies
 export const container = {    
-  items: {    
-    //userRoleService: new UserRoleService(),
+  items: {            
+    passwordService : new PasswordService(),
+    popupMenuFactoryService : new PopupMenuFactoryService(),
+
     loginService: async (credentials : IUserCredentials) => {       
         const requestOptions = {
           method: 'POST',
@@ -66,7 +71,20 @@ export const container = {
       const data = await response.json()      
       return data;
     },
-
+    getContentByNameService: async (name : string) : Promise<IContent[]> =>
+    {
+      const userInfo = getUserInfo();
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer ' + userInfo.token      
+        },
+        body: JSON.stringify( { name: name })
+      };       
+      const response = await fetch(appConfig.backendURL + "/contents/byname", requestOptions)
+      const data = await response.json()      
+      return data;
+    },
     getGroupsService: async (find : string) : Promise<IGroup[]> => {      
       const userInfo = getUserInfo();
       const requestOptions = {

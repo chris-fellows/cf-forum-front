@@ -4,7 +4,7 @@ import { useInject, useInject2 } from "../DependencyInjection";
 import { addUserForgotPasswordServiceType } from "../Interfaces";
 import getUserInfo from '../userInfo';
 
-// Forgot password
+// User forgot password
 // Params: None
 const UserForgotPassword = () => {
     const userInfo = getUserInfo();        
@@ -21,13 +21,12 @@ const UserForgotPassword = () => {
             {
                 const result = await addUserForgotPasswordService(username);                
                   
-                // Navigate home        
-                console.log("Login: Navigating home");
-                navigate("/");
+                // Navigate home                        
+                navigate("/userforgotpasswordsent");
             }
             catch (error)
             {
-                window.alert("Error resetting password");
+                window.alert("Error handling forgot password");
             }
         }
 
