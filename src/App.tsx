@@ -17,6 +17,7 @@ import Login from './pages/Login';
 import NavBar from './pages/NavBar';
 import Privacy  from './pages/Privacy';
 import SiteMaintenance from './pages/SiteMaintenance';
+import TabTest from './pages/TabTest';
 import ThreadPosts from './pages/ThreadPosts';
 import UserEdit from './pages/UserEdit';
 import UserForgotPassword from './pages/UserForgotPassword';
@@ -29,6 +30,7 @@ import Users from './pages/Users';
 import { ContainerProvider, container } from './containerContext';
 import AdvertEdit from './pages/AdvertEdit';
 import NewRootPost from './pages/NewRootPost';
+import CustomMenuTest from './pages/CustomMenuTest';
 
 function App() {    
   // Don't prompt for login, let user click Login button
@@ -64,6 +66,7 @@ function App() {
             <Route path="/about" element={<About />}/>
             <Route path="/auditevents" element={<AuditEvents />}/>
             <Route path="/contact" element={<Contact />}/>
+            <Route path="/custommenutest" element={<CustomMenuTest />}/>
             <Route path="/help" element={<Help />}/>
             <Route path="/groups" element={<Groups />}/>
             <Route path="/groupinfo" element={<GroupInfo group={dummyGroup} />}/>                    
@@ -72,6 +75,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/privacy" element={<Privacy />}/>
             <Route path="/sitemaintenance" element={<SiteMaintenance />}/>
+            <Route path="/tabtest" element={<TabTest />}/> 
             <Route path="/threadposts" element={<ThreadPosts />}/> 
             <Route path="/useredit" element={<UserEdit />}/> 
             <Route path="/userforgotpassword" element={<UserForgotPassword />}/> 

@@ -20,6 +20,9 @@ import appConfig from "../appConfig";
 // Displays posts for thread. Root post first then every other post
 // Params: PostId (Root post)
 const ThreadPosts = () => {
+
+    console.log("Rendering Threadposts");
+
     const userInfo = getUserInfo();     
     const [posts, setPosts] = useState<IPost[]>([]);
     const [groups, setGroups] = useState<IGroup[]>();

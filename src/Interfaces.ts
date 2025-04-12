@@ -47,6 +47,7 @@ export interface IGroup {
 export interface IMenuItem {
    ID: string
    Name: string
+   Logo: string
 }
 
 export interface IPopupMenu {

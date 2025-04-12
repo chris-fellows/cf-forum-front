@@ -8,15 +8,18 @@ export class PopupMenuFactoryService implements IPopupMenuFactoryService {
         let menuItems : IMenuItem[] =  [
             {
                 ID: "MI1",
-                Name: "Menu item 1"
+                Name: "Menu item 1",
+                Logo: ""
             },
             {
                 ID: "MI2",
-                Name: "Menu item 2"
+                Name: "Menu item 2",
+                Logo: ""
             },
             {
                 ID: "MI3",
-                Name: "Menu item 3"
+                Name: "Menu item 3",
+                Logo: ""
             }
         ];    
 
