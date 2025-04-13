@@ -10,7 +10,7 @@ const Home = () => {
     return (
         <>
             <div>Home</div>                           
-            <ContentByName name= { "Home Message" }/>                        
+            <ContentByName name = { "Home Message" }/>                        
             {userInfo.isLoggedIn && <PopularRootPosts maxPosts={10} />}
         </>
     )

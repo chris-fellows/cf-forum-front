@@ -6,7 +6,7 @@ const SiteMaintenance = () => {
     
     return (
         <>            
-             <ContentByName name= { "Site Maintenance Message "}/>        
+             <ContentByName name= { "Site Maintenance Message" }/>        
         </>
     )
 }

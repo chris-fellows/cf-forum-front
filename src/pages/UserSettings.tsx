@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import LoginCheck from "./LoginCheck";
 import getUserInfo from "../userInfo";
 
-// TODO: Add user settings
 // User settings
 // Params: None
 const UserSettings = () => {
