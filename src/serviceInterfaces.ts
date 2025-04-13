@@ -1,4 +1,4 @@
-import { IAdvert, IAuditEvent, IContent, IGroup, ILanguage, IMenuItem, INewPost, INewRootPost, IPage, IPost, ITag, IUser, IUserCredentials, IUserPostInfoTrack, IUserPostInfoVote } from "./Interfaces";
+import { IAdvert, IAuditEvent, IContent, IContentSummary, IGroup, IGroupTag, ILanguage, IMenuItem, INewPost, INewRootPost, IPage, IPost, ITag, IUser, IUserCredentials, IUserPostInfoTrack, IUserPostInfoVote } from "./Interfaces";
 import { ServiceFunctionType } from "./customTypes";
 
 export interface IPasswordService {
@@ -28,16 +28,20 @@ export interface IDependencyService {
  }
  
  export interface IContentsService {
+    GetContent: (id : string) => Promise<IContent[]>
     GetContentByName: (name : string) => Promise<IContent[]>
+    GetContentSummaries: () => Promise<IContentSummary[]>
  }
  
  export interface IGroupsService {
     GetGroups: (find : string) => Promise<IGroup[]>
     GetGroup: (id : string) => Promise<IGroup[]>
+    GetGroupTags: (groupId : string) => Promise<IGroupTag[]>
+    GetAllGroupTags: () => Promise<IGroupTag[]>
  }
  
  export interface ILanguagesService {
-    GetLanguagesService: () => Promise<ILanguage[]>
+    GetLanguages: () => Promise<ILanguage[]>
  }
  
  export interface IPagesService {

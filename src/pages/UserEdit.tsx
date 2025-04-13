@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 import { useInject2 } from "../useInject";
 import getUserInfo from '../userInfo';
@@ -17,21 +16,21 @@ const UserEdit = ({userId} : any) => {
     const userService = useInject2<IUsersService>('userService');      
 
       // Get user (Either passed userId, from querystring or default)
-      let userDefault = "param";
+      let userIdSource = "param";
       const [searchParams] = useSearchParams();
       var theUserId = userId;   // Default to passed value
       if (theUserId == undefined) {   // Check query string        
           theUserId = searchParams.get("userid")!;        
           if (theUserId == undefined) {    // Current user
               theUserId = userInfo.userId;
-              userDefault = "current";
+              userIdSource = "current";
           } else {
-              userDefault = "query";
+            userIdSource = "query";
           }
 
       }    
 
-    console.log("Entered User" + userDefault + ":" + theUserId);
+    console.log("Entered User" + userIdSource + ":" + theUserId);
 
     useEffect(() => {       
         // Get root posts

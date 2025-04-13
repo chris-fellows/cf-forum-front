@@ -8,6 +8,8 @@ import About from './pages/About'
 import Adverts from './pages/Adverts';
 import AuditEvents from './pages/AuditEvents';
 import Contact from './pages/Contact';
+import ContentEdit from './pages/ContentEdit';
+import Contents from './pages/Contents';
 import Help from './pages/Help';
 import Home from './pages/Home';
 import GroupRootPosts from './pages/GroupRootPosts';
@@ -18,6 +20,7 @@ import NavBar from './pages/NavBar';
 import Privacy  from './pages/Privacy';
 import SiteMaintenance from './pages/SiteMaintenance';
 import TabTest from './pages/TabTest';
+import Tags from './pages/Tags';
 import ThreadPosts from './pages/ThreadPosts';
 import UserEdit from './pages/UserEdit';
 import UserForgotPassword from './pages/UserForgotPassword';
@@ -31,6 +34,7 @@ import { ContainerProvider, container } from './containerContext';
 import AdvertEdit from './pages/AdvertEdit';
 import NewRootPost from './pages/NewRootPost';
 import CustomMenuTest from './pages/CustomMenuTest';
+import Languages from './pages/Languages';
 
 function App() {    
   // Don't prompt for login, let user click Login button
@@ -66,16 +70,20 @@ function App() {
             <Route path="/about" element={<About />}/>
             <Route path="/auditevents" element={<AuditEvents />}/>
             <Route path="/contact" element={<Contact />}/>
+            <Route path="/contentedit" element={<ContentEdit />}/> 
+            <Route path="/contents" element={<Contents />}/>
             <Route path="/custommenutest" element={<CustomMenuTest />}/>
             <Route path="/help" element={<Help />}/>
             <Route path="/groups" element={<Groups />}/>
-            <Route path="/groupinfo" element={<GroupInfo group={dummyGroup} />}/>                    
+            <Route path="/groupinfo" element={<GroupInfo group={dummyGroup} groupTags={[]} />}/>                    
             <Route path="/grouprootposts" element={<GroupRootPosts />}/>          
             <Route path="/home" element={<Home />}/>
+            <Route path="/languages" element={<Languages />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/privacy" element={<Privacy />}/>
             <Route path="/sitemaintenance" element={<SiteMaintenance />}/>
             <Route path="/tabtest" element={<TabTest />}/> 
+            <Route path="/tags" element={<Tags />}/> 
             <Route path="/threadposts" element={<ThreadPosts />}/> 
             <Route path="/useredit" element={<UserEdit />}/> 
             <Route path="/userforgotpassword" element={<UserForgotPassword />}/> 

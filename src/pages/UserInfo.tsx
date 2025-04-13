@@ -11,7 +11,7 @@ interface IUser {
 const UserInfo = ({name, logo}: IUser) => {
     return (
         <>
-        <p>{logo && <img src={logo} alt="Logo" width={20} height={20} />} {name}</p>
+        <div>{logo && <img src={logo} alt="Logo" width={20} height={20} />} {name}</div>
         </>
     )
 }

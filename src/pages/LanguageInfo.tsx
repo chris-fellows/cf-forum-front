@@ -6,12 +6,12 @@ interface ILanguage {
  }
 
 // Displays language info (Name, logo)
-const Language = ({name, logo}: ILanguage) => {
+const LanguageInfo = ({name, logo}: ILanguage) => {
     return (
         <>
-        <p>{logo && <img src={logo} alt="Logo" width={20} height={20} />} {name}</p>
+        <div>{logo && <img src={logo} alt="Logo" width={20} height={20} />} {name}</div>
         </>
     )
 }
 
-export default Language
+export default LanguageInfo

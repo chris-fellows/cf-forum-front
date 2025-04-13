@@ -50,6 +50,15 @@ const NavBar = () => {
             {isLoggedIn && <li style={navListItemStyle}>
                <Link to="/usersettings">My Settings</Link>
             </li>}   
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/languages">Languages</Link>
+            </li>}
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/contents">Content</Link>
+            </li>}
+            {isLoggedIn && isAdmin && <li style={navListItemStyle}>
+               <Link to="/tags">Tags</Link>
+            </li>}
             <li style={navListItemStyle}>
                <Link to="/help">Help</Link>
             </li>

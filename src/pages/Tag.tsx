@@ -9,7 +9,7 @@ interface ITag {
 const Tag = ({name}: ITag) => {
     return (
         <>
-        <div>{name}</div>
+        <span className="Tag">{name}</span>
         </>
     )
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 import { useInject2 } from "../useInject";
 import { Link } from "react-router-dom";
+import UserInfo from "./UserInfo";
 import LoaderOverlay from "./LoaderOverlay";
 import { IUser } from "../Interfaces";
 import { IUsersService } from "../serviceInterfaces";
@@ -63,7 +64,7 @@ const Users = () => {
             <table className="UsersTable">
                 <thead>
                     <tr>
-                        <th className="UsersTableCell">Name</th>
+                        <th className="UsersTableCell">User</th>
                         <th className="UsersTableCell">Email</th>
                         <th className="UsersTableCell">Role</th>
                         <th className="UsersTableCell"></th>
@@ -74,7 +75,7 @@ const Users = () => {
                 <tbody>
                     {users.map(user => 
                         <tr key={user.ID}>
-                            <td className="UsersTableCell">{user.Name}</td>
+                            <td className="UsersTableCell"><UserInfo name={user.Name} logo={user.Logo}/></td>                            
                             <td className="UsersTableCell">{user.Email}</td>                            
                             <td className="UsersTableCell">{user.UserRoleName}</td>   
                             <td className="UsersTableCell"><Link to={"/useredit?userid=" + user.ID }>Edit</Link></td>

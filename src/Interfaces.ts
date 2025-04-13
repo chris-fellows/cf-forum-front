@@ -21,8 +21,14 @@ export interface IAuditEvent {
 }
 
 export interface IContent {
+   ID: string
    Name: string
    Data: string
+}
+
+export interface IContentSummary {
+   ID: string
+   Name: string   
 }
 
 export interface IGroup {
@@ -42,6 +48,8 @@ export interface IGroup {
  export interface ILanguage {
    ID: string
    Name: string   
+   Code: string
+   Logo: string
 }
 
 export interface IMenuItem {

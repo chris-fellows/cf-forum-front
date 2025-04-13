@@ -5,7 +5,7 @@ import getUserInfo from "../userInfo";
 
 // Password service for validating passwords
 export class LanguagesService implements ILanguagesService {    
-    async GetLanguagesService() : Promise<ILanguage[]>
+    async GetLanguages() : Promise<ILanguage[]>
     {
         const userInfo = getUserInfo();
         const requestOptions = {
